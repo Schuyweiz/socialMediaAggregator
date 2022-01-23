@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+    <include file="user_db/database_initialisation.sql" relativeToChangelogFile="true"/>
+    <include file="user_db/app_user_remove_role.sql" relativeToChangelogFile="true"/>
+    <include file="user_db/set_id_to_auto_increment.sql" relativeToChangelogFile="true"/>
+    <include file="user_db/add_enabled_col_to_user.sql" relativeToChangelogFile="true"/>
+    <include file="token_db/create_token_table.sql" relativeToChangelogFile="true"/>
+</databaseChangeLog>
