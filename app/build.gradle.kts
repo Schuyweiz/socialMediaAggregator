@@ -20,7 +20,10 @@ java {
 
 dependencies {
     implementation("org.apache.commons:commons-text")
+
+    //project dependencies
     implementation(project(":core"))
+    implementation(project(":auth"))
 
 
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web

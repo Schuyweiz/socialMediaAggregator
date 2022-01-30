@@ -3,13 +3,29 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("socialAggregator.kotlin-common-conventions")
     id("org.springframework.boot") apply(false)
-    id("io.spring.dependency-management")
+    kotlin("plugin.spring")
 }
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    //project dependencies
+    implementation(project(":core"))
+
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
+    implementation("org.springframework.boot:spring-boot-starter-web")
+
+    // https://mvnrepository.com/artifact/org.springframework.security/spring-security-core
+    implementation("org.springframework.security:spring-security-core")
+// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail
+    implementation("org.springframework.boot:spring-boot-starter-mail")
+
+// https://mvnrepository.com/artifact/com.auth0/java-jwt
+    implementation("com.auth0:java-jwt")
+
+    // https://mvnrepository.com/artifact/org.springframework.security/spring-security-config
+    implementation("org.springframework.security:spring-security-config")
+
+    // https://mvnrepository.com/artifact/org.springframework.security/spring-security-web
+    implementation("org.springframework.security:spring-security-web")
 }
 
 tasks.withType<KotlinCompile> {

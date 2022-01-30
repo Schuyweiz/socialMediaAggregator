@@ -1,0 +1,9 @@
+package com.example.core.user.repository
+
+import com.example.core.user.model.User
+import org.springframework.data.jpa.repository.JpaRepository
+
+interface UserRepository : JpaRepository<User, Long> {
+
+    fun findByMail(mail: String): User?
+}
