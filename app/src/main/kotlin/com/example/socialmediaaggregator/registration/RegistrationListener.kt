@@ -1,8 +1,8 @@
 package com.example.socialmediaaggregator.registration
 
-import com.example.socialmediaaggregator.registration.model.User
-import com.example.socialmediaaggregator.utils.Logger
-import com.example.socialmediaaggregator.utils.Logger.Companion.log
+import com.example.core.model.User
+import com.example.core.utils.Logger
+import com.example.core.utils.Logger.Companion.log
 import org.springframework.context.ApplicationListener
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.stereotype.Component

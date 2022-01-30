@@ -1,10 +1,11 @@
-package com.example.socialmediaaggregator.registration.model
+package com.example.core.model
 
 import lombok.Setter
 import javax.persistence.*
 
 @Setter
 @Entity(name = "app_user")
+@SuppressWarnings
 data class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,4 +1,4 @@
-package com.example.socialmediaaggregator.utils
+package com.example.core.utils
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

@@ -1,6 +1,6 @@
-package com.example.socialmediaaggregator.registration.repository
+package com.example.core.utils.repository
 
-import com.example.socialmediaaggregator.registration.model.VerificationToken
+import com.example.core.model.VerificationToken
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 

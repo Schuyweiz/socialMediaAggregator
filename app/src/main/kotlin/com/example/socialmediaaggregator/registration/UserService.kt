@@ -1,17 +1,17 @@
 package com.example.socialmediaaggregator.registration
 
+import com.example.core.model.User
+import com.example.core.model.UserDto
+import com.example.core.model.VerificationToken
+import com.example.core.model.calculateExpiryDate
+import com.example.core.utils.Logger
+import com.example.core.utils.Logger.Companion.log
+import com.example.core.utils.repository.TokenRepository
+import com.example.core.utils.repository.UserRepository
 import com.example.socialmediaaggregator.registration.exception.TokenExpiredException
 import com.example.socialmediaaggregator.registration.exception.TokenNotFoundException
 import com.example.socialmediaaggregator.registration.exception.UserAlreadyExistsException
-import com.example.socialmediaaggregator.registration.model.User
-import com.example.socialmediaaggregator.registration.model.UserDto
-import com.example.socialmediaaggregator.registration.model.VerificationToken
-import com.example.socialmediaaggregator.registration.model.calculateExpiryDate
-import com.example.socialmediaaggregator.registration.repository.TokenRepository
-import com.example.socialmediaaggregator.registration.repository.UserRepository
 import com.example.socialmediaaggregator.utils.UserMapper
-import com.example.socialmediaaggregator.utils.Logger
-import com.example.socialmediaaggregator.utils.Logger.Companion.log
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService

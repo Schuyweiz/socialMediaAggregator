@@ -1,6 +1,6 @@
 package com.example.socialmediaaggregator.registration
 
-import com.example.socialmediaaggregator.registration.model.UserDto
+import com.example.core.model.UserDto
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.web.bind.annotation.*
 

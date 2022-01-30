@@ -1,13 +1,17 @@
 package com.example.socialmediaaggregator
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.runApplication
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
-@SpringBootApplication
-class SocialMediaAggregatorApplication{
+@SpringBootApplication(scanBasePackages = ["com.example.socialmediaaggregator", "com.example.core"])
+@EnableJpaRepositories(basePackages = ["com.example.core"])
+@EntityScan(basePackages = ["com.example.core"])
+class SocialMediaAggregatorApplication {
 
 
-    companion object{
+    companion object {
         @JvmStatic
         fun main(args: Array<String>) {
             runApplication<SocialMediaAggregatorApplication>(*args)

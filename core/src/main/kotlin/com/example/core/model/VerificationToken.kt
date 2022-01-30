@@ -1,4 +1,4 @@
-package com.example.socialmediaaggregator.registration.model
+package com.example.core.model
 
 import java.time.LocalDateTime
 import javax.persistence.*

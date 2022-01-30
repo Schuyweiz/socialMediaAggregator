@@ -1,4 +1,4 @@
-package com.example.socialmediaaggregator.registration.validation
+package com.example.core.utils.validation
 
 import java.util.regex.Pattern
 import javax.validation.ConstraintValidator

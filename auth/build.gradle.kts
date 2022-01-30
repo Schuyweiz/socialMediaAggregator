@@ -1,12 +1,9 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
+    id("socialAggregator.kotlin-common-conventions")
     id("org.springframework.boot") apply(false)
     id("io.spring.dependency-management")
-    kotlin("plugin.spring")
-}
-java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(11))
 }
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter")

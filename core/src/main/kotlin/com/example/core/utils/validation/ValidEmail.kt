@@ -1,4 +1,4 @@
-package com.example.socialmediaaggregator.registration.validation
+package com.example.core.utils.validation
 
 import javax.validation.Constraint
 import kotlin.annotation.AnnotationTarget.*

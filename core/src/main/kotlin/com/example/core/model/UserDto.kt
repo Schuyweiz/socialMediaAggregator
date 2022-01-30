@@ -1,6 +1,6 @@
-package com.example.socialmediaaggregator.registration.model
+package com.example.core.model
 
-import com.example.socialmediaaggregator.registration.validation.ValidEmail
+import com.example.core.utils.validation.ValidEmail
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
 

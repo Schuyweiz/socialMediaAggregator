@@ -1,7 +1,7 @@
 package com.example.socialmediaaggregator.registration.exception
 
-import com.example.socialmediaaggregator.utils.Logger
-import com.example.socialmediaaggregator.utils.Logger.Companion.log
+import com.example.core.utils.Logger
+import com.example.core.utils.Logger.Companion.log
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice

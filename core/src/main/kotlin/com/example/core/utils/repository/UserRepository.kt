@@ -1,6 +1,6 @@
-package com.example.socialmediaaggregator.registration.repository
+package com.example.core.utils.repository
 
-import com.example.socialmediaaggregator.registration.model.User
+import com.example.core.model.User
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface UserRepository : JpaRepository<User, Long> {

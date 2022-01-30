@@ -1,7 +1,7 @@
 package com.example.socialmediaaggregator.utils
 
-import com.example.socialmediaaggregator.registration.model.User
-import com.example.socialmediaaggregator.registration.model.UserDto
+import com.example.core.model.User
+import com.example.core.model.UserDto
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 

@@ -1,8 +1,8 @@
 package com.example.socialmediaaggregator.auth
 
 import com.auth0.jwt.interfaces.JWTVerifier
-import com.example.socialmediaaggregator.utils.Logger
-import com.example.socialmediaaggregator.utils.Logger.Companion.log
+import com.example.core.utils.Logger
+import com.example.core.utils.Logger.Companion.log
 import org.springframework.http.HttpHeaders.AUTHORIZATION
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder

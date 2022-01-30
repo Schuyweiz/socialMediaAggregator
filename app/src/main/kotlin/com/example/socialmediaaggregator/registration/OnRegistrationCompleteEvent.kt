@@ -1,10 +1,10 @@
 package com.example.socialmediaaggregator.registration
 
-import com.example.socialmediaaggregator.registration.model.User
+import com.example.core.model.User
 import org.springframework.context.ApplicationEvent
 
 
 class OnRegistrationCompleteEvent(
-    private val user: User,
+    user: User,
 ) : ApplicationEvent(user) {
 }

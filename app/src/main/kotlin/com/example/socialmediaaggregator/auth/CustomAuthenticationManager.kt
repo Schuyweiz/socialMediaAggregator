@@ -2,8 +2,8 @@ package com.example.socialmediaaggregator.auth
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import com.example.socialmediaaggregator.utils.Logger
-import com.example.socialmediaaggregator.utils.Logger.Companion.log
+import com.example.core.utils.Logger
+import com.example.core.utils.Logger.Companion.log
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
