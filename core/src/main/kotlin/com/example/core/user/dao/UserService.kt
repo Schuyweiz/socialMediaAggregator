@@ -52,16 +52,15 @@ class UserService(
     fun saveUser(userDto: UserDto): User {
         log.info("Verifying user with email ${userDto.mail} exists.")
 
-        if (userExists(userDto))
+        userRepository.findByMail(userDto.mail)?.apply {
             throw UserAlreadyExistsException("User with email ${userDto.mail} already exists.")
+        }
 
         log.info("Saving a user with an email ${userDto.mail}")
         val user = userMapper.userDtoToUser(userDto)
+
         return userRepository.save(user)
     }
-
-    @Transactional(readOnly = true)
-    fun userExists(userDto: UserDto) = userRepository.findByMail(userDto.mail) != null
 
     @Transactional
     fun createVerificationToken(user: User, token: String) = tokenRepository.save(
@@ -75,15 +74,16 @@ class UserService(
 
     @Transactional
     fun enableUser(token: String) {
-        log.info("Verifying token validity.")
         val verificationToken = getValidToken(token)
         val user = verificationToken.user
+
         user.enabled = true
         userRepository.save(user)
     }
 
     @Transactional(readOnly = true)
     fun getValidToken(token: String): VerificationToken {
+        log.info("Verifying token validity.")
         val verificationToken =
             tokenRepository.getByToken(token) ?: throw TokenNotFoundException("Token $token not found.")
 
