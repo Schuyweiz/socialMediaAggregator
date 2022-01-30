@@ -61,8 +61,15 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-gradle-plugin")
 
 
+    // testing ---------------------------------------------------------------------------------------------------------
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    testImplementation("com.nhaarman:mockito-kotlin")
+
+    runtimeOnly("io.kotest:kotest-assertions-core-jvm")
+
+    testImplementation("io.kotest:kotest-runner-junit5-jvm")
 }
 
 tasks.withType<KotlinCompile> {
