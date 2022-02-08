@@ -21,8 +21,10 @@ class RegistrationListener(
     private fun confirmRegistration(event: OnRegistrationCompleteEvent) {
         val user = event.source as User
         val token = UUID.randomUUID().toString()
+
         log.info("Creating a verification token for the user with an email ${user.mail}")
         userService.createVerificationToken(user, token)
+
         //fixme: string link should not be hand written
         log.info("Activate account through the link http://localhost:8080/register/confirm?token=$token")
         //TODO: uncomment when mail sender is fully configured

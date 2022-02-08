@@ -1,9 +1,8 @@
 package com.example.auth.app.security
 
-import com.auth0.jwt.algorithms.Algorithm
-import com.auth0.jwt.interfaces.JWTVerifier
 import com.example.auth.app.CustomAuthenticationManager
 import com.example.auth.app.JwtAuthenticationFilter
+import com.example.auth.app.jwt.JwtService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod.GET
@@ -22,8 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 class WebSecurityConfig(
     val userDetailsService: UserDetailsService,
     val encoder: PasswordEncoder,
-    val algorithm: Algorithm,
-    val jwtVerifier: JWTVerifier,
+    val jwtService: JwtService,
 ) : WebSecurityConfigurerAdapter() {
 
     @Bean
@@ -45,10 +43,10 @@ class WebSecurityConfig(
             .and()
             .authorizeRequests().anyRequest().authenticated()
             .and()
-            .addFilter(CustomAuthenticationManager(authenticationManagerBean(), algorithm))
+            .addFilter(CustomAuthenticationManager(authenticationManagerBean(), jwtService))
 
         http.addFilterBefore(
-            JwtAuthenticationFilter(userDetailsService, jwtVerifier),
+            JwtAuthenticationFilter(userDetailsService, jwtService),
             UsernamePasswordAuthenticationFilter::class.java
         )
 

@@ -1,6 +1,6 @@
 package com.example.auth.app
 
-import com.auth0.jwt.interfaces.JWTVerifier
+import com.example.auth.app.jwt.JwtService
 import com.example.core.utils.Logger
 import com.example.core.utils.Logger.Companion.log
 import org.springframework.http.HttpHeaders.AUTHORIZATION
@@ -15,23 +15,24 @@ import javax.servlet.http.HttpServletResponse
 @Logger
 class JwtAuthenticationFilter(
     private val userService: UserDetailsService,
-    private val jwtVerifier: JWTVerifier
+    private val jwtService: JwtService,
 ) : OncePerRequestFilter() {
 
 
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
-        filterChain: FilterChain
+        filterChain: FilterChain,
     ) {
         if (request.servletPath.contains("login")) {
             filterChain.doFilter(request, response)
+            return
         }
 
         val authHeader = request.getHeader(AUTHORIZATION) ?: throw JwtAuthenticationException("No jwt token provided.")
 
         if (!request.servletPath.contains("login") && authHeader.startsWith(BEARER)) {
-            if (authHeader.startsWith("Bearer ")) {
+            if (authHeader.startsWith(BEARER)) {
                 val token = authHeader.substring(BEARER.length)
                 val userAuthentication = getUserAuthentication(token)
                 log.info("Token verification successful, assigning to the context.")
@@ -43,7 +44,7 @@ class JwtAuthenticationFilter(
 
     private fun getUserAuthentication(token: String): UsernamePasswordAuthenticationToken {
         //fixme: reimplement with private and public key or replace with a properly stored secret
-        val decodedToken = jwtVerifier.verify(token)
+        val decodedToken = jwtService.verifyToken(token)
         val userName = decodedToken.subject
         val user = userService.loadUserByUsername(userName)
         return UsernamePasswordAuthenticationToken(user.username, null, user.authorities)
