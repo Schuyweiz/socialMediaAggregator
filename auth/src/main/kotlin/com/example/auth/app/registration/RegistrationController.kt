@@ -1,4 +1,4 @@
-package com.example.auth.registration
+package com.example.auth.app.registration
 
 import com.example.core.user.dao.UserService
 import com.example.core.user.model.UserDto

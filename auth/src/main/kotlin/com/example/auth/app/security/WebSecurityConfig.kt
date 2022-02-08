@@ -1,9 +1,9 @@
-package com.example.auth.security
+package com.example.auth.app.security
 
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.interfaces.JWTVerifier
-import com.example.auth.CustomAuthenticationManager
-import com.example.auth.JwtAuthenticationFilter
+import com.example.auth.app.CustomAuthenticationManager
+import com.example.auth.app.JwtAuthenticationFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod.GET

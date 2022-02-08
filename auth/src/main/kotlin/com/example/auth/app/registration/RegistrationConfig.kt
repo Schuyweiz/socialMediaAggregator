@@ -1,4 +1,4 @@
-package com.example.auth.registration
+package com.example.auth.app.registration
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

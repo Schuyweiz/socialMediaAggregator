@@ -1,4 +1,4 @@
-package com.example.auth.security
+package com.example.auth.app.security
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm

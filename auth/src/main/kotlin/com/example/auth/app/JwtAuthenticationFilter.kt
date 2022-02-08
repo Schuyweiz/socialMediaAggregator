@@ -1,4 +1,4 @@
-package com.example.auth
+package com.example.auth.app
 
 import com.auth0.jwt.interfaces.JWTVerifier
 import com.example.core.utils.Logger

@@ -1,4 +1,4 @@
-package com.example.auth
+package com.example.auth.app
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
@@ -25,8 +25,10 @@ class CustomAuthenticationManager(
     override fun attemptAuthentication(request: HttpServletRequest?, response: HttpServletResponse?): Authentication {
         val username = request?.getParameter("username")
         val password = request?.getParameter("password")
+
         log.info("User in attempt Authentication method in authentication manager with the name {}", username)
         val token = UsernamePasswordAuthenticationToken(username, password)
+
         return authenticationManager.authenticate(token)
     }
 

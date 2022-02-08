@@ -1,4 +1,4 @@
-package com.example.auth.registration.exception
+package com.example.auth.app.exception
 
 import com.example.core.user.exceptions.UserAlreadyExistsException
 import com.example.core.utils.Logger
