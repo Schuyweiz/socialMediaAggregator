@@ -60,6 +60,9 @@ dependencies {
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-gradle-plugin
     implementation("org.springframework.boot:spring-boot-gradle-plugin")
 
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-webflux
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
+
 
     // testing ---------------------------------------------------------------------------------------------------------
 
@@ -89,4 +92,8 @@ tasks.getByName<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar
 
 tasks.getByName<Jar>("jar") {
     enabled = true
+}
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(11))
 }

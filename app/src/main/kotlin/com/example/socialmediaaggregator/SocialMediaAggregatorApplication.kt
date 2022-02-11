@@ -3,11 +3,13 @@ package com.example.socialmediaaggregator
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.runApplication
+import org.springframework.boot.web.servlet.ServletComponentScan
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
 @SpringBootApplication(scanBasePackages = ["com.example.socialmediaaggregator", "com.example.core", "com.example.auth"])
 @EnableJpaRepositories(basePackages = ["com.example.core"])
 @EntityScan(basePackages = ["com.example.core"])
+@ServletComponentScan(basePackageClasses = [FacebookTokenUrlFilter::class])
 class SocialMediaAggregatorApplication {
 
 

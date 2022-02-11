@@ -51,6 +51,14 @@ dependencies {
     // https://mvnrepository.com/artifact/org.springframework.security/spring-security-web
     implementation("org.springframework.security:spring-security-web:5.6.1")
 
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-webflux
+    implementation("org.springframework.boot:spring-boot-starter-webflux:2.6.3")
+
+    // https://mvnrepository.com/artifact/org.springframework.security.oauth/spring-security-oauth2
+    implementation("org.springframework.security.oauth:spring-security-oauth2:2.5.1.RELEASE")
+
+    implementation("org.springframework.security:spring-security-oauth2-jose:5.6.1")
+
 
     // Align versions of all Kotlin components
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
@@ -59,6 +67,7 @@ dependencies {
     implementation("org.postgresql:postgresql:42.3.1")
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-gradle-plugin
     implementation("org.springframework.boot:spring-boot-gradle-plugin:2.6.3")
+    implementation("org.springframework.security:spring-security-oauth2-client:5.6.1")
 
 
     // Use JUnit Jupiter for testing.

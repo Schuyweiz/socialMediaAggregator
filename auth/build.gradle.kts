@@ -24,8 +24,18 @@ dependencies {
     // https://mvnrepository.com/artifact/org.springframework.security/spring-security-config
     implementation("org.springframework.security:spring-security-config")
 
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
+
+
     // https://mvnrepository.com/artifact/org.springframework.security/spring-security-web
     implementation("org.springframework.security:spring-security-web")
+
+    // https://mvnrepository.com/artifact/org.springframework.security.oauth/spring-security-oauth2
+    implementation("org.springframework.security.oauth:spring-security-oauth2")
+
+    implementation("org.springframework.boot:spring-boot-gradle-plugin")
+    implementation("org.springframework.security:spring-security-oauth2-client")
+
 }
 
 tasks.withType<KotlinCompile> {
@@ -37,4 +47,8 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(11))
 }
