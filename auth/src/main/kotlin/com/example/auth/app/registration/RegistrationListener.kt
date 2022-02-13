@@ -13,15 +13,16 @@ import java.util.*
 @Component
 class RegistrationListener(
     private val userService: UserService,
-    val mailSender: JavaMailSender
+    val mailSender: JavaMailSender,
 ) : ApplicationListener<OnRegistrationCompleteEvent> {
 
-    override fun onApplicationEvent(event: OnRegistrationCompleteEvent) = confirmRegistration(event)
+    override fun onApplicationEvent(event: OnRegistrationCompleteEvent) = sendConfirmationEmail(event)
 
-    private fun confirmRegistration(event: OnRegistrationCompleteEvent) {
+    private fun sendConfirmationEmail(event: OnRegistrationCompleteEvent) {
         val user = event.source as User
         val token = UUID.randomUUID().toString()
 
+        //todo: do  i need tokens here? probably not
         log.info("Creating a verification token for the user with an email ${user.mail}")
         userService.createVerificationToken(user, token)
 

@@ -1,6 +1,7 @@
 package com.example.auth.app.security
 
 import com.example.auth.app.CustomAuthenticationManager
+import com.example.auth.app.JwtAuthenticationFilter
 import com.example.auth.app.jwt.JwtService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -13,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy.STATELESS
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 
 @Configuration
@@ -23,6 +25,9 @@ class WebSecurityConfig(
     val jwtService: JwtService,
 ) : WebSecurityConfigurerAdapter() {
 
+    private val JWT_AUTH_WHITELIST = setOf(
+        "/auth/refresh"
+    )
 
     @Bean
     override fun authenticationManager(): AuthenticationManager {
@@ -33,6 +38,7 @@ class WebSecurityConfig(
         auth?.userDetailsService(userDetailsService)?.passwordEncoder(encoder)
     }
 
+
     override fun configure(http: HttpSecurity?) {
         http!!.csrf().disable()
             .sessionManagement().sessionCreationPolicy(STATELESS)
@@ -41,9 +47,14 @@ class WebSecurityConfig(
             .requiresChannel {
                 it.anyRequest().requiresSecure()
             }
+            .authorizeRequests().antMatchers("auth/refresh")
+            .permitAll()
+            .and()
 
-
-            .authorizeRequests().antMatchers("/login").permitAll()
+            .formLogin()
+            .loginPage("/login")
+            .permitAll()
+            .successForwardUrl("/home")
             .and()
 
 
@@ -56,10 +67,10 @@ class WebSecurityConfig(
 
             .addFilter(CustomAuthenticationManager(authenticationManagerBean(), jwtService))
 
-//        http.addFilterBefore(
-//            JwtAuthenticationFilter(userDetailsService, jwtService),
-//            UsernamePasswordAuthenticationFilter::class.java
-//        )
+        http.addFilterBefore(
+            JwtAuthenticationFilter(userDetailsService, jwtService, JWT_AUTH_WHITELIST),
+            UsernamePasswordAuthenticationFilter::class.java
+        )
 
     }
 

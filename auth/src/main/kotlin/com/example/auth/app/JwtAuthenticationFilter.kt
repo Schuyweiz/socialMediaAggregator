@@ -1,5 +1,6 @@
 package com.example.auth.app
 
+import com.example.auth.app.jwt.JwtAuthenticationException
 import com.example.auth.app.jwt.JwtService
 import com.example.core.utils.Logger
 import com.example.core.utils.Logger.Companion.log
@@ -16,8 +17,10 @@ import javax.servlet.http.HttpServletResponse
 class JwtAuthenticationFilter(
     private val userService: UserDetailsService,
     private val jwtService: JwtService,
+    private val jwtAuthWhitelist: Set<String>,
 ) : OncePerRequestFilter() {
 
+    override fun shouldNotFilter(request: HttpServletRequest): Boolean = jwtAuthWhitelist.contains(request.servletPath)
 
     override fun doFilterInternal(
         request: HttpServletRequest,
@@ -29,15 +32,15 @@ class JwtAuthenticationFilter(
             return
         }
 
-        val authHeader = request.getHeader(AUTHORIZATION) ?: throw JwtAuthenticationException("No jwt token provided.")
+        val authHeader =
+            request.getHeader(AUTHORIZATION) ?: throw JwtAuthenticationException("Authorization header is empty")
 
         if (!request.servletPath.contains("login") && authHeader.startsWith(BEARER)) {
-            if (authHeader.startsWith(BEARER)) {
-                val token = authHeader.substring(BEARER.length)
-                val userAuthentication = getUserAuthentication(token)
-                log.info("Token verification successful, assigning to the context.")
-                SecurityContextHolder.getContext().authentication = userAuthentication
-            }
+            val token = authHeader.substring(BEARER.length)
+            val userAuthentication = getUserAuthentication(token)
+            log.info("Token verification successful, assigning to the context.")
+            SecurityContextHolder.getContext().authentication = userAuthentication
+
         }
         filterChain.doFilter(request, response)
     }

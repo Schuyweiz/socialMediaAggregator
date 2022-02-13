@@ -34,7 +34,7 @@ class CustomAuthenticationManager(
         authResult: Authentication?,
     ) {
         val user = authResult?.principal as User
-        val accessToken = jwtService.createToken(user, request!!)
+        val accessToken = jwtService.createAccessToken(user, request!!)
         val refreshToken = jwtService.createRefreshToken(user, request)
 
         //TODO: rewrite as a map perhaps and rplace with a token service maybe??
@@ -61,7 +61,7 @@ class CustomAuthenticationManager(
         )
 
     companion object {
-        private const val REFRESH_TOKEN_COOKIE_NAME = "refresh_token"
+        private const val REFRESH_TOKEN_COOKIE_NAME = "REFRESH_TOKEN"
         private const val ACCESS_TOKEN_NAME = "access_token"
     }
 }

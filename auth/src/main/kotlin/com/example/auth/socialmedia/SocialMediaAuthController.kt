@@ -20,7 +20,7 @@ class SocialMediaAuthController() {
     }
 
     @GetMapping("/")
-    fun facebokstuff(model: Model) {
+    fun facebookstuff(model: Model) {
         System.out.println("Controller")
     }
 

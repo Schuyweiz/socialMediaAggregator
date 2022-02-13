@@ -1,5 +1,7 @@
 package com.example.auth.app.exception
 
+import com.example.core.user.exceptions.TokenExpiredException
+import com.example.core.user.exceptions.TokenNotFoundException
 import com.example.core.user.exceptions.UserAlreadyExistsException
 import com.example.core.utils.Logger
 import com.example.core.utils.Logger.Companion.log
@@ -17,10 +19,28 @@ class RegistrationExceptionHandler : ResponseEntityExceptionHandler() {
 
     @ExceptionHandler(UserAlreadyExistsException::class)
     fun handleUserAlreadyRegistered(
-        exception: UserAlreadyExistsException, request: WebRequest
+        exception: UserAlreadyExistsException, request: WebRequest,
     ): ResponseEntity<Any> {
         //TODO: inject message as a VALUE
         log.debug(exception.message, exception)
         return ResponseEntity(exception.message, HttpStatus.CONFLICT)
     }
+
+    @ExceptionHandler(TokenExpiredException::class)
+    fun handleTokenExpired(
+        exception: TokenExpiredException,
+    ): ResponseEntity<Any> {
+        log.debug(exception.message, exception)
+        return ResponseEntity(exception.message, HttpStatus.UNAUTHORIZED)
+    }
+
+    @ExceptionHandler(TokenNotFoundException::class)
+    fun handleTokenNotFoundException(
+        exception: TokenNotFoundException,
+    ): ResponseEntity<Any> {
+        log.debug(exception.message, exception)
+        return ResponseEntity(exception.message, HttpStatus.UNAUTHORIZED)
+    }
+
+
 }
