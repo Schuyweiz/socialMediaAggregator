@@ -35,6 +35,7 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-gradle-plugin")
     implementation("org.springframework.security:spring-security-oauth2-client")
+    implementation("com.restfb:restfb:2022.3.1")
 
 }
 

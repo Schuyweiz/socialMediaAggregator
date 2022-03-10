@@ -26,7 +26,9 @@ class WebSecurityConfig(
 ) : WebSecurityConfigurerAdapter() {
 
     private val JWT_AUTH_WHITELIST = setOf(
-        "/auth/refresh"
+        "/auth/refresh",
+        "/auth/facebook/login",
+        "/auth/facebook"
     )
 
     @Bean

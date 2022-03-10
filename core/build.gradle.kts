@@ -47,6 +47,7 @@ dependencies {
 
     implementation("jakarta.xml.bind:jakarta.xml.bind-api:2.3.3")
     //
+    implementation("com.restfb:restfb:2022.3.1")
 
     //validation
     implementation("org.springframework.boot:spring-boot-starter-validation")
