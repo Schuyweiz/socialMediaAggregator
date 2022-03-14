@@ -1,9 +1,7 @@
 package com.example.core.user.model
 
-import lombok.Setter
 import javax.persistence.*
 
-@Setter
 @Entity(name = "app_user")
 @SuppressWarnings
 data class User(
