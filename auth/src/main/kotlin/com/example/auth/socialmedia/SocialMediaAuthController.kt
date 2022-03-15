@@ -19,12 +19,7 @@ class SocialMediaAuthController(
 
     @GetMapping("/auth/facebook/login")
     fun facebookLoginDialogue(
-    ): String {
-
-        return facebookClient.getLoginDialogUrl("1005503330221024",
-            "https://localhost:8443/auth/facebook",
-            FacebookConfiguration.scope)
-    }
+    ): String = socialMediaAuthService.getLoginDialogueUrl()
 
     @GetMapping("auth/facebook")
     fun getFacebookCode(

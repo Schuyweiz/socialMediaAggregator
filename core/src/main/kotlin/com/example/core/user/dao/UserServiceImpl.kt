@@ -33,12 +33,12 @@ class UserServiceImpl(
         if (email == null)
             throw Exception("Username not provided the loadUserByUsername from UserDetailsService")
 
-        val user = userRepository.findByMail(email)
+        val user = userRepository.findByEmail(email)
             ?: throw UsernameNotFoundException("User with the email $email not found.")
 
         return org.springframework.security.core.userdetails.User(
-            user.mail,
-            user.passwordHash,
+            user.email,
+            user.password,
             user.enabled,
             true,
             true,
@@ -50,13 +50,13 @@ class UserServiceImpl(
 
     @Transactional
     override fun saveUser(userDto: UserDto): User {
-        log.info("Verifying user with email ${userDto.mail} exists.")
+        log.info("Verifying user with email ${userDto.email} exists.")
 
-        userRepository.findByMail(userDto.mail)?.apply {
-            throw UserAlreadyExistsException("User with email ${userDto.mail} already exists.")
+        userRepository.findByEmail(userDto.email)?.apply {
+            throw UserAlreadyExistsException("User with email ${userDto.email} already exists.")
         }
 
-        log.info("Saving a user with an email ${userDto.mail}")
+        log.info("Saving a user with an email ${userDto.email}")
         val user = userMapper.userDtoToUser(userDto)
 
         return userRepository.save(user)
@@ -65,7 +65,6 @@ class UserServiceImpl(
     @Transactional
     override fun createVerificationToken(user: User, token: String) = tokenRepository.save(
         VerificationToken(
-            id = null,
             token = token,
             user = user,
             expiryDate = calculateExpiryDate(expirationTimeMinutes)

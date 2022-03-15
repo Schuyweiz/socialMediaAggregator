@@ -1,5 +1,6 @@
 package com.example.auth.socialmedia.events
 
+import com.example.auth.socialmedia.FacebookAuthService
 import com.example.core.user.model.SocialMediaToken
 import com.example.core.user.model.SocialMediaType
 import com.example.core.user.repository.SocialMediaTokenRepository
@@ -16,24 +17,18 @@ import org.springframework.transaction.annotation.Transactional
 @Logger
 @Component
 class SocialMediaAuthenticationEventListener(
-    private val facebookClient: DefaultFacebookClient,
+    private val facebookAuthService: FacebookAuthService,
     private val socialMediaTokenRepository: SocialMediaTokenRepository,
-    private val appUserRepository: UserRepository,
 ) : ApplicationListener<OnSocialMediaAuthenticationEvent> {
     //todo: вынести контсанты из кода
     @Transactional
     override fun onApplicationEvent(event: OnSocialMediaAuthenticationEvent) {
         val token = event.source as AccessToken
-        val userEmail = SecurityContextHolder.getContext().authentication.principal.toString()
-        val user = appUserRepository.findByMail(userEmail)!!
-        val extendedToken = facebookClient.obtainExtendedAccessToken("1005503330221024",
-            "08953917c4e63dcd7e145dd5b208071c",
-            token.accessToken
-        )
+        val extendedToken = facebookAuthService.getExtendedAccessToken(token.accessToken)
+
         log.info("""long lived access token is ${extendedToken.accessToken} expires in ${extendedToken.expires}""")
 
         socialMediaTokenRepository.save(SocialMediaToken(token = extendedToken.accessToken,
-            socialMediaType = SocialMediaType.FACEBOOK,
-            user = user))
+            socialMediaType = SocialMediaType.FACEBOOK))
     }
 }

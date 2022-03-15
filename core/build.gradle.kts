@@ -1,3 +1,7 @@
+import org.jetbrains.kotlin.fir.expressions.impl.FirNoReceiverExpression.annotations
+import org.jetbrains.kotlin.fir.expressions.impl.FirStubStatement.annotations
+import org.jetbrains.kotlin.gradle.model.AllOpen
+
 plugins {
     id("socialAggregator.kotlin-common-conventions")
     id("org.springframework.boot")
@@ -6,6 +10,7 @@ plugins {
     kotlin("kapt")
     kotlin("plugin.spring")
     kotlin("jvm")
+    id("org.jetbrains.kotlin.plugin.allopen")
 }
 
 repositories {
@@ -17,6 +22,11 @@ repositories {
 //no args for entitiy
 configure<org.jetbrains.kotlin.noarg.gradle.NoArgExtension> {
     annotation("javax.persistence.Entity")
+}
+allOpen{
+    annotations("javax.persistence.Entity",
+        "javax.persistence.MappedSuperclass",
+        "javax.persistence.Embedabble" )
 }
 
 java {

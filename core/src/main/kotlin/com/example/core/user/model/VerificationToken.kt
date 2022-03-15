@@ -8,11 +8,14 @@ import javax.persistence.*
 data class VerificationToken(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long?,
+    var id: Long = 0,
+
     val token: String,
+
     @OneToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(nullable = false, referencedColumnName = "id")
     val user: User,
+
     val expiryDate: LocalDateTime,
 )
 

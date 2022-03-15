@@ -12,9 +12,9 @@ class UserMapper(
 
     fun userDtoToUser(userDto: UserDto) = User(
         firstName = userDto.firstName,
-        secondName = userDto.secondName,
-        username = userDto.username,
-        mail = userDto.mail,
-        passwordHash = passwordEncoder.encode(userDto.password),
+        lastName = userDto.lastName,
+        email = userDto.email,
+        userPassword = passwordEncoder.encode(userDto.password),
+        socialMediaTokens = mutableSetOf()
     )
 }

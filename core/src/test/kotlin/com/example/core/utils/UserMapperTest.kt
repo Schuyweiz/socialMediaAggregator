@@ -30,19 +30,17 @@ internal class UserMapperTest {
     fun `verify userDto to user mapper works correctly`() {
         val userDto = UserDto(
             firstName = "first name",
-            secondName = "second name",
-            mail = "mail@mail.ru",
-            username = "username",
+            lastName = "second name",
+            email = "mail@mail.ru",
             password = "password",
         )
 
         val expectedUser = User(
-            id = null,
+            id = 0,
             firstName = "first name",
-            secondName = "second name",
-            mail = "mail@mail.ru",
-            username = "username",
-            passwordHash = "encoded",
+            lastName = "second name",
+            email = "mail@mail.ru",
+            userPassword = "encoded",
             enabled = false,
         )
 

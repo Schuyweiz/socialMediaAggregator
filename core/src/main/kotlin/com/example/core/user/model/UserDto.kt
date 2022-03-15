@@ -8,19 +8,16 @@ data class UserDto(
     @NotNull
     @NotEmpty
     val firstName: String,
+
     @NotNull
     @NotEmpty
-    //TODO: replace second with last name
-    val secondName: String,
+    val lastName: String,
+
     @ValidEmail
     @NotNull
     @NotEmpty
-    //TODO: replace with email
-    val mail: String,
-    @NotNull
-    @NotEmpty
-    //TODO: remove, unnecessary
-    val username: String,
+    val email: String,
+
     @NotNull
     @NotEmpty
     val password: String,

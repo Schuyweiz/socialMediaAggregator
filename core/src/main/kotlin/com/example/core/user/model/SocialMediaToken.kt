@@ -8,17 +8,12 @@ data class SocialMediaToken(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    var id: Long? = 0,
+    var id: Long = 0,
 
-    val token: String,
+    var token: String = "",
 
     @Column(name = "social_media_type")
-    val socialMediaType: SocialMediaType,
-
-    //todo: скорее всего нужно будет чтобы юзер фетчил
-    @ManyToOne
-    @JoinColumn(name = "app_user")
-    val user: User,
+    var socialMediaType: SocialMediaType = SocialMediaType.FACEBOOK,
 ) {
 
 }

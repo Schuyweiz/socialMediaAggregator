@@ -23,7 +23,7 @@ class RegistrationListener(
         val token = UUID.randomUUID().toString()
 
         //todo: do  i need tokens here? probably not
-        log.info("Creating a verification token for the user with an email ${user.mail}")
+        log.info("Creating a verification token for the user with an email ${user.email}")
         userService.createVerificationToken(user, token)
 
         //fixme: string link should not be hand written
