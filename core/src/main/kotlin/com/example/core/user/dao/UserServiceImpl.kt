@@ -12,7 +12,6 @@ import com.example.core.user.repository.UserRepository
 import com.example.core.utils.Logger
 import com.example.core.utils.Logger.Companion.log
 import com.example.core.utils.UserMapper
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -29,23 +28,13 @@ class UserServiceImpl(
     val userMapper: UserMapper,
 ) : UserDetailsService, UserService {
 
+    @Transactional(readOnly = true)
     override fun loadUserByUsername(email: String?): UserDetails {
         if (email == null)
             throw Exception("Username not provided the loadUserByUsername from UserDetailsService")
 
-        val user = userRepository.findByEmail(email)
+        return userRepository.findByEmail(email)
             ?: throw UsernameNotFoundException("User with the email $email not found.")
-
-        return org.springframework.security.core.userdetails.User(
-            user.email,
-            user.password,
-            user.enabled,
-            true,
-            true,
-            true,
-            //TODO: create a proper set of authorities and how to extraact them from the user
-            mutableListOf(SimpleGrantedAuthority("ROLE_USER"))
-        )
     }
 
     @Transactional
@@ -83,6 +72,7 @@ class UserServiceImpl(
     @Transactional(readOnly = true)
     override fun getValidToken(token: String): VerificationToken {
         log.info("Verifying token validity.")
+
         val verificationToken =
             tokenRepository.getByToken(token) ?: throw TokenNotFoundException("Token $token not found.")
 

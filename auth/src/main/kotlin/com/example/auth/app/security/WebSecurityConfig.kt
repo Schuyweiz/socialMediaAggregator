@@ -75,13 +75,4 @@ class WebSecurityConfig(
         )
 
     }
-
-
-    companion object {
-        const val FACEBOOK_LOGIN_DIALOGUE_URL = "https://www.facebook.com/v13.0/dialog/oauth?" +
-                "client_id=1005503330221024" +
-                "&redirect_uri=https://localhost:8443/auth/facebook" +
-                "&response_type=code" +
-                "&state={\"{st=state123abc,ds=123456789}\"}"
-    }
 }

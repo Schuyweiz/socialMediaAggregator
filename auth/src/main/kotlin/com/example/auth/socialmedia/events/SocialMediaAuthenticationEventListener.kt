@@ -20,7 +20,8 @@ class SocialMediaAuthenticationEventListener(
     private val facebookAuthService: FacebookAuthService,
     private val socialMediaTokenRepository: SocialMediaTokenRepository,
 ) : ApplicationListener<OnSocialMediaAuthenticationEvent> {
-    //todo: вынести контсанты из кода
+
+
     @Transactional
     override fun onApplicationEvent(event: OnSocialMediaAuthenticationEvent) {
         val token = event.source as AccessToken
