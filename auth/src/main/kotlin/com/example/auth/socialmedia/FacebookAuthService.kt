@@ -2,6 +2,7 @@ package com.example.auth.socialmedia
 
 import com.example.auth.socialmedia.events.OnSocialMediaAuthenticationEvent
 import com.example.core.config.FacebookConfiguration
+import com.example.core.user.model.User
 import com.restfb.DefaultFacebookClient
 import com.restfb.FacebookClient
 import org.springframework.beans.factory.annotation.Value
@@ -20,11 +21,10 @@ class FacebookAuthService(
     private val redirectUrl: String,
 ) {
 
-    //todo: вынести контсанты из кода
-    fun authenticateUser(verificationCode: String) =
+    fun authenticateUser(verificationCode: String, user: User) =
         with(facebookClient.obtainUserAccessToken(appId, appSecret, redirectUrl,
             verificationCode)) {
-            applicationEventPublisher.publishEvent(OnSocialMediaAuthenticationEvent(this))
+            applicationEventPublisher.publishEvent(OnSocialMediaAuthenticationEvent(this, user))
         }
 
     fun getLoginDialogueUrl(): String = facebookClient.getLoginDialogUrl(appId, redirectUrl, FacebookConfiguration.scope)

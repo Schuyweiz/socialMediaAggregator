@@ -27,7 +27,7 @@ class RegistrationListener(
         userService.createVerificationToken(user, token)
 
         //fixme: string link should not be hand written
-        log.info("Activate account through the link http://localhost:8080/register/confirm?token=$token")
+        log.info("Activate account through the link http://localhost:8443/register/confirm?token=$token")
         //TODO: uncomment when mail sender is fully configured
 //
 //        val email = SimpleMailMessage().apply {

@@ -1,5 +1,6 @@
 package com.example.auth.socialmedia
 
+import com.example.core.user.model.User
 import com.example.core.utils.Logger
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -27,7 +28,8 @@ class SocialMediaAuthController(
     @GetMapping("auth/facebook/authenticate")
     fun authenticateFacebook(
         @RequestParam(name = "code") code: String,
+        user: User
     ) {
-        socialMediaAuthService.authenticateUser(code)
+        socialMediaAuthService.authenticateUser(code,user)
     }
 }

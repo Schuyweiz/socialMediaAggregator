@@ -25,11 +25,15 @@ class SocialMediaAuthenticationEventListener(
     @Transactional
     override fun onApplicationEvent(event: OnSocialMediaAuthenticationEvent) {
         val token = event.source as AccessToken
+        val user = event.user
         val extendedToken = facebookAuthService.getExtendedAccessToken(token.accessToken)
 
         log.info("""long lived access token is ${extendedToken.accessToken} expires in ${extendedToken.expires}""")
 
-        socialMediaTokenRepository.save(SocialMediaToken(token = extendedToken.accessToken,
-            socialMediaType = SocialMediaType.FACEBOOK))
+        socialMediaTokenRepository.save(SocialMediaToken(
+            token = extendedToken.accessToken,
+            socialMediaType = SocialMediaType.FACEBOOK,
+            user = user)
+        )
     }
 }

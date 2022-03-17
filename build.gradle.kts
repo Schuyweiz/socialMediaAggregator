@@ -19,14 +19,14 @@ allprojects {
     version = "0.0.1-SNAPSHOT"
 
     tasks.withType<JavaCompile> {
-        sourceCompatibility = "15"
-        targetCompatibility = "15"
+        sourceCompatibility = "1.8"
+        targetCompatibility = "1.8"
     }
 
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         kotlinOptions {
-            freeCompilerArgs = listOf("-Xjsr305=strict")
-            jvmTarget = "15"
+            freeCompilerArgs = listOf("-Xjsr305=strict", "-Xjvm-default=enable")
+            jvmTarget = "1.8"
         }
     }
 }

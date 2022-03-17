@@ -10,10 +10,13 @@ data class SocialMediaToken(
     @Column(name = "id", nullable = false)
     var id: Long = 0,
 
-    var token: String = "",
+    var token: String,
 
     @Column(name = "social_media_type")
-    var socialMediaType: SocialMediaType = SocialMediaType.FACEBOOK,
+    var socialMediaType: SocialMediaType,
+
+    @ManyToOne(optional = false, cascade = [CascadeType.PERSIST], fetch = FetchType.LAZY)
+    val user: User
 ) {
 
 }
