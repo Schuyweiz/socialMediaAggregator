@@ -22,6 +22,7 @@ data class User(
     @Column(name = "password")
     var userPassword: String,
 
+    @Column(name="email", unique = true)
     val email: String,
 
     var enabled: Boolean = false,
@@ -34,7 +35,7 @@ data class User(
     @JoinColumn(name = "id", nullable = true, updatable = true)
     var socialMediaTokens: MutableSet<SocialMediaToken> = mutableSetOf()
 
-): UserDetails {
+): UserDetails{
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> = authorities
 
     override fun getPassword(): String = userPassword

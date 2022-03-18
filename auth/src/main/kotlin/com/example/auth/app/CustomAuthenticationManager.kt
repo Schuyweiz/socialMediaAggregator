@@ -1,13 +1,14 @@
 package com.example.auth.app
 
 import com.example.auth.app.jwt.JwtService
+import com.example.core.user.model.User
 import com.example.core.utils.Logger
 import com.example.core.utils.Logger.Companion.log
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
-import org.springframework.security.core.userdetails.User
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import javax.servlet.FilterChain
 import javax.servlet.http.Cookie
@@ -18,11 +19,14 @@ import javax.servlet.http.HttpServletResponse
 class CustomAuthenticationManager(
     authenticationManager: AuthenticationManager,
     private val jwtService: JwtService,
+    private val encoder: PasswordEncoder
 ) : UsernamePasswordAuthenticationFilter(authenticationManager) {
 
     override fun attemptAuthentication(request: HttpServletRequest?, response: HttpServletResponse?): Authentication {
         val token = getUsernamePasswordAuthenticationToken(request!!)
-        log.info("User in attempt Authentication method in authentication manager with the name {}", token.name)
+        log.info("User in attempt Authentication method in" +
+                " authentication manager with the name ${token.name} and isAuthneticated ${token.isAuthenticated}" +
+                " principal ${token.principal}\n creditentials ${token.credentials}")
 
         return authenticationManager.authenticate(token)
     }
@@ -33,6 +37,7 @@ class CustomAuthenticationManager(
         chain: FilterChain?,
         authResult: Authentication?,
     ) {
+        log.info("Authentication successfully")
         val user = authResult?.principal as User
         val accessToken = jwtService.createAccessToken(user, request!!)
         val refreshToken = jwtService.createRefreshToken(user, request)
@@ -56,9 +61,10 @@ class CustomAuthenticationManager(
 
     private fun getUsernamePasswordAuthenticationToken(request: HttpServletRequest) =
         UsernamePasswordAuthenticationToken(
-            request.getParameter("username"),
-            request.getParameter("password")
+            obtainUsername(request),
+            obtainPassword(request)
         )
+
 
     companion object {
         private const val REFRESH_TOKEN_COOKIE_NAME = "REFRESH_TOKEN"

@@ -13,22 +13,25 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy.STATELESS
 import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import java.security.SecureRandom
 
 
 @Configuration
 @EnableWebSecurity
 class WebSecurityConfig(
     val userDetailsService: UserDetailsService,
-    val encoder: PasswordEncoder,
     val jwtService: JwtService,
 ) : WebSecurityConfigurerAdapter() {
 
     private val JWT_AUTH_WHITELIST = setOf(
         "/auth/refresh",
         "/auth/facebook/login",
-        "/auth/facebook"
+        "/auth/facebook",
+        "/register",
+        "/register/confirm"
     )
 
     @Bean
@@ -37,8 +40,11 @@ class WebSecurityConfig(
     }
 
     override fun configure(auth: AuthenticationManagerBuilder?) {
-        auth?.userDetailsService(userDetailsService)?.passwordEncoder(encoder)
+        auth?.userDetailsService(userDetailsService)?.passwordEncoder(encoder())
     }
+
+    @Bean
+    fun encoder(): PasswordEncoder = BCryptPasswordEncoder(6, SecureRandom.getInstanceStrong())
 
 
     override fun configure(http: HttpSecurity?) {
@@ -67,7 +73,7 @@ class WebSecurityConfig(
             .authorizeRequests().anyRequest().permitAll()
             .and()
 
-            .addFilter(CustomAuthenticationManager(authenticationManagerBean(), jwtService))
+            .addFilter(CustomAuthenticationManager(authenticationManagerBean(), jwtService, encoder()))
 
         http.addFilterBefore(
             JwtAuthenticationFilter(userDetailsService, jwtService, JWT_AUTH_WHITELIST),

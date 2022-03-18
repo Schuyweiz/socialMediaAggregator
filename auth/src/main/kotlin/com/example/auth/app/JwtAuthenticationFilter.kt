@@ -20,7 +20,8 @@ class JwtAuthenticationFilter(
     private val jwtAuthWhitelist: Set<String>,
 ) : OncePerRequestFilter() {
 
-    override fun shouldNotFilter(request: HttpServletRequest): Boolean = jwtAuthWhitelist.contains(request.servletPath)
+    override fun shouldNotFilter(request: HttpServletRequest): Boolean
+    = jwtAuthWhitelist.any { request.servletPath.startsWith(it) }
 
     override fun doFilterInternal(
         request: HttpServletRequest,

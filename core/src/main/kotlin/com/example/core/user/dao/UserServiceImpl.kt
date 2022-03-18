@@ -12,9 +12,11 @@ import com.example.core.user.repository.UserRepository
 import com.example.core.utils.Logger
 import com.example.core.utils.Logger.Companion.log
 import com.example.core.utils.UserMapper
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -26,16 +28,8 @@ class UserServiceImpl(
     val userRepository: UserRepository,
     val tokenRepository: TokenRepository,
     val userMapper: UserMapper,
-) : UserDetailsService, UserService {
-
-    @Transactional(readOnly = true)
-    override fun loadUserByUsername(email: String?): UserDetails {
-        if (email == null)
-            throw Exception("Username not provided the loadUserByUsername from UserDetailsService")
-
-        return userRepository.findByEmail(email)
-            ?: throw UsernameNotFoundException("User with the email $email not found.")
-    }
+    val encoder: PasswordEncoder,
+) : UserService {
 
     @Transactional
     override fun saveUser(userDto: UserDto): User {
@@ -46,7 +40,8 @@ class UserServiceImpl(
         }
 
         log.info("Saving a user with an email ${userDto.email}")
-        val user = userMapper.userDtoToUser(userDto)
+        val encodedPassword = encoder.encode(userDto.password)
+        val user = userMapper.userDtoToUser(userDto, encodedPassword)
 
         return userRepository.save(user)
     }

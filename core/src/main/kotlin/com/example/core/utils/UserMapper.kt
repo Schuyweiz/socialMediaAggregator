@@ -7,14 +7,13 @@ import org.springframework.stereotype.Component
 
 @Component
 class UserMapper(
-    val passwordEncoder: PasswordEncoder,
 ) {
 
-    fun userDtoToUser(userDto: UserDto) = User(
+    fun userDtoToUser(userDto: UserDto, password: String) = User(
         firstName = userDto.firstName,
         lastName = userDto.lastName,
         email = userDto.email,
-        userPassword = passwordEncoder.encode(userDto.password),
-        socialMediaTokens = mutableSetOf()
+        socialMediaTokens = mutableSetOf(),
+        userPassword = password
     )
 }
