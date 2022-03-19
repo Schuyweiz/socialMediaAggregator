@@ -1,5 +1,6 @@
 package com.example.core.user.dao
 
+import com.example.core.user.model.User
 import com.example.core.user.repository.UserRepository
 import com.example.core.utils.Logger.Companion.log
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -15,7 +16,7 @@ class UserDetailsServiceImpl(
 ): UserDetailsService {
 
     @Transactional(readOnly = true)
-    override fun loadUserByUsername(email: String?): UserDetails {
+    override fun loadUserByUsername(email: String?): User {
         log.info("Trying to load user from database for authnetication")
         if (email == null)
             throw Exception("Username not provided the loadUserByUsername from UserDetailsService")
@@ -23,4 +24,6 @@ class UserDetailsServiceImpl(
         return userRepository.findByEmail(email)?.apply { authorities = mutableListOf(SimpleGrantedAuthority("ROLE_USER")) }
             ?: throw UsernameNotFoundException("User with the email $email not found.")
     }
+
+
 }

@@ -24,7 +24,7 @@ class SocialMediaAuthenticationEventListener(
 
     @Transactional
     override fun onApplicationEvent(event: OnSocialMediaAuthenticationEvent) {
-        val token = event.source as AccessToken
+        val token = event.token
         val user = event.user
         val extendedToken = facebookAuthService.getExtendedAccessToken(token.accessToken)
 

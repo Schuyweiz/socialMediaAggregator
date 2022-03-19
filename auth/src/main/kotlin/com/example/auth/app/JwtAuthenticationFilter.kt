@@ -21,7 +21,7 @@ class JwtAuthenticationFilter(
 ) : OncePerRequestFilter() {
 
     override fun shouldNotFilter(request: HttpServletRequest): Boolean
-    = jwtAuthWhitelist.any { request.servletPath.startsWith(it) }
+    = jwtAuthWhitelist.contains(request.servletPath)
 
     override fun doFilterInternal(
         request: HttpServletRequest,
@@ -41,7 +41,6 @@ class JwtAuthenticationFilter(
             val userAuthentication = getUserAuthentication(token)
             log.info("Token verification successful, assigning to the context.")
             SecurityContextHolder.getContext().authentication = userAuthentication
-
         }
         filterChain.doFilter(request, response)
     }
@@ -51,7 +50,7 @@ class JwtAuthenticationFilter(
         val decodedToken = jwtService.verifyToken(token)
         val userName = decodedToken.subject
         val user = userService.loadUserByUsername(userName)
-        return UsernamePasswordAuthenticationToken(user.username, null, user.authorities)
+        return UsernamePasswordAuthenticationToken(user, null, user.authorities)
     }
 
     companion object {

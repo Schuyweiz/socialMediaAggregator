@@ -13,11 +13,11 @@ import org.springframework.stereotype.Service
 class FacebookAuthService(
     private val facebookClient: DefaultFacebookClient,
     private val applicationEventPublisher: ApplicationEventPublisher,
-    @Value("app.facebook.app-secret")
+    @Value("\${app.facebook.app-secret}")
     private val appSecret: String,
-    @Value("app.facebook.app-id")
+    @Value("\${app.facebook.app-id}")
     private val appId: String,
-    @Value("app.facebook.auth.redirect-url")
+    @Value("\${app.facebook.auth.redirect-url}")
     private val redirectUrl: String,
 ) {
 

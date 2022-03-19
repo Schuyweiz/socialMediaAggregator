@@ -21,7 +21,7 @@ repositories {
 
 //no args for entitiy
 configure<org.jetbrains.kotlin.noarg.gradle.NoArgExtension> {
-    annotation("javax.persistence.Entity")
+    annotations("javax.persistence.Entity", "com.example.core.utils.DefaultCtor")
 }
 allOpen{
     annotations("javax.persistence.Entity",

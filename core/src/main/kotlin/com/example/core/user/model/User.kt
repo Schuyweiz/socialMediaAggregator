@@ -14,18 +14,18 @@ data class User(
     val id: Long = 0,
 
     @Column(name = "first_name")
-    val firstName: String,
+    val firstName: String?,
 
     @Column(name = "last_name")
-    val lastName: String,
+    val lastName: String?,
 
     @Column(name = "password")
-    var userPassword: String,
+    val userPassword: String?,
 
     @Column(name="email", unique = true)
-    val email: String,
+    val email: String?,
 
-    var enabled: Boolean = false,
+    var enabled: Boolean = true,
 
     @kotlin.jvm.Transient
     @ElementCollection
@@ -38,9 +38,9 @@ data class User(
 ): UserDetails{
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> = authorities
 
-    override fun getPassword(): String = userPassword
+    override fun getPassword(): String = userPassword.orEmpty()
 
-    override fun getUsername(): String = email
+    override fun getUsername(): String = email.orEmpty()
 
     override fun isAccountNonExpired(): Boolean = true
 

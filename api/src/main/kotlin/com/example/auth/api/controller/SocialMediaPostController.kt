@@ -15,6 +15,8 @@ class SocialMediaPostController(
     @GetMapping
     fun getAllPosts(
         user: User
-    ) = mediaPostService.getAllUserPosts(user)
+    ){
+        System.out.println("hello, get all posts works fine")
+    }
 
 }

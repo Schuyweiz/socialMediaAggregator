@@ -5,7 +5,6 @@ import com.example.auth.app.JwtAuthenticationFilter
 import com.example.auth.app.jwt.JwtService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpMethod.GET
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -16,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport
 import java.security.SecureRandom
 
 
@@ -43,6 +43,8 @@ class WebSecurityConfig(
         auth?.userDetailsService(userDetailsService)?.passwordEncoder(encoder())
     }
 
+
+
     @Bean
     fun encoder(): PasswordEncoder = BCryptPasswordEncoder(6, SecureRandom.getInstanceStrong())
 
@@ -66,19 +68,16 @@ class WebSecurityConfig(
             .and()
 
 
-            .authorizeRequests().antMatchers(GET, "api/user/**").hasAuthority("ROLE_USER")
+            .authorizeRequests().antMatchers("/auth/facebook/**").fullyAuthenticated()
             .and()
 
 
-            .authorizeRequests().anyRequest().permitAll()
-            .and()
+//            .authorizeRequests().anyRequest().permitAll()
+//            .and()
 
             .addFilter(CustomAuthenticationManager(authenticationManagerBean(), jwtService, encoder()))
-
-        http.addFilterBefore(
-            JwtAuthenticationFilter(userDetailsService, jwtService, JWT_AUTH_WHITELIST),
-            UsernamePasswordAuthenticationFilter::class.java
-        )
+            .addFilterBefore( JwtAuthenticationFilter(userDetailsService, jwtService, JWT_AUTH_WHITELIST),
+                UsernamePasswordAuthenticationFilter::class.java)
 
     }
 }
