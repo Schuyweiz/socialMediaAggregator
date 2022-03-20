@@ -1,6 +1,6 @@
 package com.example.auth.app.registration
 
-import com.example.core.user.model.User
+import com.example.core.model.User
 import org.springframework.context.ApplicationEvent
 
 

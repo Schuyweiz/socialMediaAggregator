@@ -1,4 +1,4 @@
-package com.example.core.user.model
+package com.example.core.model
 
 import java.time.LocalDateTime
 import javax.persistence.*

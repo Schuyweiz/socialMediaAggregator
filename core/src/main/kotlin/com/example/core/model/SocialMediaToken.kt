@@ -1,4 +1,4 @@
-package com.example.core.user.model
+package com.example.core.model
 
 import javax.persistence.*
 
@@ -15,8 +15,13 @@ data class SocialMediaToken(
     @Column(name = "social_media_type")
     var socialMediaType: SocialMediaType,
 
-    @ManyToOne(optional = false, cascade = [CascadeType.PERSIST], fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     val user: User
 ) {
 
+    fun isFacebook() = socialMediaType == SocialMediaType.FACEBOOK
+
+    override fun toString(): String = """Token is $id, token social media type is ${socialMediaType.name}"""
+    override fun hashCode(): Int = id.toInt()
 }

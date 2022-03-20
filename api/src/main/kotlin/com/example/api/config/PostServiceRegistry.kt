@@ -1,6 +1,6 @@
-package com.example.auth.api.config
+package com.example.api.config
 
-import com.example.auth.api.service.SocialMediaPosting
+import com.example.api.service.SocialMediaPosting
 
 interface PostServiceRegistry {
 

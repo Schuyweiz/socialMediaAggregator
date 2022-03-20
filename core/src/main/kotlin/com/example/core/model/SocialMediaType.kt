@@ -1,4 +1,4 @@
-package com.example.core.user.model
+package com.example.core.model
 
 enum class SocialMediaType {
     FACEBOOK{

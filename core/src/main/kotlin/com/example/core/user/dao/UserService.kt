@@ -1,8 +1,8 @@
 package com.example.core.user.dao
 
-import com.example.core.user.model.User
-import com.example.core.user.model.UserDto
-import com.example.core.user.model.VerificationToken
+import com.example.core.model.User
+import com.example.core.model.UserDto
+import com.example.core.model.VerificationToken
 
 
 interface UserService {

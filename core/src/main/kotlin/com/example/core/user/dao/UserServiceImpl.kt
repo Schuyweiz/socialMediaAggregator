@@ -3,10 +3,10 @@ package com.example.core.user.dao
 import com.example.core.user.exceptions.TokenExpiredException
 import com.example.core.user.exceptions.TokenNotFoundException
 import com.example.core.user.exceptions.UserAlreadyExistsException
-import com.example.core.user.model.User
-import com.example.core.user.model.UserDto
-import com.example.core.user.model.VerificationToken
-import com.example.core.user.model.calculateExpiryDate
+import com.example.core.model.User
+import com.example.core.model.UserDto
+import com.example.core.model.VerificationToken
+import com.example.core.model.calculateExpiryDate
 import com.example.core.user.repository.TokenRepository
 import com.example.core.user.repository.UserRepository
 import com.example.core.utils.Logger

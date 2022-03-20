@@ -23,6 +23,7 @@ class JwtAuthenticationFilter(
     override fun shouldNotFilter(request: HttpServletRequest): Boolean
     = jwtAuthWhitelist.contains(request.servletPath)
 
+
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,

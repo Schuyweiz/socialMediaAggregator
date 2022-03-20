@@ -28,10 +28,9 @@ class WebSecurityConfig(
 
     private val JWT_AUTH_WHITELIST = setOf(
         "/auth/refresh",
-        "/auth/facebook/login",
         "/auth/facebook",
         "/register",
-        "/register/confirm"
+        "/register/confirm",
     )
 
     @Bean
@@ -65,10 +64,6 @@ class WebSecurityConfig(
             .loginPage("/login")
             .permitAll()
             .successForwardUrl("/home")
-            .and()
-
-
-            .authorizeRequests().antMatchers("/auth/facebook/**").fullyAuthenticated()
             .and()
 
 

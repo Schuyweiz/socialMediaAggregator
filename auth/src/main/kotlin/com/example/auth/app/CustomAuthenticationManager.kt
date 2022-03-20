@@ -1,7 +1,7 @@
 package com.example.auth.app
 
 import com.example.auth.app.jwt.JwtService
-import com.example.core.user.model.User
+import com.example.core.model.User
 import com.example.core.utils.Logger
 import com.example.core.utils.Logger.Companion.log
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE

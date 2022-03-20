@@ -1,4 +1,4 @@
-package com.example.core.user.model
+package com.example.core.model
 
 import com.example.core.utils.DefaultCtor
 import com.example.core.validation.ValidEmail

@@ -1,4 +1,4 @@
-package com.example.core.user.model
+package com.example.core.model
 
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -31,12 +31,11 @@ data class User(
     @ElementCollection
     var authorities: MutableList<SimpleGrantedAuthority> = mutableListOf(SimpleGrantedAuthority("ROLE_USER")),
 
-    @OneToMany
-    @JoinColumn(name = "id", nullable = true, updatable = true)
-    var socialMediaTokens: MutableSet<SocialMediaToken> = mutableSetOf()
+    @OneToMany(mappedBy = "user")
+    var socialMediaTokens: MutableSet<SocialMediaToken> =  mutableSetOf()
 
 ): UserDetails{
-    override fun getAuthorities(): MutableCollection<out GrantedAuthority> = authorities
+    override fun getAuthorities(): MutableCollection<out GrantedAuthority> =  mutableSetOf(SimpleGrantedAuthority("ROLE_USER"))
 
     override fun getPassword(): String = userPassword.orEmpty()
 
@@ -49,5 +48,9 @@ data class User(
     override fun isCredentialsNonExpired(): Boolean = true
 
     override fun isEnabled(): Boolean = enabled
+
+    override fun hashCode(): Int {
+        return id.toInt()
+    }
 }
 

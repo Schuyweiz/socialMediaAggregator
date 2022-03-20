@@ -1,4 +1,4 @@
-package com.example.core.user.model.socialmedia
+package com.example.core.model.socialmedia
 
 import javax.persistence.*
 

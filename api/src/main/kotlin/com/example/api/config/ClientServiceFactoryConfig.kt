@@ -1,4 +1,4 @@
-package com.example.auth.api.config
+package com.example.api.config
 
 import org.springframework.beans.factory.config.ServiceLocatorFactoryBean
 import org.springframework.context.annotation.Bean

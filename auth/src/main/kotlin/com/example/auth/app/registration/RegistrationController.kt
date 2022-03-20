@@ -1,7 +1,7 @@
 package com.example.auth.app.registration
 
 import com.example.core.user.dao.UserService
-import com.example.core.user.model.UserDto
+import com.example.core.model.UserDto
 import com.example.core.utils.Logger
 import com.example.core.utils.Logger.Companion.log
 import org.springframework.context.ApplicationEventPublisher

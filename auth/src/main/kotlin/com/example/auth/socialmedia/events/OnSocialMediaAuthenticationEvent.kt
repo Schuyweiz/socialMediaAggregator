@@ -1,6 +1,6 @@
 package com.example.auth.socialmedia.events
 
-import com.example.core.user.model.User
+import com.example.core.model.User
 import com.restfb.FacebookClient.AccessToken
 import org.springframework.context.ApplicationEvent
 

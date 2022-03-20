@@ -1,7 +1,7 @@
-package com.example.auth.api.service
+package com.example.api.service
 
-import com.example.core.user.model.SocialMediaToken
-import com.example.core.user.model.socialmedia.Post
+import com.example.core.model.SocialMediaToken
+import com.example.core.model.socialmedia.Post
 import com.example.core.utils.Logger
 import com.restfb.DefaultFacebookClient
 import com.restfb.Version

@@ -1,6 +1,6 @@
 package com.example.core.user.dao
 
-import com.example.core.user.model.User
+import com.example.core.model.User
 import com.example.core.user.repository.UserRepository
 import com.example.core.utils.Logger.Companion.log
 import org.springframework.security.core.authority.SimpleGrantedAuthority
