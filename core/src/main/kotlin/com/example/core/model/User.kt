@@ -4,7 +4,6 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import javax.persistence.*
-import org.springframework.security.core.userdetails.User as SecUser
 
 @Entity(name = "app_user")
 data class User(
@@ -32,7 +31,7 @@ data class User(
     var authorities: MutableList<SimpleGrantedAuthority> = mutableListOf(SimpleGrantedAuthority("ROLE_USER")),
 
     @OneToMany(mappedBy = "user")
-    var socialMediaTokens: MutableSet<SocialMediaToken> =  mutableSetOf()
+    var socialMediaSet: MutableSet<SocialMedia> =  mutableSetOf()
 
 ): UserDetails{
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> =  mutableSetOf(SimpleGrantedAuthority("ROLE_USER"))

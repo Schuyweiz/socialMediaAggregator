@@ -1,28 +1,27 @@
 package com.example.auth.socialmedia
 
-import com.example.auth.socialmedia.events.OnFacebookPageAuthenticationEvent
-import com.example.auth.socialmedia.events.OnSocialMediaAuthenticationEvent
 import com.example.core.config.FacebookConfiguration
-import com.example.core.model.SocialMediaToken
-import com.example.core.model.SocialMediaType
+import com.example.core.model.SocialMedia
+import com.example.core.model.SocialMediaType.*
 import com.example.core.model.User
 import com.example.core.model.socialmedia.FacebookPage
+import com.example.core.user.repository.SocialMediaRepository
 import com.example.core.user.repository.UserRepository
+import com.example.core.utils.Logger
 import com.restfb.DefaultFacebookClient
 import com.restfb.FacebookClient
 import com.restfb.Parameter
 import com.restfb.Version
-import com.restfb.types.Page
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
-import java.util.Objects
+import org.springframework.transaction.annotation.Transactional
 
 @Service
+@Logger
 class FacebookAuthService(
     private val facebookClient: DefaultFacebookClient,
-    private val applicationEventPublisher: ApplicationEventPublisher,
     private val userRepository: UserRepository,
+    private val socialMediaRepository: SocialMediaRepository,
     @Value("\${app.facebook.app-secret}")
     private val appSecret: String,
     @Value("\${app.facebook.app-id}")
@@ -31,49 +30,44 @@ class FacebookAuthService(
     private val redirectUrl: String,
 ) {
 
+    @Transactional
     fun authenticateUser(verificationCode: String, user: User) =
         with(facebookClient.obtainUserAccessToken(appId, appSecret, redirectUrl,
             verificationCode)) {
-            applicationEventPublisher.publishEvent(OnSocialMediaAuthenticationEvent(this, user))
+            userRepository.findById(user.id)
+            val extendedToken = getExtendedAccessToken(this.accessToken).accessToken
+            return@with socialMediaRepository.save(SocialMedia(token = extendedToken, socialMediaType = FACEBOOK_USER, user = user, nativeId = null))
         }
 
     fun getLoginDialogueUrl(): String = facebookClient.getLoginDialogUrl(appId, redirectUrl, FacebookConfiguration.scope)
 
-    fun getExtendedAccessToken(token: String): FacebookClient.AccessToken = facebookClient.obtainExtendedAccessToken(appId, appSecret, token)
+    private fun getExtendedAccessToken(token: String): FacebookClient.AccessToken = facebookClient.obtainExtendedAccessToken(appId, appSecret, token)
 
     fun getUserPages(userId: Long): List<FacebookPage> {
-        val user = userRepository.findByIdWithTokensOrThrow(userId)
-        return getPages(user)
+        val user = userRepository.findByIdWithSocialMediaOrThrow(userId)
+        return getPages(user.socialMediaSet)
     }
 
-    fun authenticateUserPage(userId: Long, pageId: Long){
-        val user = userRepository.findByIdWithTokensOrThrow(userId)
+    @Transactional
+    fun authenticateUserPage(userId: Long, pageId: Long): SocialMedia {
+        val user = userRepository.findByIdWithSocialMediaOrThrow(userId)
 
-        getFacebookPageToSocialToken(user.socialMediaTokens)
-            .filter { it.key.pageId == pageId }
-            .entries
-            .firstOrNull()?.let {
-                applicationEventPublisher.publishEvent(OnFacebookPageAuthenticationEvent(user, it.value, it.key.accessToken))
-            }?: run{
-                throw IllegalArgumentException("""Page with id $pageId does not match bijectively into user ${user.id} social media token """)
+        getPages(user.socialMediaSet)
+            .singleOrNull {
+            it.pageId == pageId
+        }?.let {
+                return socialMediaRepository.save(SocialMedia(nativeId = it.pageId, token = it.accessToken, socialMediaType = FACEBOOK_PAGE, user = user))
+            }?: kotlin.run {
+                throw IllegalArgumentException("No bijection between facebook page and page id.")
         }
-
     }
 
     private fun getUserClient(token: String) = DefaultFacebookClient(token, Version.LATEST)
 
-    private fun getPages(user: User) = user.socialMediaTokens
-        .filter { it.socialMediaType == SocialMediaType.FACEBOOK }
+    private fun getPages(userSocialMedia: Set<SocialMedia>) = userSocialMedia
+        .filter { it.socialMediaType == FACEBOOK_USER }
         .flatMap { fetchPagesConnection(it.token) }
         .flatten()
-
-    private fun getFacebookPageToSocialToken(socialMediaTokens: Set<SocialMediaToken>) = socialMediaTokens
-        .filter { it.isFacebook() }
-        .map {
-            fetchPagesConnection(it.token).flatten() to it
-        }.flatMap{
-            it.first.map { first-> first to it.second }
-        }.toMap()
 
     private fun fetchPagesConnection(userToken: String) = getUserClient(userToken).fetchConnection(
         "/me/accounts", FacebookPage::class.java, Parameter.with("fields","id,name,access_token"))

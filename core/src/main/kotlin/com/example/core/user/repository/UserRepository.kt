@@ -10,7 +10,7 @@ import javax.persistence.EntityNotFoundException
 @Repository
 interface UserRepository : JpaRepository<User, Long> {
 
-    @EntityGraph(type=EntityGraph.EntityGraphType.LOAD, attributePaths = ["socialMediaTokens"])
+    @EntityGraph(type=EntityGraph.EntityGraphType.LOAD, attributePaths = ["socialMediaSet"])
     fun findByEmail(mail: String): User?
 
     //todo: maybe a custom exception
@@ -18,13 +18,13 @@ interface UserRepository : JpaRepository<User, Long> {
     fun findByIdOrElseThrow(id: Long): User = findById(id).orElseThrow()
 
 
-    @EntityGraph(type=EntityGraph.EntityGraphType.LOAD, attributePaths = ["socialMediaTokens"])
+    @EntityGraph(type=EntityGraph.EntityGraphType.LOAD, attributePaths = ["socialMediaSet"])
     @JvmDefault
     @Query("select u from app_user u where u.id = :id")
     fun findByIdWithTokens(id: Long): User?
 
     @JvmDefault
-    fun findByIdWithTokensOrThrow(id: Long): User{
+    fun findByIdWithSocialMediaOrThrow(id: Long): User{
         return findByIdWithTokens(id) ?: throw EntityNotFoundException()
     }
 }

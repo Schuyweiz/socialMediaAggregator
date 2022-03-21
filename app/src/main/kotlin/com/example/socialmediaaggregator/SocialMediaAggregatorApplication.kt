@@ -1,9 +1,9 @@
 package com.example.socialmediaaggregator
 
-import com.example.core.model.SocialMediaToken
+import com.example.core.model.SocialMedia
 import com.example.core.model.SocialMediaType
 import com.example.core.model.User
-import com.example.core.user.repository.SocialMediaTokenRepository
+import com.example.core.user.repository.SocialMediaRepository
 import com.example.core.user.repository.UserRepository
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -12,7 +12,6 @@ import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.security.crypto.password.PasswordEncoder
-import java.util.function.Consumer
 
 
 @SpringBootApplication(scanBasePackages = ["com.example.socialmediaaggregator", "com.example.core", "com.example.auth", "com.example.api"])
@@ -31,7 +30,7 @@ class SocialMediaAggregatorApplication {
     @Bean
     fun init(
         userRepository: UserRepository,
-        socialMediaTokenRepository: SocialMediaTokenRepository,
+        socialMediaTokenRepository: SocialMediaRepository,
         encoder: PasswordEncoder
     ): CommandLineRunner? {
         return CommandLineRunner {
@@ -40,11 +39,11 @@ class SocialMediaAggregatorApplication {
                 userPassword = encoder.encode("1234"), email = "kpike@mail.ru", enabled = true
             )
             val token =
-                "EAAHO4difc4UBAIF1jNFfWNu7HZAYpzvq0L1AHhkuuN0gkGrHRI6Qa9yGHHK9mw9nI4pygqQ8EtXd6scF2hwVMy8uAWvE3kmmmItHYVPEJSTGaexE824AwXiKVpKL2CqmtZCSg55ZCa9cLJf8TtuQiYcHV8wj208eLTlwZAqULPDuiZBPYQUoU";
-            val socialMediaTokens =
-                listOf(SocialMediaToken(token = token, socialMediaType = SocialMediaType.FACEBOOK, user = user))
+                "EAAHO4difc4UBADZCZBFrZA2tzbsM89oOJdYL3ViWKS4m7ZA7YR6gF9ZA3oyMhuMavPCsxgTN9XEQobCRaBlI61PvmQdlpWT7wfBEx6XKdwI7f4gtpt3QF9e6W3ewCY1HbyQZAQr3bYs02CLNbUY0CdckT7eYElzs6Q3TYNPaN5xoY63c3F5dBY";
+            val socialMedia =
+                listOf(SocialMedia(token = token, socialMediaType = SocialMediaType.FACEBOOK_USER, user = user, nativeId = 110351558278776))
             userRepository.save(user)
-            socialMediaTokenRepository.save(socialMediaTokens[0])
+            socialMediaTokenRepository.save(socialMedia[0])
         }
     }
 }

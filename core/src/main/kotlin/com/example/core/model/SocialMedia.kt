@@ -2,13 +2,16 @@ package com.example.core.model
 
 import javax.persistence.*
 
-@Entity(name = "social_media_token")
-data class SocialMediaToken(
+@Entity(name = "social_media")
+data class SocialMedia(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     var id: Long = 0,
+
+    @Column(nullable = true)
+    var nativeId: Long?,
 
     var token: String,
 
@@ -20,7 +23,7 @@ data class SocialMediaToken(
     val user: User
 ) {
 
-    fun isFacebook() = socialMediaType == SocialMediaType.FACEBOOK
+    fun isFacebook() = socialMediaType == SocialMediaType.FACEBOOK_USER
 
     override fun toString(): String = """Token is $id, token social media type is ${socialMediaType.name}"""
     override fun hashCode(): Int = id.toInt()

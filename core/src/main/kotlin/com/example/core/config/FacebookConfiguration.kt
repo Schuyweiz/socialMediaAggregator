@@ -15,10 +15,7 @@ class FacebookConfiguration {
 
     companion object {
         val scope: ScopeBuilder = with(ScopeBuilder()) {
-            addPermission(FacebookPermissions.USER_MANAGED_GROUPS)
             addPermission(FacebookPermissions.USER_POSTS)
-            addPermission(FacebookPermissions.PAGES_MANAGE_POSTS)
-            addPermission(FacebookPermissions.PAGES_READ_USER_CONTENT)
         }
     }
 }

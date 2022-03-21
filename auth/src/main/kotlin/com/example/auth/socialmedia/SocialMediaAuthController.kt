@@ -1,5 +1,6 @@
 package com.example.auth.socialmedia
 
+import com.example.core.model.SocialMedia
 import com.example.core.model.User
 import com.example.core.model.socialmedia.FacebookPage
 import com.example.core.utils.Logger
@@ -29,9 +30,7 @@ class SocialMediaAuthController(
     fun authenticateFacebook(
         @RequestParam(name = "code") code: String,
         @AuthenticationPrincipal user: User?
-    ) {
-        socialMediaAuthService.authenticateUser(code,user!!)
-    }
+    ): SocialMedia = socialMediaAuthService.authenticateUser(code,user!!)
 
     @GetMapping("/auth/facebook/pages")
     fun getUserPages(
@@ -39,10 +38,8 @@ class SocialMediaAuthController(
     ): List<FacebookPage> = socialMediaAuthService.getUserPages(user.id)
 
     @PostMapping("/auth/facebook/pages/{pageId}/authenticate")
-    fun authneticateUserPage(
+    fun authenticateUserPage(
         @AuthenticationPrincipal user: User,
         @PathVariable(name = "pageId") pageId: Long
-    ){
-        socialMediaAuthService.authenticateUserPage(user.id, pageId)
-    }
+    ): SocialMedia = socialMediaAuthService.authenticateUserPage(user.id, pageId)
 }

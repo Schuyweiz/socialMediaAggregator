@@ -1,7 +1,7 @@
 package com.example.api.service
 
 import com.example.api.config.PostServiceRegistry
-import com.example.core.model.SocialMediaToken
+import com.example.core.model.SocialMedia
 import com.example.core.model.User
 import com.example.core.model.socialmedia.Post
 import com.example.core.user.repository.UserRepository
@@ -18,10 +18,10 @@ class MediaPostService(
     fun getAllUserPosts(user: User): List<Post>{
         val user = userRepository.findByIdOrElseThrow(user.id)
 
-        return getPosts(user.socialMediaTokens)
+        return getPosts(user.socialMediaSet)
     }
 
-    private fun getPosts(tokens: Set<SocialMediaToken>): List<Post> =
+    private fun getPosts(tokens: Set<SocialMedia>): List<Post> =
         tokens.flatMap {
         postServiceRegistry.getPostService(it.socialMediaType.getApiService())
             .getPosts(it)
