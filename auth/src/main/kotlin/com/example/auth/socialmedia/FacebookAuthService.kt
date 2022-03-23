@@ -2,12 +2,16 @@ package com.example.auth.socialmedia
 
 import com.example.core.config.FacebookConfiguration
 import com.example.core.model.SocialMedia
+import com.example.core.model.SocialMediaType
 import com.example.core.model.SocialMediaType.*
 import com.example.core.model.User
-import com.example.core.model.socialmedia.FacebookPage
+import com.example.core.model.socialmedia.PageAuthenticateDto
+import com.example.core.model.socialmedia.PostDto
+import com.example.core.model.socialmedia.SocialMediaDto
 import com.example.core.user.repository.SocialMediaRepository
 import com.example.core.user.repository.UserRepository
 import com.example.core.utils.Logger
+import com.example.core.utils.SocialMediaMapper
 import com.restfb.DefaultFacebookClient
 import com.restfb.FacebookClient
 import com.restfb.Parameter
@@ -22,6 +26,7 @@ class FacebookAuthService(
     private val facebookClient: DefaultFacebookClient,
     private val userRepository: UserRepository,
     private val socialMediaRepository: SocialMediaRepository,
+    private val socialMediaMapper: SocialMediaMapper,
     @Value("\${app.facebook.app-secret}")
     private val appSecret: String,
     @Value("\${app.facebook.app-id}")
@@ -31,44 +36,80 @@ class FacebookAuthService(
 ) {
 
     @Transactional
-    fun authenticateUser(verificationCode: String, user: User) =
-        with(facebookClient.obtainUserAccessToken(appId, appSecret, redirectUrl,
-            verificationCode)) {
-            userRepository.findById(user.id)
+    fun authenticateUser(verificationCode: String, userId: Long): SocialMediaDto =
+        with(
+            facebookClient.obtainUserAccessToken(
+                appId, appSecret, redirectUrl,
+                verificationCode
+            )
+        ) {
+            val user = userRepository.findByIdOrElseThrow(userId)
             val extendedToken = getExtendedAccessToken(this.accessToken).accessToken
-            return@with socialMediaRepository.save(SocialMedia(token = extendedToken, socialMediaType = FACEBOOK_USER, user = user, nativeId = null))
+            val socialMedia = socialMediaRepository.save(
+                SocialMedia(
+                    token = extendedToken,
+                    socialMediaType = FACEBOOK_USER,
+                    user = user,
+                    nativeId = null
+                )
+            )
+            return@with socialMediaMapper.mapToDto(socialMedia)
         }
 
-    fun getLoginDialogueUrl(): String = facebookClient.getLoginDialogUrl(appId, redirectUrl, FacebookConfiguration.scope)
+    fun getLoginDialogueUrl(): String =
+        facebookClient.getLoginDialogUrl(appId, redirectUrl, FacebookConfiguration.scope)
 
-    private fun getExtendedAccessToken(token: String): FacebookClient.AccessToken = facebookClient.obtainExtendedAccessToken(appId, appSecret, token)
-
-    fun getUserPages(userId: Long): List<FacebookPage> {
+    fun getUserPages(userId: Long): List<PageAuthenticateDto> {
         val user = userRepository.findByIdWithSocialMediaOrThrow(userId)
-        return getPages(user.socialMediaSet)
+        return getUserPagesAuthenticateDto(user.socialMediaSet)
     }
 
     @Transactional
-    fun authenticateUserPage(userId: Long, pageId: Long): SocialMedia {
+    fun authenticateUserPage(userId: Long, pageId: Long): SocialMediaDto {
         val user = userRepository.findByIdWithSocialMediaOrThrow(userId)
 
-        getPages(user.socialMediaSet)
+        getUserPages(user.socialMediaSet)
             .singleOrNull {
-            it.pageId == pageId
-        }?.let {
-                return socialMediaRepository.save(SocialMedia(nativeId = it.pageId, token = it.accessToken, socialMediaType = FACEBOOK_PAGE, user = user))
-            }?: kotlin.run {
-                throw IllegalArgumentException("No bijection between facebook page and page id.")
+                it.id == pageId
+            }?.let {
+                val socialMedia = socialMediaRepository.save(
+                    SocialMedia(
+                        nativeId = it.id,
+                        token = it.token,
+                        socialMediaType = FACEBOOK_PAGE,
+                        user = user
+                    )
+                )
+                return socialMediaMapper.mapToDto(socialMedia)
+            } ?: kotlin.run {
+            throw IllegalArgumentException("No bijection between facebook page and page id.")
         }
     }
 
+    private fun getUserPagesAuthenticateDto(userSocialMedia: Set<SocialMedia>) =
+        getPagesOfType(userSocialMedia, FACEBOOK_USER)
+
+    private fun getExtendedAccessToken(token: String): FacebookClient.AccessToken =
+        facebookClient.obtainExtendedAccessToken(appId, appSecret, token)
+
     private fun getUserClient(token: String) = DefaultFacebookClient(token, Version.LATEST)
 
-    private fun getPages(userSocialMedia: Set<SocialMedia>) = userSocialMedia
-        .filter { it.socialMediaType == FACEBOOK_USER }
+
+    private fun getPagesOfType(userSocialMedia: Set<SocialMedia>, socialMediatype: SocialMediaType) = userSocialMedia
+        .filter { it.socialMediaType == socialMediatype }
         .flatMap { fetchPagesConnection(it.token) }
         .flatten()
 
+    private fun getUserPages(userSocialMedia: Set<SocialMedia>) =
+        getPagesOfType(userSocialMedia, socialMediatype = FACEBOOK_USER)
+
+    private fun getPagePages(userSocialMedia: Set<SocialMedia>) =
+        getPagesOfType(userSocialMedia, socialMediatype = FACEBOOK_PAGE)
+
     private fun fetchPagesConnection(userToken: String) = getUserClient(userToken).fetchConnection(
-        "/me/accounts", FacebookPage::class.java, Parameter.with("fields","id,name,access_token"))
+        "/me/accounts",
+        PageAuthenticateDto::class.java,
+        Parameter.with("fields", "id,name,access_token,instagram_business_account")
+    )
+
 }

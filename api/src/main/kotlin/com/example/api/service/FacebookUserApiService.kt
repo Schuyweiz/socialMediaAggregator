@@ -2,6 +2,8 @@ package com.example.api.service
 
 import com.example.core.model.SocialMedia
 import com.example.core.model.socialmedia.Post
+import com.example.core.model.socialmedia.PostDto
+import com.example.core.model.socialmedia.PublishPostDto
 import com.example.core.utils.Logger
 import com.restfb.DefaultFacebookClient
 import com.restfb.Parameter
@@ -14,13 +16,15 @@ import org.springframework.stereotype.Service
 @Logger
 class FacebookUserApiService(
 ) : SocialMediaPosting {
-    override fun getPosts(token: SocialMedia): List<Post> {
-        val facebookClient = getFacebookClient(token.token)
-        val posts = facebookClient.fetchConnection("me/feed", fbPost::class.java, Parameter.with("fields", "id, message"))
-        val user = facebookClient.fetchObject("me", User::class.java)
+    override fun getPosts(socialMedia: SocialMedia): List<PostDto> {
+        val facebookClient = getFacebookClient(socialMedia.token)
+        val posts = facebookClient.fetchConnection("me/feed", PostDto::class.java, Parameter.with("fields", "id, message"))
 
-        return posts.flatten()
-            .map { Post(socialMediaId = it.id.toLong(), textContent = it.message) }
+        return posts.data
+    }
+
+    override fun publishPost(socialMedia: SocialMedia, postDto: PublishPostDto): List<PostDto> {
+        TODO("Not yet implemented")
     }
 
     private fun getFacebookClient(token: String) = DefaultFacebookClient(token, Version.LATEST)

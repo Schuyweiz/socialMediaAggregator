@@ -30,7 +30,7 @@ data class User(
     @ElementCollection
     var authorities: MutableList<SimpleGrantedAuthority> = mutableListOf(SimpleGrantedAuthority("ROLE_USER")),
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.MERGE, CascadeType.PERSIST])
     var socialMediaSet: MutableSet<SocialMedia> =  mutableSetOf()
 
 ): UserDetails{

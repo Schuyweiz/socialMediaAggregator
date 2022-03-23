@@ -4,6 +4,8 @@ import com.example.api.config.PostServiceRegistry
 import com.example.core.model.SocialMedia
 import com.example.core.model.User
 import com.example.core.model.socialmedia.Post
+import com.example.core.model.socialmedia.PostDto
+import com.example.core.model.socialmedia.PublishPostDto
 import com.example.core.user.repository.UserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -15,15 +17,28 @@ class MediaPostService(
 ) {
 
     @Transactional
-    fun getAllUserPosts(user: User): List<Post>{
+    fun getAllUserPosts(user: User): List<PostDto> {
         val user = userRepository.findByIdOrElseThrow(user.id)
 
         return getPosts(user.socialMediaSet)
     }
 
-    private fun getPosts(tokens: Set<SocialMedia>): List<Post> =
-        tokens.flatMap {
-        postServiceRegistry.getPostService(it.socialMediaType.getApiService())
-            .getPosts(it)
+    @Transactional
+    fun publishPost(userId: Long, postDto: PublishPostDto): List<PostDto> {
+        val user = userRepository.findByIdOrElseThrow(userId)
+
+        return publishPost(user.socialMediaSet, postDto)
     }
+
+    private fun publishPost(tokens: Set<SocialMedia>, post: PublishPostDto): List<PostDto> =
+        tokens.flatMap {
+            postServiceRegistry.getPostService(it.socialMediaType.getApiService())
+                .publishPost(socialMedia = it, postDto = post)
+        }
+
+    private fun getPosts(tokens: Set<SocialMedia>): List<PostDto> =
+        tokens.flatMap {
+            postServiceRegistry.getPostService(it.socialMediaType.getApiService())
+                .getPosts(it)
+        }
 }

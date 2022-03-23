@@ -39,11 +39,14 @@ class SocialMediaAggregatorApplication {
                 userPassword = encoder.encode("1234"), email = "kpike@mail.ru", enabled = true
             )
             val token =
-                "EAAHO4difc4UBADZCZBFrZA2tzbsM89oOJdYL3ViWKS4m7ZA7YR6gF9ZA3oyMhuMavPCsxgTN9XEQobCRaBlI61PvmQdlpWT7wfBEx6XKdwI7f4gtpt3QF9e6W3ewCY1HbyQZAQr3bYs02CLNbUY0CdckT7eYElzs6Q3TYNPaN5xoY63c3F5dBY";
+                "EAAHO4difc4UBAPeRcPMSZC54dEOUBAEtitiljPNGhZC9FXBS0m77mhrfGMuvOoAIpXaUslVZA3U3IDWnDM2bBwc8SgR5HQXb1TniZATJlPpGdhAAtqRAFwASHu0nPmhkoZAh0ZCZAEZCicpUSoYd0g0bvWu4TLKAeKCA5WVmMR7wIizjK9To6ZBFSAnfvrg7vTkMZD";
+            val token2 = "EAAHO4difc4UBAPeRcPMSZC54dEOUBAEtitiljPNGhZC9FXBS0m77mhrfGMuvOoAIpXaUslVZA3U3IDWnDM2bBwc8SgR5HQXb1TniZATJlPpGdhAAtqRAFwASHu0nPmhkoZAh0ZCZAEZCicpUSoYd0g0bvWu4TLKAeKCA5WVmMR7wIizjK9To6ZBFSAnfvrg7vTkMZD"
             val socialMedia =
-                listOf(SocialMedia(token = token, socialMediaType = SocialMediaType.FACEBOOK_USER, user = user, nativeId = 110351558278776))
+                mutableSetOf(SocialMedia(token = token, socialMediaType = SocialMediaType.FACEBOOK_PAGE, user = user, nativeId = 110351558278776),
+                SocialMedia(token = token2, socialMediaType = SocialMediaType.FACEBOOK_USER, user = user, nativeId = null)
+                )
+            user.socialMediaSet = socialMedia
             userRepository.save(user)
-            socialMediaTokenRepository.save(socialMedia[0])
         }
     }
 }
