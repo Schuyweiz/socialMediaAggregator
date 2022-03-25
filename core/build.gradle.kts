@@ -1,6 +1,3 @@
-import org.jetbrains.kotlin.fir.expressions.impl.FirNoReceiverExpression.annotations
-import org.jetbrains.kotlin.fir.expressions.impl.FirStubStatement.annotations
-import org.jetbrains.kotlin.gradle.model.AllOpen
 
 plugins {
     id("socialAggregator.kotlin-common-conventions")
@@ -61,12 +58,19 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-gradle-plugin")
 
-    implementation("org.springframework.boot:spring-boot-starter-webflux")
-
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
     //endregion
+
+
+    implementation("org.springdoc:springdoc-openapi-ui")
+
+    implementation("org.springdoc:springdoc-openapi-kotlin")
+
+    implementation("org.springdoc:springdoc-openapi-security")
+
+    implementation("org.springdoc:springdoc-openapi-data-rest")
 
     implementation("com.restfb:restfb:2022.3.1")
     // https://mvnrepository.com/artifact/org.postgresql/postgresql

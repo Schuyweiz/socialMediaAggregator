@@ -1,5 +1,6 @@
 package com.example.core.model.socialmedia
 
+import com.example.core.model.SocialMediaType
 import com.example.core.utils.DefaultCtor
 import com.restfb.Facebook
 
@@ -13,5 +14,6 @@ data class PostDto(
     val likesCount: Long,
 
     val pageId: Long,
+    var socialMediaType: SocialMediaType
 ) {
 }

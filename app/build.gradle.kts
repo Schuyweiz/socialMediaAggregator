@@ -35,6 +35,14 @@ dependencies {
 
     //endregion
 
+    implementation("org.springdoc:springdoc-openapi-ui")
+
+    implementation("org.springdoc:springdoc-openapi-kotlin")
+
+    implementation("org.springdoc:springdoc-openapi-security")
+
+    implementation("org.springdoc:springdoc-openapi-data-rest")
+
     implementation("com.auth0:java-jwt")
 
 }

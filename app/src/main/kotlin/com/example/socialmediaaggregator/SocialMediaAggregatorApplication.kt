@@ -40,7 +40,7 @@ class SocialMediaAggregatorApplication {
             )
             val token =
                 "EAAHO4difc4UBAPeRcPMSZC54dEOUBAEtitiljPNGhZC9FXBS0m77mhrfGMuvOoAIpXaUslVZA3U3IDWnDM2bBwc8SgR5HQXb1TniZATJlPpGdhAAtqRAFwASHu0nPmhkoZAh0ZCZAEZCicpUSoYd0g0bvWu4TLKAeKCA5WVmMR7wIizjK9To6ZBFSAnfvrg7vTkMZD";
-            val token2 = "EAAHO4difc4UBAPeRcPMSZC54dEOUBAEtitiljPNGhZC9FXBS0m77mhrfGMuvOoAIpXaUslVZA3U3IDWnDM2bBwc8SgR5HQXb1TniZATJlPpGdhAAtqRAFwASHu0nPmhkoZAh0ZCZAEZCicpUSoYd0g0bvWu4TLKAeKCA5WVmMR7wIizjK9To6ZBFSAnfvrg7vTkMZD"
+            val token2 = "EAAHO4difc4UBABf7HzajtszIVF1fN7cEbaGTiTuKCTO6gl35a1ZCp0s7t46GVTOrmvdirvgPtrKgrAeH6W9ZCN4JQvpiU4bcfHbawxCliSTjwXru25hfsaB6Aelothr6bZCFB8yzd0uBOXssBHLH5xoJbrcyulK3PJB0IFpawrGJtYtypWT"
             val socialMedia =
                 mutableSetOf(SocialMedia(token = token, socialMediaType = SocialMediaType.FACEBOOK_PAGE, user = user, nativeId = 110351558278776),
                 SocialMedia(token = token2, socialMediaType = SocialMediaType.FACEBOOK_USER, user = user, nativeId = null)

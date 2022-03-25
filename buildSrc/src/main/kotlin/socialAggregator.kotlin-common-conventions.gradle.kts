@@ -39,8 +39,6 @@ dependencies {
 
     implementation("org.springframework.security:spring-security-web:5.6.1")
 
-    implementation("org.springframework.boot:spring-boot-starter-webflux:2.6.3")
-
     implementation("org.springframework.security.oauth:spring-security-oauth2:2.5.1.RELEASE")
 
     implementation("org.springframework.security:spring-security-oauth2-jose:5.6.1")
@@ -56,6 +54,14 @@ dependencies {
     implementation("com.auth0:java-jwt:3.18.3")
 
     implementation("org.postgresql:postgresql:42.3.1")
+
+    implementation("org.springdoc:springdoc-openapi-ui:1.6.6")
+
+    implementation("org.springdoc:springdoc-openapi-kotlin:1.6.6")
+
+    implementation("org.springdoc:springdoc-openapi-security:1.6.6")
+
+    implementation("org.springdoc:springdoc-openapi-data-rest:1.6.6")
 
 
     // Use JUnit Jupiter for testing.

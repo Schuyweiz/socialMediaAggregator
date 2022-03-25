@@ -18,8 +18,6 @@ dependencies {
 
     implementation("org.springframework.security:spring-security-config")
 
-    implementation("org.springframework.boot:spring-boot-starter-webflux")
-
     implementation("org.springframework.security:spring-security-web")
 
     implementation("org.springframework.security.oauth:spring-security-oauth2")

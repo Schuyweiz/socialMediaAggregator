@@ -72,15 +72,7 @@ class FacebookAuthService(
             .singleOrNull {
                 it.id == pageId
             }?.let {
-                val socialMedia = socialMediaRepository.save(
-                    SocialMedia(
-                        nativeId = it.id,
-                        token = it.token,
-                        socialMediaType = FACEBOOK_PAGE,
-                        user = user
-                    )
-                )
-                return socialMediaMapper.mapToDto(socialMedia)
+                return saveSocialMedia(it, user)
             } ?: kotlin.run {
             throw IllegalArgumentException("No bijection between facebook page and page id.")
         }
@@ -111,5 +103,18 @@ class FacebookAuthService(
         PageAuthenticateDto::class.java,
         Parameter.with("fields", "id,name,access_token,instagram_business_account")
     )
+
+    private fun saveSocialMedia(dto: PageAuthenticateDto, user: User): SocialMediaDto {
+        val socialMedia = socialMediaRepository.findByNativeIdAndSocialMediaType(dto.id, FACEBOOK_PAGE)?.apply {
+            this.token = dto.token
+        } ?: SocialMedia(
+            nativeId = dto.id,
+            token = dto.token,
+            socialMediaType = FACEBOOK_PAGE,
+            user = user
+        )
+        val savedSocialMedia = socialMediaRepository.save(socialMedia)
+        return socialMediaMapper.mapToDto(savedSocialMedia)
+    }
 
 }

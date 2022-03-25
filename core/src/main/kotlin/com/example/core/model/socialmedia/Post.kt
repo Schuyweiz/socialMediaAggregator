@@ -1,5 +1,7 @@
 package com.example.core.model.socialmedia
 
+import com.example.core.model.SocialMedia
+import com.example.core.model.SocialMediaType
 import javax.persistence.*
 
 //todo: full implementation once everything is ready
@@ -12,7 +14,8 @@ data class Post(
 
     val textContent: String,
 
-    val socialMediaId: Long,
+    @ManyToOne
+    val socialMedia: SocialMedia
 
     //todo: comments
 ) {

@@ -18,18 +18,26 @@ class JwtAuthenticationFilter(
     private val userService: UserDetailsService,
     private val jwtService: JwtService,
     private val jwtAuthWhitelist: Set<String>,
+    private val swaggerPrefix: Set<String>,
 ) : OncePerRequestFilter() {
 
     override fun shouldNotFilter(request: HttpServletRequest): Boolean
     = jwtAuthWhitelist.contains(request.servletPath)
 
+    private fun isSwaggerUrl(url: String): Boolean {
+        swaggerPrefix.forEach {
+            if (url.startsWith(it))
+                return true
+        }
+        return false
+    }
 
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
         filterChain: FilterChain,
     ) {
-        if (request.servletPath.contains("login")) {
+        if (request.servletPath.contains("login")||  request.getHeader(AUTHORIZATION).isNullOrEmpty()) {
             filterChain.doFilter(request, response)
             return
         }

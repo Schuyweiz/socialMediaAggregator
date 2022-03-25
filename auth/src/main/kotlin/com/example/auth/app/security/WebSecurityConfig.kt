@@ -5,9 +5,11 @@ import com.example.auth.app.JwtAuthenticationFilter
 import com.example.auth.app.jwt.JwtService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy.STATELESS
@@ -31,7 +33,11 @@ class WebSecurityConfig(
         "/auth/facebook",
         "/register",
         "/register/confirm",
+        "/swagger-ui.html",
+        "/swagger-ui/index.html"
     )
+
+    private val SWAGGER_WHITELIST_PREFIX = setOf("/swagger-ui", "/favicon")
 
     @Bean
     override fun authenticationManager(): AuthenticationManager {
@@ -42,7 +48,25 @@ class WebSecurityConfig(
         auth?.userDetailsService(userDetailsService)?.passwordEncoder(encoder())
     }
 
+    override fun configure(web: WebSecurity?) {
+        web!!.ignoring()
 
+            // allow anonymous resource requests
+            .antMatchers(
+                HttpMethod.GET,
+                "/",
+                "/v3/api-docs",           // swagger
+                "/webjars/**",            // swagger-ui webjars
+                "/swagger-resources/**",  // swagger-ui resources
+                "/configuration/**",      // swagger configuration
+                "/*.html",
+                "/favicon.ico",
+                "/**/*.html",
+                "/**/*.css",
+                "/**/*.js",
+                "/swagger-ui/"
+            )
+    }
 
     @Bean
     fun encoder(): PasswordEncoder = BCryptPasswordEncoder(6, SecureRandom.getInstanceStrong())
@@ -53,9 +77,11 @@ class WebSecurityConfig(
             .sessionManagement().sessionCreationPolicy(STATELESS)
             .and()
 
+
             .requiresChannel {
                 it.anyRequest().requiresSecure()
             }
+
             .authorizeRequests().antMatchers("auth/refresh")
             .permitAll()
             .and()
@@ -71,8 +97,10 @@ class WebSecurityConfig(
 //            .and()
 
             .addFilter(CustomAuthenticationManager(authenticationManagerBean(), jwtService, encoder()))
-            .addFilterBefore( JwtAuthenticationFilter(userDetailsService, jwtService, JWT_AUTH_WHITELIST),
-                UsernamePasswordAuthenticationFilter::class.java)
+            .addFilterBefore(
+                JwtAuthenticationFilter(userDetailsService, jwtService, JWT_AUTH_WHITELIST, SWAGGER_WHITELIST_PREFIX),
+                UsernamePasswordAuthenticationFilter::class.java
+            )
 
     }
 }

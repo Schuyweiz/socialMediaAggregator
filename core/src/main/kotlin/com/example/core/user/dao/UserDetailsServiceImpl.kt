@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class UserDetailsServiceImpl(
     private val userRepository: UserRepository,
-): UserDetailsService {
+) : UserDetailsService {
 
     @Transactional(readOnly = true)
     override fun loadUserByUsername(email: String?): User {
@@ -21,7 +21,8 @@ class UserDetailsServiceImpl(
         if (email == null)
             throw Exception("Username not provided the loadUserByUsername from UserDetailsService")
 
-        return userRepository.findByEmail(email)?.apply { authorities = mutableListOf(SimpleGrantedAuthority("ROLE_USER")) }
+        return userRepository.findByEmail(email)
+            ?.apply { authorities = mutableListOf(SimpleGrantedAuthority("ROLE_USER")) }
             ?: throw UsernameNotFoundException("User with the email $email not found.")
     }
 

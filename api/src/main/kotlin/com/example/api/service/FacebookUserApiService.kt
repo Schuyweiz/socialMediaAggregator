@@ -18,7 +18,8 @@ class FacebookUserApiService(
 ) : SocialMediaPosting {
     override fun getPosts(socialMedia: SocialMedia): List<PostDto> {
         val facebookClient = getFacebookClient(socialMedia.token)
-        val posts = facebookClient.fetchConnection("me/feed", PostDto::class.java, Parameter.with("fields", "id, message"))
+        val posts =
+            facebookClient.fetchConnection("me/feed", PostDto::class.java, Parameter.with("fields", "id, message"))
 
         return posts.data
     }

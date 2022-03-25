@@ -24,9 +24,11 @@ class CustomAuthenticationManager(
 
     override fun attemptAuthentication(request: HttpServletRequest?, response: HttpServletResponse?): Authentication {
         val token = getUsernamePasswordAuthenticationToken(request!!)
-        log.info("User in attempt Authentication method in" +
-                " authentication manager with the name ${token.name} and isAuthneticated ${token.isAuthenticated}" +
-                " principal ${token.principal}\n creditentials ${token.credentials}")
+        log.info(
+            "User in attempt Authentication method in" +
+                    " authentication manager with the name ${token.name} and isAuthneticated ${token.isAuthenticated}" +
+                    " principal ${token.principal}\n creditentials ${token.credentials}"
+        )
 
         return authenticationManager.authenticate(token)
     }
@@ -64,8 +66,6 @@ class CustomAuthenticationManager(
             obtainUsername(request),
             obtainPassword(request)
         )
-
-
 
 
     companion object {

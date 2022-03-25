@@ -21,7 +21,7 @@ class JwtService(
 
     fun createAccessToken(user: User, request: HttpServletRequest): String = JWT.create()
         .withSubject(user.username)
-        .withExpiresAt(Date(System.currentTimeMillis() + 10 * 60 * 1000))
+        .withExpiresAt(Date(System.currentTimeMillis() + 30 * 60 * 1000))
         .withIssuer(request.requestURL.toString())
         .sign(algorithm)
 
@@ -38,7 +38,7 @@ class JwtService(
     fun updateAccessToken(decodedJWT: DecodedJWT): String {
         return JWT.create()
             .withSubject(decodedJWT.subject)
-            .withExpiresAt(Date(System.currentTimeMillis() + 10 * 60 * 1000))
+            .withExpiresAt(Date(System.currentTimeMillis() + 30 * 60 * 1000))
             .withIssuer(decodedJWT.issuer)
             .sign(algorithm)
     }
