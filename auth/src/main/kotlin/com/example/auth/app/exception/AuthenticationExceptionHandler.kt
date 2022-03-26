@@ -1,6 +1,6 @@
 package com.example.auth.app.exception
 
-import com.example.core.utils.Logger
+import com.example.core.annotation.Logger
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
 

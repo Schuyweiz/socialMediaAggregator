@@ -1,5 +1,6 @@
 package com.example.core.validation
 
+import com.example.core.annotation.ValidEmail
 import java.util.regex.Pattern
 import javax.validation.ConstraintValidator
 import javax.validation.ConstraintValidatorContext

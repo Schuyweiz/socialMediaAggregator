@@ -3,10 +3,9 @@ package com.example.api.service
 import com.example.api.config.PostServiceRegistry
 import com.example.core.model.SocialMedia
 import com.example.core.model.User
-import com.example.core.model.socialmedia.Post
-import com.example.core.model.socialmedia.PostDto
-import com.example.core.model.socialmedia.PublishPostDto
-import com.example.core.user.repository.UserRepository
+import com.example.core.dto.PostDto
+import com.example.core.dto.PublishPostDto
+import com.example.core.repository.UserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 

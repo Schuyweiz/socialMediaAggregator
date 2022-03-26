@@ -1,7 +1,7 @@
 package com.example.api.events
 
-import com.example.core.user.repository.PostRepository
-import com.example.core.utils.PostDtoMapper
+import com.example.core.repository.PostRepository
+import com.example.core.mapper.PostDtoMapper
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
 

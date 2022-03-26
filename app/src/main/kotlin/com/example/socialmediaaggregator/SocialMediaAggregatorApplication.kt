@@ -3,8 +3,8 @@ package com.example.socialmediaaggregator
 import com.example.core.model.SocialMedia
 import com.example.core.model.SocialMediaType
 import com.example.core.model.User
-import com.example.core.user.repository.SocialMediaRepository
-import com.example.core.user.repository.UserRepository
+import com.example.core.repository.SocialMediaRepository
+import com.example.core.repository.UserRepository
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.autoconfigure.domain.EntityScan

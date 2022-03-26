@@ -1,3 +1,4 @@
+
 plugins {
     id("socialAggregator.kotlin-common-conventions")
     id("org.springframework.boot") apply(false)
@@ -27,6 +28,13 @@ dependencies {
     implementation("org.springframework.security:spring-security-oauth2-client")
 
     //endregion
+
+    implementation("org.springdoc:springdoc-openapi-data-rest:1.6.0")
+
+    // https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-security
+    implementation("org.springdoc:springdoc-openapi-security")
+
+
 
     implementation("com.auth0:java-jwt")
 

@@ -1,9 +1,9 @@
 package com.example.auth.app.registration
 
-import com.example.core.user.dao.UserService
+import com.example.core.service.UserService
 import com.example.core.model.User
-import com.example.core.utils.Logger
-import com.example.core.utils.Logger.Companion.log
+import com.example.core.annotation.Logger
+import com.example.core.annotation.Logger.Companion.log
 import org.springframework.context.ApplicationListener
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.stereotype.Component

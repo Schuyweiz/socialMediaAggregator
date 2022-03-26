@@ -55,6 +55,8 @@ dependencies {
 
     implementation("org.postgresql:postgresql:42.3.1")
 
+    //region springdoc openapi
+
     implementation("org.springdoc:springdoc-openapi-ui:1.6.6")
 
     implementation("org.springdoc:springdoc-openapi-kotlin:1.6.6")
@@ -63,6 +65,11 @@ dependencies {
 
     implementation("org.springdoc:springdoc-openapi-data-rest:1.6.6")
 
+    implementation("org.springdoc:springdoc-openapi-data-rest:1.6.0")
+
+    implementation("org.springdoc:springdoc-openapi-security:1.6.6")
+
+    //endregion
 
     // Use JUnit Jupiter for testing.
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.2")

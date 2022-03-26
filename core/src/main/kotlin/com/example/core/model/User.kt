@@ -21,7 +21,7 @@ data class User(
     @Column(name = "password")
     val userPassword: String?,
 
-    @Column(name="email", unique = true)
+    @Column(name = "email", unique = true)
     val email: String?,
 
     var enabled: Boolean = true,
@@ -31,10 +31,11 @@ data class User(
     var authorities: MutableList<SimpleGrantedAuthority> = mutableListOf(SimpleGrantedAuthority("ROLE_USER")),
 
     @OneToMany(mappedBy = "user", cascade = [CascadeType.MERGE, CascadeType.PERSIST])
-    var socialMediaSet: MutableSet<SocialMedia> =  mutableSetOf()
+    var socialMediaSet: MutableSet<SocialMedia> = mutableSetOf()
 
-): UserDetails{
-    override fun getAuthorities(): MutableCollection<out GrantedAuthority> =  mutableSetOf(SimpleGrantedAuthority("ROLE_USER"))
+) : UserDetails {
+    override fun getAuthorities(): MutableCollection<out GrantedAuthority> =
+        mutableSetOf(SimpleGrantedAuthority("ROLE_USER"))
 
     override fun getPassword(): String = userPassword.orEmpty()
 

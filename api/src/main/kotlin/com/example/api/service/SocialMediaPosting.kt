@@ -1,9 +1,8 @@
 package com.example.api.service
 
 import com.example.core.model.SocialMedia
-import com.example.core.model.socialmedia.Post
-import com.example.core.model.socialmedia.PostDto
-import com.example.core.model.socialmedia.PublishPostDto
+import com.example.core.dto.PostDto
+import com.example.core.dto.PublishPostDto
 
 interface SocialMediaPosting {
 
