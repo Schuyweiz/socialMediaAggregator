@@ -9,6 +9,6 @@ data class PostResponseDto(
     val success: Boolean,
 
     @Facebook("id")
-    val postId: String
+    val postId: String,
 ) {
 }

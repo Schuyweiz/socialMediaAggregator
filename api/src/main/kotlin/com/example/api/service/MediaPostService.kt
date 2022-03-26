@@ -1,10 +1,10 @@
 package com.example.api.service
 
 import com.example.api.config.PostServiceRegistry
-import com.example.core.model.SocialMedia
-import com.example.core.model.User
 import com.example.core.dto.PostDto
 import com.example.core.dto.PublishPostDto
+import com.example.core.model.SocialMedia
+import com.example.core.model.User
 import com.example.core.repository.UserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -30,7 +30,7 @@ class MediaPostService(
     }
 
     private fun publishPost(tokens: Set<SocialMedia>, post: PublishPostDto): List<PostDto> =
-        tokens.flatMap {
+        tokens.map {
             postServiceRegistry.getPostService(it.socialMediaType.getApiService())
                 .publishPost(socialMedia = it, postDto = post)
         }

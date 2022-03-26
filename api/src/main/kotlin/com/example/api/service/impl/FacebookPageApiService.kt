@@ -3,12 +3,12 @@ package com.example.api.service.impl
 import com.example.api.events.PostRequestedEvent
 import com.example.api.service.FacebookApi
 import com.example.api.service.SocialMediaPosting
-import com.example.core.model.SocialMedia
+import com.example.core.annotation.Logger
 import com.example.core.dto.PostDto
 import com.example.core.dto.PostResponseDto
 import com.example.core.dto.PublishPostDto
-import com.example.core.annotation.Logger
 import com.example.core.mapper.PublishPostDtoMapper
+import com.example.core.model.SocialMedia
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 
@@ -30,7 +30,7 @@ class FacebookPageApiService(
     }
 
 
-    override fun publishPost(socialMedia: SocialMedia, postDto: PublishPostDto): List<PostDto> {
+    override fun publishPost(socialMedia: SocialMedia, postDto: PublishPostDto): PostDto {
         val facebookClient = getFacebookClient(socialMedia.token)
         val pageId = socialMedia.nativeId
 
@@ -40,7 +40,10 @@ class FacebookPageApiService(
             *publishPostMapper.mapToFacebookParams(postDto)
         )
 
-        return facebookClient.fetchConnection(responseDto.postId, PostDto::class.java)?.data
+        return facebookClient.fetchObject(responseDto.postId, PostDto::class.java).apply {
+            this.pageId = socialMedia.nativeId ?: -1
+            this.socialMediaType = socialMedia.socialMediaType
+        }
             ?: throw Exception("Something went wrong, post id is ${responseDto.postId}")
     }
 }

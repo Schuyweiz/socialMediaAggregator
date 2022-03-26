@@ -13,7 +13,7 @@ data class PostDto(
     @Facebook("likes")
     val likesCount: Long,
 
-    val pageId: Long,
+    var pageId: Long,
     var socialMediaType: SocialMediaType
 ) {
 }

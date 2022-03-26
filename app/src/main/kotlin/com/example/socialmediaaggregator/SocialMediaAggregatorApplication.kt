@@ -38,12 +38,12 @@ class SocialMediaAggregatorApplication {
                 firstName = "kirill", lastName = "pike",
                 userPassword = encoder.encode("1234"), email = "kpike@mail.ru", enabled = true
             )
-            val token =
-                "EAAHO4difc4UBAPeRcPMSZC54dEOUBAEtitiljPNGhZC9FXBS0m77mhrfGMuvOoAIpXaUslVZA3U3IDWnDM2bBwc8SgR5HQXb1TniZATJlPpGdhAAtqRAFwASHu0nPmhkoZAh0ZCZAEZCicpUSoYd0g0bvWu4TLKAeKCA5WVmMR7wIizjK9To6ZBFSAnfvrg7vTkMZD";
-            val token2 = "EAAHO4difc4UBABf7HzajtszIVF1fN7cEbaGTiTuKCTO6gl35a1ZCp0s7t46GVTOrmvdirvgPtrKgrAeH6W9ZCN4JQvpiU4bcfHbawxCliSTjwXru25hfsaB6Aelothr6bZCFB8yzd0uBOXssBHLH5xoJbrcyulK3PJB0IFpawrGJtYtypWT"
+            val pageToken =
+                "EAAHO4difc4UBADrba2mvv7GxnebpJZB6BfORsmXBXZC6TBYNkKtxNlOF6K0GfmMsOsAeBhoUvoNpiBCayrktA8grR8mYxyBR4hQivaymW7KVCkDDSfEIwk8W5kjI7fDbdukVCYLpKjMfmoiAfpcVpO5YBABTQc66q2hsUTW2qZCHlONHk5gk9hev47ZAa7cZD";
+            val userToken = "EAAHO4difc4UBAPWLiSSJLPt4wSqVxT7542ewQDR0ZAJMXMsLV5HZBjjQeP8Y1nTj9FOhfqFtzWY3nn5nCHXBss3IiZC9WIhocLvKCVFoXlnQBfNP6N2mop7A4HbKP7MwNibigIsjyivH8PULDFdMiDY9oX55piHdTBStSuQxoZBkDxcYsMew"
             val socialMedia =
-                mutableSetOf(SocialMedia(token = token, socialMediaType = SocialMediaType.FACEBOOK_PAGE, user = user, nativeId = 110351558278776),
-                SocialMedia(token = token2, socialMediaType = SocialMediaType.FACEBOOK_USER, user = user, nativeId = null)
+                mutableSetOf(SocialMedia(token = pageToken, socialMediaType = SocialMediaType.FACEBOOK_PAGE, user = user, nativeId = 110351558278776),
+                SocialMedia(token = userToken, socialMediaType = SocialMediaType.FACEBOOK_USER, user = user, nativeId = null)
                 )
             user.socialMediaSet = socialMedia
             userRepository.save(user)

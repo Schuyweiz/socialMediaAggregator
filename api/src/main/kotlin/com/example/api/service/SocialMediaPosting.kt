@@ -8,5 +8,5 @@ interface SocialMediaPosting {
 
     fun getPosts(socialMedia: SocialMedia): List<PostDto>
 
-    fun publishPost(socialMedia: SocialMedia, postDto: PublishPostDto): List<PostDto>
+    fun publishPost(socialMedia: SocialMedia, postDto: PublishPostDto): PostDto
 }

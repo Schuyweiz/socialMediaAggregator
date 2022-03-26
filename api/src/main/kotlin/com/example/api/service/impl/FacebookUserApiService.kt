@@ -5,6 +5,7 @@ import com.example.core.model.SocialMedia
 import com.example.core.dto.PostDto
 import com.example.core.dto.PublishPostDto
 import com.example.core.annotation.Logger
+import com.example.core.model.SocialMediaType
 import com.restfb.DefaultFacebookClient
 import com.restfb.Parameter
 import com.restfb.Version
@@ -22,8 +23,8 @@ class FacebookUserApiService(
         return posts.data
     }
 
-    override fun publishPost(socialMedia: SocialMedia, postDto: PublishPostDto): List<PostDto> {
-        TODO("Not yet implemented")
+    override fun publishPost(socialMedia: SocialMedia, postDto: PublishPostDto): PostDto {
+        return PostDto("", "", 0L, 0L, SocialMediaType.FACEBOOK_USER)
     }
 
     private fun getFacebookClient(token: String) = DefaultFacebookClient(token, Version.LATEST)
