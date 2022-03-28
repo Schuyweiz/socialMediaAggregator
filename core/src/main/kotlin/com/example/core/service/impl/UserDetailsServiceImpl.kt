@@ -1,4 +1,4 @@
-package com.example.core.service
+package com.example.core.service.impl
 
 import com.example.core.model.User
 import com.example.core.repository.UserRepository

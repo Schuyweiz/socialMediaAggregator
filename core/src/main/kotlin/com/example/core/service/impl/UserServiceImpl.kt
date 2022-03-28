@@ -1,4 +1,4 @@
-package com.example.core.service
+package com.example.core.service.impl
 
 import com.example.core.exceptions.TokenExpiredException
 import com.example.core.exceptions.TokenNotFoundException
@@ -12,6 +12,7 @@ import com.example.core.repository.UserRepository
 import com.example.core.annotation.Logger
 import com.example.core.annotation.Logger.Companion.log
 import com.example.core.mapper.UserMapper
+import com.example.core.service.UserService
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

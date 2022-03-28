@@ -1,6 +1,6 @@
 package com.example.api.controller
 
-import com.example.api.service.MediaPostService
+import com.example.api.service.PostService
 import com.example.core.model.User
 import com.example.core.dto.PostDto
 import com.example.core.dto.PublishPostDto
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 @RestControllerJwt
 @RequestMapping
 class SocialMediaPostController(
-    private val mediaPostService: MediaPostService,
+    private val postService: PostService,
 ) {
 
     @JwtSecureEndpoint
@@ -23,7 +23,7 @@ class SocialMediaPostController(
     fun getAllPosts(
         @AuthenticationPrincipal user: User
     ): List<PostDto> {
-        return mediaPostService.getAllUserPosts(user)
+        return postService.getAllUserPosts(user)
     }
 
     @JwtSecureEndpoint
@@ -32,7 +32,7 @@ class SocialMediaPostController(
         @RequestBody postDto: PublishPostDto,
         @AuthenticationPrincipal user: User
     ): List<PostDto> {
-        return mediaPostService.publishPost(user.id, postDto)
+        return postService.publishPost(user.id, postDto)
     }
 
 }
