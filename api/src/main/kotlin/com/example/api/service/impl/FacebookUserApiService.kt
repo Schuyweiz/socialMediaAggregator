@@ -1,10 +1,12 @@
 package com.example.api.service.impl
 
+import com.example.api.dto.ConversationDto
+import com.example.api.service.SocialMediaConversation
 import com.example.api.service.SocialMediaPosting
-import com.example.core.model.SocialMedia
+import com.example.core.annotation.Logger
 import com.example.core.dto.PostDto
 import com.example.core.dto.PublishPostDto
-import com.example.core.annotation.Logger
+import com.example.core.model.SocialMedia
 import com.example.core.model.SocialMediaType
 import com.restfb.DefaultFacebookClient
 import com.restfb.Parameter
@@ -14,7 +16,7 @@ import org.springframework.stereotype.Service
 @Service
 @Logger
 class FacebookUserApiService(
-) : SocialMediaPosting {
+) : SocialMediaPosting, SocialMediaConversation {
     override fun getPosts(socialMedia: SocialMedia): List<PostDto> {
         val facebookClient = getFacebookClient(socialMedia.token)
         val posts =
@@ -24,8 +26,13 @@ class FacebookUserApiService(
     }
 
     override fun publishPost(socialMedia: SocialMedia, postDto: PublishPostDto): PostDto {
+        //todo: implement when facebook allows it
         return PostDto("", "", 0L, 0L, SocialMediaType.FACEBOOK_USER)
     }
 
     private fun getFacebookClient(token: String) = DefaultFacebookClient(token, Version.LATEST)
+    override fun getAllConversations(socialMedia: SocialMedia): List<ConversationDto> {
+        //todo: implement when facebook allows it
+        return emptyList()
+    }
 }

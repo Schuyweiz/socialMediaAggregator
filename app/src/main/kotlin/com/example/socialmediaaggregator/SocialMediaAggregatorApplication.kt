@@ -39,7 +39,7 @@ class SocialMediaAggregatorApplication {
                 userPassword = encoder.encode("1234"), email = "kpike@mail.ru", enabled = true
             )
             val pageToken =
-                "EAAHO4difc4UBADrba2mvv7GxnebpJZB6BfORsmXBXZC6TBYNkKtxNlOF6K0GfmMsOsAeBhoUvoNpiBCayrktA8grR8mYxyBR4hQivaymW7KVCkDDSfEIwk8W5kjI7fDbdukVCYLpKjMfmoiAfpcVpO5YBABTQc66q2hsUTW2qZCHlONHk5gk9hev47ZAa7cZD";
+                "EAAHO4difc4UBAFncunwJUqjDl3N8EsS8DLF9h0TfFKAuajGA2tOZAB9bQFP6V6jIJK2W2BG16pZCtFiVIXSr4uT4sEyGmME0MJ140x0m83qxYkS2ZBnQN1fbban6SiOitHkyHaZCFOvXWUgOXpnUnNjGf7zphtBeKuFoXyIAjDZAHx4WdZBSWZBKFwNu0439RYZD";
             val userToken = "EAAHO4difc4UBAPWLiSSJLPt4wSqVxT7542ewQDR0ZAJMXMsLV5HZBjjQeP8Y1nTj9FOhfqFtzWY3nn5nCHXBss3IiZC9WIhocLvKCVFoXlnQBfNP6N2mop7A4HbKP7MwNibigIsjyivH8PULDFdMiDY9oX55piHdTBStSuQxoZBkDxcYsMew"
             val socialMedia =
                 mutableSetOf(SocialMedia(token = pageToken, socialMediaType = SocialMediaType.FACEBOOK_PAGE, user = user, nativeId = 110351558278776),

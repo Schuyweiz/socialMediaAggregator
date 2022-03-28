@@ -19,6 +19,7 @@ class FacebookConfiguration {
             addPermission(FacebookPermissions.PAGES_MANAGE_POSTS)
             addPermission(FacebookPermissions.PAGES_READ_ENGAGEMENT)
             addPermission(FacebookPermissions.PAGES_SHOW_LIST)
+            addPermission(FacebookPermissions.PAGES_MESSAGING)
             addPermission(FacebookPermissions.PAGES_READ_USER_CONTENT)
         }
     }
