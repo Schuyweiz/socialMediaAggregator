@@ -1,8 +1,11 @@
 package com.example.api.mapper
 
-import com.example.api.dto.ConversationDto
-import com.restfb.types.Conversation as RestFbConversation
+import com.example.api.dto.*
+import com.example.core.model.SocialMedia
+import com.example.core.model.socialmedia.Message
 import org.springframework.stereotype.Component
+import com.restfb.types.Conversation as RestFbConversation
+import com.restfb.types.Message as RestFbMessage
 
 @Component
 class ConversationMapper {
@@ -14,5 +17,43 @@ class ConversationMapper {
         unreadCount = restFbConversation.unreadCount,
         participants = restFbConversation.participants,
         canReply = restFbConversation.canReply,
+        createdTime = null
+    )
+
+    fun convertRestFbConversationToConversationWithMessagesDto(restFbConversation: RestFbConversation): ConversationWithMessagesDto =
+        ConversationWithMessagesDto(
+            conversationDto = convertRestFbConversationToDto(restFbConversation),
+            messagesDto = convertRestFbMessagesToMessagesDto(restFbConversation.messages),
+        )
+
+
+    fun convertRestFbMessagesToMessagesDto(restFbMessageList: List<RestFbMessage>): List<MessageDto> =
+        restFbMessageList.map {
+            convertRestFbMessageToMessageDto(it)
+        }
+
+    fun convertRestFbMessageToMessageDto(restFbMessage: RestFbMessage): MessageDto = MessageDto(
+        nativeId = restFbMessage.id,
+        message = restFbMessage.message,
+        participantDto = ParticipantDto(nativeId = restFbMessage.from.id, name = restFbMessage.from.name),
+        createdTime = restFbMessage.createdTime,
+        attachment = restFbMessage.attachments.firstOrNull().let {
+            return@let AttachmentDto(it?.id, it?.mimeType, it?.size, it?.imageData?.url)
+        }
+    )
+
+
+    fun convertRestFbConversationToMessages(
+        conversationWithMessagesDto: ConversationWithMessagesDto,
+        socialMedia: SocialMedia
+    ): List<Message> = conversationWithMessagesDto.messagesDto.map {
+        convertRestFbMessageToMessage(it, socialMedia)
+    }
+
+    fun convertRestFbMessageToMessage(messagesDto: MessageDto, socialMedia: SocialMedia): Message = Message(
+        content = messagesDto.message.plus(messagesDto.attachment?.url),
+        nativeId = messagesDto.nativeId,
+        createdTime = messagesDto.createdTime.toInstant(),
+        socialMedia = socialMedia,
     )
 }

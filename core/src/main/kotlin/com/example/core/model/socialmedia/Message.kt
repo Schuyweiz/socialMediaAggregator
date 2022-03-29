@@ -2,7 +2,7 @@ package com.example.core.model.socialmedia
 
 import com.example.core.annotation.DefaultCtor
 import com.example.core.model.SocialMedia
-import java.time.LocalDateTime
+import java.time.Instant
 import javax.persistence.*
 
 @DefaultCtor
@@ -21,9 +21,7 @@ data class Message(
     @ManyToOne
     var socialMedia: SocialMedia,
 
-    var updateTime: LocalDateTime,
-
-
+    var createdTime: Instant,
 ) {
 
 }

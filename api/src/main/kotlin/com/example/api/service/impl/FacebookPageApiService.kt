@@ -1,6 +1,8 @@
 package com.example.api.service.impl
 
 import com.example.api.dto.ConversationDto
+import com.example.api.dto.ConversationWithMessagesDto
+import com.example.api.events.ConversationGetMessagesEvent
 import com.example.api.events.PostRequestedEvent
 import com.example.api.mapper.ConversationMapper
 import com.example.api.service.FacebookApi
@@ -68,5 +70,23 @@ class FacebookPageApiService(
         return restFbConversations.map {
             conversationMapper.convertRestFbConversationToDto(it)
         }
+    }
+
+    override fun getConversationWithMessages(
+        socialMedia: SocialMedia,
+        conversationId: String
+    ): ConversationWithMessagesDto {
+        val facebookClient = getFacebookClient(socialMedia.token)
+
+        val restFbConversationWithMessages = facebookClient.fetchObject(
+            conversationId, Conversation::class.java,
+            Parameter.with("fields", "messages{message,attachments,from,created_time},message_count,can_reply")
+        )
+
+        return conversationMapper.convertRestFbConversationToConversationWithMessagesDto(restFbConversationWithMessages)
+            .also {
+                val messageEntities = conversationMapper.convertRestFbConversationToMessages(it, socialMedia)
+                eventPublisher.publishEvent(ConversationGetMessagesEvent(messageEntities))
+            }
     }
 }

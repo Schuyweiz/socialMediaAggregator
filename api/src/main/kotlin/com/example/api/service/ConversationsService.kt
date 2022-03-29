@@ -2,6 +2,7 @@ package com.example.api.service
 
 import com.example.api.config.ConversationServiceRegistry
 import com.example.api.dto.ConversationDto
+import com.example.api.dto.ConversationWithMessagesDto
 import com.example.core.model.SocialMedia
 import com.example.core.repository.SocialMediaRepository
 import com.example.core.repository.UserRepository
@@ -29,6 +30,18 @@ class ConversationsService(
         socialMediaRepository.findByIdOrThrow(socialMediaId).run {
             return getConversations(this)
         }
+    }
+
+    @Transactional
+    fun getConversationWithMessages(
+        socialMediaId: Long,
+        conversationId: String
+    ): ConversationWithMessagesDto {
+        val socialMedia = socialMediaRepository.findByIdOrThrow(socialMediaId)
+        val apiServiceBean = socialMedia.socialMediaType.getApiService()
+
+        return conversationRegistry.getConversationService(apiServiceBean)
+            .getConversationWithMessages(socialMedia, conversationId)
     }
 
     private fun getConversations(socialMedia: SocialMedia): List<ConversationDto> {

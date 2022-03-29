@@ -1,6 +1,5 @@
 package com.example.api.dto
 
-import com.example.api.model.ConversationParticipant
 import com.example.core.annotation.DefaultCtor
 import com.restfb.Facebook
 import com.restfb.types.ExtendedReferenceType
@@ -11,7 +10,8 @@ data class ConversationDto(
     @Facebook("id")
     val conversationId: String,
     @Facebook("updated_time")
-    val updatedTime: Date,
+    val updatedTime: Date?,
+    val createdTime: Date?,
     @Facebook("message_count")
     val messageCount: Long,
     @Facebook("unread_count")

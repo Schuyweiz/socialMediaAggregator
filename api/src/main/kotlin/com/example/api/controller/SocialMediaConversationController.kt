@@ -24,4 +24,11 @@ class SocialMediaConversationController(
     fun getAllConversationsBySocialMediaAccount(
         @PathVariable(name = "socialMediaId", required = true) socialMediaId: Long
     ) = conversationsService.getAllConversationsBySocialMediaId(socialMediaId)
+
+    @JwtSecureEndpoint
+    @GetMapping("api/{socialMediaId}/conversations/{conversationId}/messages")
+    fun getConversationWithMessages(
+        @PathVariable(name = "socialMediaId", required = true) socialMediaId: Long,
+        @PathVariable(name = "conversationId", required = true) conversationId: String,
+    ) = conversationsService.getConversationWithMessages(socialMediaId, conversationId)
 }
