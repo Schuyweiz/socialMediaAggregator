@@ -2,6 +2,8 @@ package com.example.api.service.impl
 
 import com.example.api.dto.ConversationDto
 import com.example.api.dto.ConversationWithMessagesDto
+import com.example.api.dto.MessageDto
+import com.example.api.dto.SendMessageDto
 import com.example.api.service.SocialMediaConversation
 import com.example.api.service.SocialMediaPosting
 import com.example.core.annotation.Logger
@@ -55,5 +57,13 @@ class FacebookUserApiService(
                 createdTime = null,
             ), messagesDto = listOf()
         )
+    }
+
+    override fun sendMessageToConversation(
+        socialMedia: SocialMedia,
+        conversationId: String,
+        sendMessageDto: SendMessageDto
+    ): MessageDto {
+        TODO("Not yet implemented")
     }
 }

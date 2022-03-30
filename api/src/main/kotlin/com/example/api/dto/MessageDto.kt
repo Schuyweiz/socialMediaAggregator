@@ -9,5 +9,5 @@ data class MessageDto(
     val message: String,
     val participantDto: ParticipantDto,
     val createdTime: Date,
-    val attachment: AttachmentDto?,
+    val attachment: RecieveAttachmentDto?,
     )

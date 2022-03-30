@@ -2,6 +2,8 @@ package com.example.api.service.impl
 
 import com.example.api.dto.ConversationDto
 import com.example.api.dto.ConversationWithMessagesDto
+import com.example.api.dto.MessageDto
+import com.example.api.dto.SendMessageDto
 import com.example.api.events.ConversationGetMessagesEvent
 import com.example.api.events.PostRequestedEvent
 import com.example.api.mapper.ConversationMapper
@@ -18,6 +20,7 @@ import com.restfb.Parameter
 import com.restfb.types.Conversation
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
+import org.springframework.web.multipart.MultipartFile
 
 @Service
 @Logger
@@ -88,5 +91,14 @@ class FacebookPageApiService(
                 val messageEntities = conversationMapper.convertRestFbConversationToMessages(it, socialMedia)
                 eventPublisher.publishEvent(ConversationGetMessagesEvent(messageEntities))
             }
+    }
+
+    override fun sendMessageToConversation(
+        socialMedia: SocialMedia,
+        conversationId: String,
+        sendMessageDto: SendMessageDto,
+        file: MultipartFile?
+    ): MessageDto {
+
     }
 }

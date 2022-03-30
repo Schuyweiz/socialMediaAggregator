@@ -14,6 +14,7 @@ data class Message(
     @Column(name = "id", nullable = false)
     var id: Long? = null,
 
+    @Column(name = "content", length = 500)
     var content: String,
 
     var nativeId: String,

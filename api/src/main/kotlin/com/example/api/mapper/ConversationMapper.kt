@@ -38,7 +38,7 @@ class ConversationMapper {
         participantDto = ParticipantDto(nativeId = restFbMessage.from.id, name = restFbMessage.from.name),
         createdTime = restFbMessage.createdTime,
         attachment = restFbMessage.attachments.firstOrNull().let {
-            return@let AttachmentDto(it?.id, it?.mimeType, it?.size, it?.imageData?.url)
+            return@let RecieveAttachmentDto(it?.id, it?.mimeType, it?.size, it?.imageData?.url)
         }
     )
 

@@ -3,11 +3,14 @@ package com.example.api.service
 import com.example.api.config.ConversationServiceRegistry
 import com.example.api.dto.ConversationDto
 import com.example.api.dto.ConversationWithMessagesDto
+import com.example.api.dto.MessageDto
+import com.example.api.dto.SendMessageDto
 import com.example.core.model.SocialMedia
 import com.example.core.repository.SocialMediaRepository
 import com.example.core.repository.UserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.multipart.MultipartFile
 
 @Service
 class ConversationsService(
@@ -42,6 +45,15 @@ class ConversationsService(
 
         return conversationRegistry.getConversationService(apiServiceBean)
             .getConversationWithMessages(socialMedia, conversationId)
+    }
+
+    @Transactional
+    fun sendMessage(socialMediaId: Long, conversationId: String, sendMessageDto: SendMessageDto, file: MultipartFile): MessageDto {
+        val socialMedia = socialMediaRepository.findByIdOrThrow(socialMediaId)
+        val apiServiceBean = socialMedia.socialMediaType.getApiService()
+
+        return conversationRegistry.getConversationService(apiServiceBean)
+            .sendMessageToConversation(socialMedia, conversationId, sendMessageDto, file)
     }
 
     private fun getConversations(socialMedia: SocialMedia): List<ConversationDto> {
