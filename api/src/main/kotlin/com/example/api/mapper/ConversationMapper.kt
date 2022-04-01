@@ -3,7 +3,10 @@ package com.example.api.mapper
 import com.example.api.dto.*
 import com.example.core.model.SocialMedia
 import com.example.core.model.socialmedia.Message
+import com.restfb.BinaryAttachment
+import com.restfb.types.send.MediaAttachment
 import org.springframework.stereotype.Component
+import org.springframework.web.multipart.MultipartFile
 import com.restfb.types.Conversation as RestFbConversation
 import com.restfb.types.Message as RestFbMessage
 
@@ -55,5 +58,13 @@ class ConversationMapper {
         nativeId = messagesDto.nativeId,
         createdTime = messagesDto.createdTime.toInstant(),
         socialMedia = socialMedia,
+    )
+
+    fun convertMessageDtoToReceiveAttachment(dto: MessageDto?) = RecieveAttachmentDto(
+        nativeId = dto?.nativeId,
+        mimeType = dto?.attachment?.mimeType,
+        size = dto?.attachment?.size,
+        url = dto?.attachment?.url,
+        attachmentMessageId = dto?.nativeId
     )
 }

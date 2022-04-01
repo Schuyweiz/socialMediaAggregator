@@ -6,8 +6,8 @@ import org.springframework.web.multipart.MultipartFile
 
 @DefaultCtor
 data class SendMessageDto(
-    val recipientId: String,
-    val attachmentDto: SendAttachmentDto,
-    val messagingType: MessagingType,
-) {
-}
+    var recipientId: String?,
+    var message: String?,
+    var messagingType: MessagingType?,
+    var attachment: MultipartFile?,
+)

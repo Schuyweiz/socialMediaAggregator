@@ -48,12 +48,12 @@ class ConversationsService(
     }
 
     @Transactional
-    fun sendMessage(socialMediaId: Long, conversationId: String, sendMessageDto: SendMessageDto, file: MultipartFile): MessageDto {
+    fun sendMessage(socialMediaId: Long, conversationId: String, sendMessageDto: SendMessageDto): MessageDto {
         val socialMedia = socialMediaRepository.findByIdOrThrow(socialMediaId)
         val apiServiceBean = socialMedia.socialMediaType.getApiService()
 
         return conversationRegistry.getConversationService(apiServiceBean)
-            .sendMessageToConversation(socialMedia, conversationId, sendMessageDto, file)
+            .sendMessageToConversation(socialMedia, conversationId, sendMessageDto, sendMessageDto.attachment)
     }
 
     private fun getConversations(socialMedia: SocialMedia): List<ConversationDto> {

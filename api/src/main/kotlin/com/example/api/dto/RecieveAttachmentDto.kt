@@ -8,4 +8,5 @@ data class RecieveAttachmentDto(
     val mimeType: String?,
     val size: Long?,
     val url: String?,
+    val attachmentMessageId: String? = null,
 )

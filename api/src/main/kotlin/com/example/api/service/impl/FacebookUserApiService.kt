@@ -1,9 +1,6 @@
 package com.example.api.service.impl
 
-import com.example.api.dto.ConversationDto
-import com.example.api.dto.ConversationWithMessagesDto
-import com.example.api.dto.MessageDto
-import com.example.api.dto.SendMessageDto
+import com.example.api.dto.*
 import com.example.api.service.SocialMediaConversation
 import com.example.api.service.SocialMediaPosting
 import com.example.core.annotation.Logger
@@ -15,6 +12,7 @@ import com.restfb.DefaultFacebookClient
 import com.restfb.Parameter
 import com.restfb.Version
 import org.springframework.stereotype.Service
+import org.springframework.web.multipart.MultipartFile
 import java.time.Instant
 import java.util.*
 
@@ -62,8 +60,16 @@ class FacebookUserApiService(
     override fun sendMessageToConversation(
         socialMedia: SocialMedia,
         conversationId: String,
-        sendMessageDto: SendMessageDto
+        sendMessageDto: SendMessageDto,
+        file: MultipartFile?
     ): MessageDto {
-        TODO("Not yet implemented")
+        //todo: to implement
+        return MessageDto(
+            nativeId = "",
+            message = "",
+            participantDto = ParticipantDto(nativeId = "", name = ""),
+            createdTime = Date.from(Instant.now()),
+            attachment = null
+        )
     }
 }

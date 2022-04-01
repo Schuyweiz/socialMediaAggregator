@@ -13,6 +13,7 @@ import org.springdoc.api.annotations.ParameterObject
 import org.springframework.http.MediaType
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -52,8 +53,6 @@ class SocialMediaConversationController(
     fun sendMessageToConversation(
         @PathVariable(name = "socialMediaId", required = true) socialMediaId: Long,
         @PathVariable(name = "conversationId", required = true) conversationId: String,
-        @Parameter(content = [Content(mediaType = MediaType.APPLICATION_OCTET_STREAM_VALUE)])
-        @RequestParam file: MultipartFile,
-        @RequestParam sendMessageDto: SendMessageDto
-    ) = conversationsService.
+        @ModelAttribute request: SendMessageDto,
+    ) = conversationsService.sendMessage(socialMediaId, conversationId, request)
 }

@@ -6,8 +6,8 @@ import java.util.*
 @DefaultCtor
 data class MessageDto(
     val nativeId: String,
-    val message: String,
+    var message: String?,
     val participantDto: ParticipantDto,
     val createdTime: Date,
-    val attachment: RecieveAttachmentDto?,
+    var attachment: RecieveAttachmentDto?,
     )
