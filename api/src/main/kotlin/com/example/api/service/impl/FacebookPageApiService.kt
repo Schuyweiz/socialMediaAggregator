@@ -1,6 +1,9 @@
 package com.example.api.service.impl
 
-import com.example.api.dto.*
+import com.example.api.dto.ConversationDto
+import com.example.api.dto.ConversationWithMessagesDto
+import com.example.api.dto.MessageDto
+import com.example.api.dto.SendMessageDto
 import com.example.api.events.ConversationGetMessagesEvent
 import com.example.api.events.PostRequestedEvent
 import com.example.api.mapper.ConversationMapper
@@ -14,6 +17,7 @@ import com.example.core.dto.PublishPostDto
 import com.example.core.mapper.PublishPostDtoMapper
 import com.example.core.model.SocialMedia
 import com.restfb.BinaryAttachment
+import com.restfb.FacebookClient
 import com.restfb.Parameter
 import com.restfb.types.Conversation
 import com.restfb.types.send.IdMessageRecipient
@@ -23,8 +27,6 @@ import com.restfb.types.send.SendResponse
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
-import java.time.Instant
-import java.util.*
 
 @Service
 @Logger
@@ -45,7 +47,6 @@ class FacebookPageApiService(
                 eventPublisher.publishEvent(PostRequestedEvent(socialMedia, it))
             }
     }
-
 
     override fun publishPost(socialMedia: SocialMedia, postDto: PublishPostDto): PostDto {
         val facebookClient = getFacebookClient(socialMedia.token)
@@ -99,7 +100,6 @@ class FacebookPageApiService(
 
     override fun sendMessageToConversation(
         socialMedia: SocialMedia,
-        conversationId: String,
         sendMessageDto: SendMessageDto,
         file: MultipartFile?
     ): MessageDto {
@@ -108,17 +108,9 @@ class FacebookPageApiService(
         val recipient = IdMessageRecipient(sendMessageDto.recipientId)
         val testMessage = sendMessageDto.message?.let {
             val message = Message(it)
-            val response = facebookClient.publish(
-                """${socialMedia.nativeId}/messages""",
-                SendResponse::class.java,
-                Parameter.with("recipient", recipient),
-                Parameter.with("message", message)
-            )
-            val facebookMessage = facebookClient.fetchObject(
-                response.messageId,
-                com.restfb.types.Message::class.java,
-                Parameter.with("fields", "message,created_time,from")
-            )
+            val response = publishTextMessage(facebookClient, recipient, socialMedia.nativeId!!, message)
+            val facebookMessage =
+                fetchFacebookMessageWithFields(facebookClient, response.messageId, "message,created_time,from")
             return@let conversationMapper.convertRestFbMessageToMessageDto(facebookMessage)
         }
 
@@ -127,30 +119,59 @@ class FacebookPageApiService(
             //todo: workout files properly
             val mediaAttachment = MediaAttachment(MediaAttachment.Type.IMAGE)
             val message = Message(mediaAttachment)
-            val response = facebookClient.publish(
-                """${socialMedia.nativeId}/messages""",
-                SendResponse::class.java, binaryAttachment,
-                Parameter.with("recipient", recipient),
-                Parameter.with("message", message)
-            )
-            val facebookMessage = facebookClient.fetchObject(
-                response.messageId,
-                com.restfb.types.Message::class.java,
-                Parameter.with("fields", "attachments,created_time,from")
-            )
+            val response =
+                publishMediaMessage(socialMedia.nativeId!!, facebookClient, binaryAttachment, recipient, message)
+            val facebookMessage =
+                fetchFacebookMessageWithFields(facebookClient, response.messageId, "attachments,created_time,from")
             return@let conversationMapper.convertRestFbMessageToMessageDto(facebookMessage)
         }
-
 
         return when {
             testMessage != null -> testMessage.apply {
                 this.attachment = conversationMapper.convertMessageDtoToReceiveAttachment(mediaMessage)
             }
-            mediaMessage != null -> mediaMessage
+            mediaMessage != null -> mediaMessage.apply {
+                this.nativeId = this.attachment?.nativeId!!
+            }
             else -> throw Exception("No text or media was provided")
         }
     }
 
     private fun prepareBinaryAttachment(file: MultipartFile) =
         BinaryAttachment.with(file.name, file.bytes, org.springframework.http.MediaType.IMAGE_PNG_VALUE)
+
+    private fun publishMediaMessage(
+        nativeId: Long,
+        facebookClient: FacebookClient,
+        binaryAttachment: BinaryAttachment,
+        recipient: IdMessageRecipient,
+        message: Message
+    ) = facebookClient.publish(
+        """${nativeId}/messages""",
+        SendResponse::class.java, binaryAttachment,
+        Parameter.with("recipient", recipient),
+        Parameter.with("message", message)
+    )
+
+    private fun fetchFacebookMessageWithFields(
+        facebookClient: FacebookClient,
+        messageId: String,
+        fieldsString: String
+    ) = facebookClient.fetchObject(
+        messageId,
+        com.restfb.types.Message::class.java,
+        Parameter.with("fields", fieldsString)
+    )
+
+    private fun publishTextMessage(
+        facebookClient: FacebookClient,
+        recipient: IdMessageRecipient,
+        socialMediaId: Long,
+        message: Message
+    ) = facebookClient.publish(
+        """${socialMediaId}/messages""",
+        SendResponse::class.java,
+        Parameter.with("recipient", recipient),
+        Parameter.with("message", message)
+    )
 }

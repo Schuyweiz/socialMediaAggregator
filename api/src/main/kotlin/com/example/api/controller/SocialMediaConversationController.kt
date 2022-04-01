@@ -52,7 +52,6 @@ class SocialMediaConversationController(
     )
     fun sendMessageToConversation(
         @PathVariable(name = "socialMediaId", required = true) socialMediaId: Long,
-        @PathVariable(name = "conversationId", required = true) conversationId: String,
         @ModelAttribute request: SendMessageDto,
-    ) = conversationsService.sendMessage(socialMediaId, conversationId, request)
+    ) = conversationsService.sendMessage(socialMediaId, request)
 }

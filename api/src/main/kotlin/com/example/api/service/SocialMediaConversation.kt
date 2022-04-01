@@ -13,5 +13,9 @@ interface SocialMediaConversation {
 
     fun getConversationWithMessages(socialMedia: SocialMedia, conversationId: String): ConversationWithMessagesDto
 
-    fun sendMessageToConversation(socialMedia: SocialMedia, conversationId: String, sendMessageDto: SendMessageDto, file: MultipartFile?): MessageDto
+    fun sendMessageToConversation(
+        socialMedia: SocialMedia,
+        sendMessageDto: SendMessageDto,
+        file: MultipartFile?
+    ): MessageDto
 }

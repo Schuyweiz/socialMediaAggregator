@@ -10,7 +10,6 @@ import com.example.core.repository.SocialMediaRepository
 import com.example.core.repository.UserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.web.multipart.MultipartFile
 
 @Service
 class ConversationsService(
@@ -48,12 +47,12 @@ class ConversationsService(
     }
 
     @Transactional
-    fun sendMessage(socialMediaId: Long, conversationId: String, sendMessageDto: SendMessageDto): MessageDto {
+    fun sendMessage(socialMediaId: Long, sendMessageDto: SendMessageDto): MessageDto {
         val socialMedia = socialMediaRepository.findByIdOrThrow(socialMediaId)
         val apiServiceBean = socialMedia.socialMediaType.getApiService()
 
         return conversationRegistry.getConversationService(apiServiceBean)
-            .sendMessageToConversation(socialMedia, conversationId, sendMessageDto, sendMessageDto.attachment)
+            .sendMessageToConversation(socialMedia, sendMessageDto, sendMessageDto.attachment)
     }
 
     private fun getConversations(socialMedia: SocialMedia): List<ConversationDto> {
