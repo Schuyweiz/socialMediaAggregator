@@ -59,14 +59,12 @@ class FacebookUserApiService(
 
     override fun sendMessageToConversation(
         socialMedia: SocialMedia,
-        conversationId: String,
         sendMessageDto: SendMessageDto,
         file: MultipartFile?
     ): MessageDto {
-        //todo: to implement
         return MessageDto(
             nativeId = "",
-            message = "",
+            message = null,
             participantDto = ParticipantDto(nativeId = "", name = ""),
             createdTime = Date.from(Instant.now()),
             attachment = null

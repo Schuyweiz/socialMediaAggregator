@@ -11,6 +11,12 @@ enum class SocialMediaType {
         override fun getApiService(): String {
             return "facebookPageApiService"
         }
+    },
+
+    INSTAGRAM{
+        override fun getApiService(): String {
+            return "instagramApiService"
+        }
     }
     ;
 

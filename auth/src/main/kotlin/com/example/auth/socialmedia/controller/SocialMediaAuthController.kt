@@ -51,4 +51,17 @@ class SocialMediaAuthController(
         @AuthenticationPrincipal user: User,
         @PathVariable(name = "pageId") pageId: Long
     ): SocialMediaDto = socialMediaAuthService.authenticateUserPage(user.id, pageId)
+
+    @JwtSecureEndpoint
+    @GetMapping("/auth/instagram/accounts")
+    fun getInstagramAccounts(
+        @AuthenticationPrincipal user: User,
+    ) = socialMediaAuthService.getInstagramPages(user.id)
+
+    @JwtSecureEndpoint
+    @PostMapping("/auth/instagram/accounts/{accountId}/authenticate")
+    fun authenticateInstagramAccount(
+        @AuthenticationPrincipal user: User,
+        @PathVariable(name = "accountId") accountId: Long
+    ) = socialMediaAuthService.authenticateInstagramPage(user.id, accountId)
 }

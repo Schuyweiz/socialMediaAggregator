@@ -39,7 +39,7 @@ class SocialMediaConversationController(
     ) = conversationsService.getAllConversationsBySocialMediaId(socialMediaId)
 
     @JwtSecureEndpoint
-    @GetMapping("api/{socialMediaId}/conversations/{conversationId}/messages")
+    @GetMapping("/api/{socialMediaId}/conversations/{conversationId}/messages")
     fun getConversationWithMessages(
         @PathVariable(name = "socialMediaId", required = true) socialMediaId: Long,
         @PathVariable(name = "conversationId", required = true) conversationId: String,
@@ -47,7 +47,7 @@ class SocialMediaConversationController(
 
     @JwtSecureEndpoint
     @PostMapping(
-        "api/{socialMediaId}/conversations/{conversationId}/send",
+        "/api/{socialMediaId}/conversations/send",
         consumes = [MediaType.MULTIPART_FORM_DATA_VALUE]
     )
     fun sendMessageToConversation(

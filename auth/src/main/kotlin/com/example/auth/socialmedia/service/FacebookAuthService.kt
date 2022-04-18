@@ -15,6 +15,7 @@ import com.restfb.DefaultFacebookClient
 import com.restfb.FacebookClient
 import com.restfb.Parameter
 import com.restfb.Version
+import com.restfb.types.Page
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -71,11 +72,27 @@ class FacebookAuthService(
             .singleOrNull {
                 it.id == pageId
             }?.let {
-                return saveSocialMedia(it, user)
+                return saveSocialMedia(it, user, FACEBOOK_PAGE, it.id)
             } ?: kotlin.run {
-            throw IllegalArgumentException("No bijection between facebook page and page id.")
+            throw IllegalArgumentException("No bijection between facebook page and page id $pageId")
         }
     }
+
+    @Transactional
+    fun authenticateInstagramPage(userId: Long, accountId: Long): SocialMediaDto {
+        val user = userRepository.findByIdOrElseThrow(userId)
+
+        getUserPages(user.socialMediaSet)
+            .singleOrNull {
+                it.instagramId == accountId
+            }?.let {
+                return saveSocialMedia(it, user, INSTAGRAM, it.instagramId!!)
+            } ?: kotlin.run {
+            throw IllegalArgumentException("No bijection between facebook page and instagram accountId $accountId.")
+        }
+    }
+
+    fun getInstagramPages(userId: Long) = getUserPages(userId).filter { it.instagramId != null }
 
     private fun getUserPagesAuthenticateDto(userSocialMedia: Set<SocialMedia>) =
         getPagesOfType(userSocialMedia, FACEBOOK_USER)
@@ -90,6 +107,7 @@ class FacebookAuthService(
         .filter { it.socialMediaType == socialMediatype }
         .flatMap { fetchPagesConnection(it.token) }
         .flatten()
+        .map { socialMediaMapper.mapAuthenticationDto(it) }
 
     private fun getUserPages(userSocialMedia: Set<SocialMedia>) =
         getPagesOfType(userSocialMedia, socialMediatype = FACEBOOK_USER)
@@ -99,17 +117,22 @@ class FacebookAuthService(
 
     private fun fetchPagesConnection(userToken: String) = getUserClient(userToken).fetchConnection(
         "/me/accounts",
-        PageAuthenticateDto::class.java,
+        Page::class.java,
         Parameter.with("fields", "id,name,access_token,instagram_business_account")
     )
 
-    private fun saveSocialMedia(dto: PageAuthenticateDto, user: User): SocialMediaDto {
-        val socialMedia = socialMediaRepository.findByNativeIdAndSocialMediaType(dto.id, FACEBOOK_PAGE)?.apply {
+    private fun saveSocialMedia(
+        dto: PageAuthenticateDto,
+        user: User,
+        socialMediaType: SocialMediaType,
+        nativeId: Long,
+    ): SocialMediaDto {
+        val socialMedia = socialMediaRepository.findByNativeIdAndSocialMediaType(nativeId, FACEBOOK_PAGE)?.apply {
             this.token = dto.token
         } ?: SocialMedia(
-            nativeId = dto.id,
+            nativeId = nativeId,
             token = dto.token,
-            socialMediaType = FACEBOOK_PAGE,
+            socialMediaType = socialMediaType,
             user = user
         )
         val savedSocialMedia = socialMediaRepository.save(socialMedia)
