@@ -65,7 +65,7 @@ class SocialMediaAggregatorApplication {
             )
             val user2token =
                 "EAAHO4difc4UBAHj3SDtCBm3y3cxrSz19o9DknpOu9UcQKTwVFgzqFuJaaZCt2CX0Xpkd7dwgBZCe9Jihca8HfHRWD8jeaj3mjZAt2wq8602YZCHAec4H013lmcMlB80hjMT5m4ngvMT16pzvO8smwLrkC9bEjMvanogTZChmjpOuZBF69dITGZB"
-            val user2insta = "EAAHO4difc4UBAMrx7ZCRMGS80TA7Ws4M7UAmgg6JI59gBnOrGemsqMby11SCZAwJo29J2XPZAuwewszzKneyS8dHh7HvJwtI90NMB4BZAnAVhWFeeIkYkZCRquj3jdR1XZCtSuakUp1sPKG8SXb4P3DzCMMHdcljkvsZAhXDzPH2lssob6DZBmRcV5V5gF113mUZD"
+            val user2insta = "EAAHO4difc4UBALVo4h4aj1dvaoJlV3MggP16f4J6oZCTlQrxuxUFGfaursrzP0AZCC1EVCqvjqWlvwLWYhqitKn9IqN6JZB07Af5IjU86rJqJl2bUSq5n5QmKSEnNcZCVrbg5XD2EIKNbYsLp281mhyHc0gI1q7b2sjQcwSPMpzS7q9aRaymv9hPhLyHu5gZD"
             val socialMedia2 = mutableSetOf(
                 SocialMedia(
                     token = user2insta,

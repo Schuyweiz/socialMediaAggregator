@@ -1,4 +1,4 @@
-package com.example.api.service.impl
+package com.example.api.service.impl.facebook
 
 import com.example.api.dto.*
 import com.example.api.service.SocialMediaConversation
@@ -30,7 +30,7 @@ class FacebookUserApiService(
 
     override fun publishPost(socialMedia: SocialMedia, postDto: PublishPostDto): PostDto {
         //todo: implement when facebook allows it
-        return PostDto("", "", 0L, 0L, SocialMediaType.FACEBOOK_USER)
+        return PostDto("", "", 0L, 0L, socialMediaType = SocialMediaType.FACEBOOK_USER)
     }
 
     private fun getFacebookClient(token: String) = DefaultFacebookClient(token, Version.LATEST)

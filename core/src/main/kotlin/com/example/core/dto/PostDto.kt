@@ -14,6 +14,7 @@ data class PostDto(
     val likesCount: Long,
 
     var pageId: Long,
+    var mediaUrl: String? = null,
     var socialMediaType: SocialMediaType
 ) {
 }

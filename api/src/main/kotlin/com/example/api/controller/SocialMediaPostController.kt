@@ -1,19 +1,18 @@
 package com.example.api.controller
 
 import com.example.api.service.PostService
-import com.example.core.model.User
-import com.example.core.dto.PostDto
-import com.example.core.dto.PublishPostDto
 import com.example.core.annotation.JwtSecureEndpoint
 import com.example.core.annotation.RestControllerJwt
+import com.example.core.dto.PostDto
+import com.example.core.dto.PublishPostDto
+import com.example.core.model.User
+import org.springframework.http.MediaType
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
 
 @RestControllerJwt
-@RequestMapping
 class SocialMediaPostController(
     private val postService: PostService,
 ) {
@@ -27,9 +26,9 @@ class SocialMediaPostController(
     }
 
     @JwtSecureEndpoint
-    @PostMapping("/api/post")
+    @PostMapping("/api/post", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     fun publishPost(
-        @RequestBody postDto: PublishPostDto,
+        @ModelAttribute postDto: PublishPostDto,
         @AuthenticationPrincipal user: User
     ): List<PostDto> {
         return postService.publishPost(user.id, postDto)

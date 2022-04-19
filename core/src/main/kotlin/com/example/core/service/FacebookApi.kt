@@ -1,4 +1,4 @@
-package com.example.api.service
+package com.example.core.service
 
 import com.restfb.DefaultFacebookClient
 import com.restfb.Version

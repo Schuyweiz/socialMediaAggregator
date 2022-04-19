@@ -1,10 +1,10 @@
 package com.example.core.dto
 
 import com.example.core.annotation.DefaultCtor
+import org.springframework.web.multipart.MultipartFile
 
 @DefaultCtor
 data class PublishPostDto(
     val content: String,
-    val image_url: String,
-) {
-}
+    val attachment: MultipartFile?,
+)

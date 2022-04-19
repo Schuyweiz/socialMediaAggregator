@@ -17,6 +17,6 @@ class SocialMediaMapper {
             id = page.id.toLong(),
             token = page.accessToken,
             name = page.name,
-            instagramId = page.instagramBusinessAccount.id.toLong()
+            instagramId = page.instagramBusinessAccount?.id?.toLong()
         )
 }

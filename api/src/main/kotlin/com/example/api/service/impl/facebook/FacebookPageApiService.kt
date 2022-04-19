@@ -1,4 +1,4 @@
-package com.example.api.service.impl
+package com.example.api.service.impl.facebook
 
 import com.example.api.dto.ConversationDto
 import com.example.api.dto.ConversationWithMessagesDto
@@ -7,7 +7,7 @@ import com.example.api.dto.SendMessageDto
 import com.example.api.events.ConversationGetMessagesEvent
 import com.example.api.events.PostRequestedEvent
 import com.example.api.mapper.ConversationMapper
-import com.example.api.service.FacebookApi
+import com.example.core.service.FacebookApi
 import com.example.api.service.SocialMediaConversation
 import com.example.api.service.SocialMediaPosting
 import com.example.core.annotation.Logger
@@ -35,6 +35,7 @@ class FacebookPageApiService(
     private val conversationMapper: ConversationMapper,
     private val eventPublisher: ApplicationEventPublisher,
 ) : SocialMediaPosting, FacebookApi, SocialMediaConversation {
+
     override fun getPosts(socialMedia: SocialMedia): List<PostDto> {
         val facebookClient = getFacebookClient(socialMedia.token)
         val pageId = socialMedia.nativeId
@@ -52,18 +53,28 @@ class FacebookPageApiService(
         val facebookClient = getFacebookClient(socialMedia.token)
         val pageId = socialMedia.nativeId
 
-        val responseDto = facebookClient.publish(
-            """$pageId/feed""",
-            PostResponseDto::class.java,
-            *publishPostMapper.mapToFacebookParams(postDto)
-        )
-
+        val responseDto = postDto.attachment?.let { publishMediaPost(facebookClient, postDto, pageId!!) }
+            ?: publishTextPost(facebookClient, postDto, pageId!!)
         return facebookClient.fetchObject(responseDto.postId, PostDto::class.java).apply {
             this.pageId = socialMedia.nativeId ?: -1
             this.socialMediaType = socialMedia.socialMediaType
         }
             ?: throw Exception("Something went wrong, post id is ${responseDto.postId}")
     }
+
+    private fun publishMediaPost(client: FacebookClient, postDto: PublishPostDto, pageId: Long) = client.publish(
+        """$pageId/feed""",
+        PostResponseDto::class.java,
+        BinaryAttachment.with(postDto.attachment!!.name, postDto.attachment!!.bytes, postDto.attachment!!.contentType),
+        Parameter.with("message", postDto.content)
+    )
+
+    private fun publishTextPost(client: FacebookClient, postDto: PublishPostDto, pageId: Long) =
+        client.publish(
+            """$pageId/feed""",
+            PostResponseDto::class.java,
+            Parameter.with("message", postDto.content)
+        )
 
     override fun getAllConversations(socialMedia: SocialMedia): List<ConversationDto> {
         val facebookClient = getFacebookClient(socialMedia.token)
