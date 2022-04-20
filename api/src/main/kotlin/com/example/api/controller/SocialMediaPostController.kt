@@ -2,6 +2,7 @@ package com.example.api.controller
 
 import com.example.api.service.PostService
 import com.example.core.annotation.JwtSecureEndpoint
+import com.example.core.annotation.Logger
 import com.example.core.annotation.RestControllerJwt
 import com.example.core.dto.PostDto
 import com.example.core.dto.PublishPostDto
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
 
+
 @RestControllerJwt
+@Logger
 class SocialMediaPostController(
     private val postService: PostService,
 ) {

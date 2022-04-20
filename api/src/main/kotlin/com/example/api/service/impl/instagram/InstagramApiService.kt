@@ -1,6 +1,7 @@
 package com.example.api.service.impl.instagram
 
 import com.example.api.mapper.PostMapper
+import com.example.api.service.SaveImageExternallyService
 import com.example.api.service.SocialMediaPosting
 import com.example.core.annotation.Logger
 import com.example.core.dto.PostDto
@@ -11,6 +12,7 @@ import com.example.core.service.FacebookApi
 import com.restfb.BinaryAttachment
 import com.restfb.FacebookClient
 import com.restfb.Parameter
+import com.restfb.json.JsonObject
 import com.restfb.types.instagram.IgMedia
 import org.springframework.stereotype.Service
 
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service
 @Service
 class InstagramApiService(
     private val postMapper: PostMapper,
+    private val saveImageService: SaveImageExternallyService
 ) : SocialMediaPosting, FacebookApi {
 
     override fun getPosts(socialMedia: SocialMedia): List<PostDto> {
@@ -36,28 +39,28 @@ class InstagramApiService(
     override fun publishPost(socialMedia: SocialMedia, postDto: PublishPostDto): PostDto {
         val client = getFacebookClient(socialMedia.token)
         val nativeId = socialMedia.nativeId
+        val imageUrl = saveImageService.saveImage(postDto.attachment!!)
+        val containerId =
+            client.publish("""$nativeId/media""", JsonObject::class.java, Parameter.with("image_url", imageUrl))
+                .getString("id", null)
+        val response = client.publish(
+            """$nativeId/media_publish""",
+            JsonObject::class.java,
+            Parameter.with("creation_id", containerId)
+        )
 
-        val response = postDto.attachment?.let { publishMediaPost(client, nativeId!!, postDto) }
-            ?: publishTextPost(client, nativeId!!, postDto)
 
-
-        return client.fetchObject(response.postId, PostDto::class.java).apply {
+        return client.fetchObject(response.getString("id", null).toString(), PostDto::class.java).apply {
             this.pageId = socialMedia.nativeId ?: -1
             this.socialMediaType = socialMedia.socialMediaType
         }
-            ?: throw Exception("Something went wrong, post id is ${response.postId}")
+            ?: throw Exception("Something went wrong, post id is ${response.getLong("id", -1)}")
     }
 
     private fun publishMediaPost(client: FacebookClient, nativeId: Long, postDto: PublishPostDto) = client.publish(
         """$nativeId/media""",
         PostResponseDto::class.java,
         BinaryAttachment.with(postDto.attachment!!.name, postDto.attachment!!.bytes, postDto.attachment!!.contentType),
-        Parameter.with("message", postDto.content)
-    )
-
-    private fun publishTextPost(client: FacebookClient, nativeId: Long, postDto: PublishPostDto) = client.publish(
-        """$nativeId/media""",
-        PostResponseDto::class.java,
         Parameter.with("message", postDto.content)
     )
 }

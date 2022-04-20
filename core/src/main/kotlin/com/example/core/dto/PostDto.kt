@@ -9,7 +9,7 @@ data class PostDto(
     @Facebook("id")
     val postId: String,
     @Facebook("message")
-    val content: String,
+    val content: String?,
     @Facebook("likes")
     val likesCount: Long,
 
