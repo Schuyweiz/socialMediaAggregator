@@ -9,11 +9,9 @@ import com.example.api.service.SocialMediaConversation
 import com.example.api.service.SocialMediaPosting
 import com.example.core.annotation.Logger
 import com.example.core.dto.PostDto
-import com.example.core.dto.PostResponseDto
 import com.example.core.dto.PublishPostDto
 import com.example.core.model.SocialMedia
 import com.example.core.service.FacebookApi
-import com.restfb.BinaryAttachment
 import com.restfb.FacebookClient
 import com.restfb.Parameter
 import com.restfb.json.JsonObject
@@ -28,7 +26,6 @@ import org.springframework.stereotype.Service
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
 import org.springframework.web.client.RestTemplate
-import org.springframework.web.client.getForEntity
 import org.springframework.web.multipart.MultipartFile
 
 @Logger
@@ -144,21 +141,21 @@ class InstagramApiService(
         val recipient = IdMessageRecipient(sendMessageDto.recipientId)
         val testMessage = sendMessageDto.message?.let {
             val message = Message(it)
-            val response = publishTextMessage(facebookClient, recipient, pageId!!.toLong(), message)
+            val response = publishMessage(pageId!!.toLong(), facebookClient, recipient, message)
             val facebookMessage =
-                fetchFacebookMessageWithFields(facebookClient, response.messageId, "message,created_time,from")
+                fetchMessages(facebookClient, response.messageId, "message,created_time,from")
             return@let conversationMapper.convertRestFbMessageToMessageDto(facebookMessage)
         }
 
         val mediaMessage = sendMessageDto.attachment?.let {
-            val binaryAttachment = prepareBinaryAttachment(file!!)
+            val imageUrl = saveImageService.saveImage(sendMessageDto.attachment!!)
             //todo: workout files properly
-            val mediaAttachment = MediaAttachment(MediaAttachment.Type.IMAGE)
+            val mediaAttachment = MediaAttachment(MediaAttachment.Type.IMAGE, imageUrl)
             val message = Message(mediaAttachment)
             val response =
-                publishMediaMessage(pageId!!.toLong(), facebookClient, binaryAttachment, recipient, message)
+                publishMessage(pageId!!.toLong(), facebookClient, recipient, message)
             val facebookMessage =
-                fetchFacebookMessageWithFields(facebookClient, response.messageId, "attachments,created_time,from")
+                fetchMessages(facebookClient, response.messageId, "attachments,created_time,from")
             return@let conversationMapper.convertRestFbMessageToMessageDto(facebookMessage)
         }
 
@@ -173,23 +170,19 @@ class InstagramApiService(
         }
     }
 
-    private fun prepareBinaryAttachment(file: MultipartFile) =
-        BinaryAttachment.with(file.name, file.bytes, org.springframework.http.MediaType.IMAGE_PNG_VALUE)
-
-    private fun publishMediaMessage(
+    private fun publishMessage(
         nativeId: Long,
         facebookClient: FacebookClient,
-        binaryAttachment: BinaryAttachment,
         recipient: IdMessageRecipient,
         message: Message
     ) = facebookClient.publish(
         """${nativeId}/messages""",
-        SendResponse::class.java, binaryAttachment,
+        SendResponse::class.java,
         Parameter.with("recipient", recipient),
         Parameter.with("message", message)
     )
 
-    private fun fetchFacebookMessageWithFields(
+    private fun fetchMessages(
         facebookClient: FacebookClient,
         messageId: String,
         fieldsString: String
@@ -197,17 +190,5 @@ class InstagramApiService(
         messageId,
         com.restfb.types.Message::class.java,
         Parameter.with("fields", fieldsString)
-    )
-
-    private fun publishTextMessage(
-        facebookClient: FacebookClient,
-        recipient: IdMessageRecipient,
-        socialMediaId: Long,
-        message: Message
-    ) = facebookClient.publish(
-        """${socialMediaId}/messages""",
-        SendResponse::class.java,
-        Parameter.with("recipient", recipient),
-        Parameter.with("message", message)
     )
 }

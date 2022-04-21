@@ -7,7 +7,6 @@ import com.example.api.dto.SendMessageDto
 import com.example.api.events.ConversationGetMessagesEvent
 import com.example.api.events.PostRequestedEvent
 import com.example.api.mapper.ConversationMapper
-import com.example.core.service.FacebookApi
 import com.example.api.service.SocialMediaConversation
 import com.example.api.service.SocialMediaPosting
 import com.example.core.annotation.Logger
@@ -16,6 +15,7 @@ import com.example.core.dto.PostResponseDto
 import com.example.core.dto.PublishPostDto
 import com.example.core.mapper.PublishPostDtoMapper
 import com.example.core.model.SocialMedia
+import com.example.core.service.FacebookApi
 import com.restfb.BinaryAttachment
 import com.restfb.FacebookClient
 import com.restfb.Parameter
