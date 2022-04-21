@@ -8,17 +8,17 @@ import java.util.*
 @DefaultCtor
 data class ConversationDto(
     @Facebook("id")
-    val conversationId: String,
+    val conversationId: String? = null,
     @Facebook("updated_time")
     val updatedTime: Date?,
     val createdTime: Date?,
     @Facebook("message_count")
-    val messageCount: Long,
+    val messageCount: Long? = null,
     @Facebook("unread_count")
-    val unreadCount: Long,
+    val unreadCount: Long? = null,
     @Facebook("participants")
     val participants: List<ExtendedReferenceType>,
     @Facebook("can_reply")
-    val canReply: Boolean,
+    val canReply: Boolean? = null,
 ) {
 }

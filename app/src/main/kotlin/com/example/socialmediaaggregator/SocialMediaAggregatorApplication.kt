@@ -89,6 +89,12 @@ class SocialMediaAggregatorApplication {
                     socialMediaType = SocialMediaType.FACEBOOK_USER,
                     user = user2,
                     nativeId = null
+                ),
+                SocialMedia(
+                    token = "EAAHO4difc4UBAH0VSSY7c7Gs5yEkjtFMHs8JzUaFopl4dZBaZB6r7PnZAmdElZBz8JesVkbfjNgFr710CZBKZC2tCG7fDFrMtCZAFhqcg4GlJxAAycgUY2w6zEq6ohjwbS1aSEJusvIeFwzrMqa4IKYtrnxOZCWKDO18UJjGvorXwn3UImBCGC5ioZC2sHJlAL44ZD",
+                    socialMediaType = SocialMediaType.FACEBOOK_PAGE,
+                    user = user2,
+                    nativeId = 104426122254580
                 )
             )
             user2.socialMediaSet = socialMedia2
