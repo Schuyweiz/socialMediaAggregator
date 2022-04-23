@@ -16,4 +16,9 @@ class ClientServiceFactoryConfig {
     fun conversationServiceFactoryBean(): ServiceLocatorFactoryBean = ServiceLocatorFactoryBean().apply {
         setServiceLocatorInterface(ConversationServiceRegistry::class.java)
     }
+
+    @Bean
+    fun commentingServiceFactoryBean(): ServiceLocatorFactoryBean = ServiceLocatorFactoryBean().apply {
+        setServiceLocatorInterface(CommentServiceRegistry::class.java)
+    }
 }
