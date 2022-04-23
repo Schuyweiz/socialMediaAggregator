@@ -5,6 +5,7 @@ import com.example.api.service.CommentingService
 import com.example.core.annotation.JwtSecureEndpoint
 import com.example.core.annotation.RestControllerJwt
 import com.example.core.model.User
+import org.springframework.http.MediaType
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
@@ -17,15 +18,16 @@ class SocialMediaCommentController(
 ) {
 
     @JwtSecureEndpoint
-    @PostMapping("/api/comment/publish")
+    @PostMapping("/api/{socialMediaId}/{postId}/comment/publish", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     fun publishComment(
         @ModelAttribute commentDto: PublishCommentDto,
+        @PathVariable(name = "socialMediaId") socialMediaId: Long,
+        @PathVariable(name = "postId") postId: String,
         @AuthenticationPrincipal user: User,
-    ) {
-    }
+    ) = commentingService.postComment(user.id, socialMediaId, postId, commentDto)
 
     @JwtSecureEndpoint
-    @GetMapping("/api/{socialMediaId}/comment/{postId}")
+    @GetMapping("/api/{socialMediaId}/comment/{postId}", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     fun getComments(
         @PathVariable(name = "postId") postId: String,
         @PathVariable(name = "socialMediaId") socialMediaId: Long,

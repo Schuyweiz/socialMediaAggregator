@@ -1,6 +1,9 @@
 package com.example.api.service.impl.facebook
 
 import com.example.api.dto.*
+import com.example.api.dto.comment.CommentDto
+import com.example.api.dto.message.MessageDto
+import com.example.api.dto.message.SendMessageDto
 import com.example.api.events.ConversationGetMessagesEvent
 import com.example.api.events.PostRequestedEvent
 import com.example.api.mapper.CommentsMapper
@@ -18,6 +21,7 @@ import com.example.core.service.FacebookApi
 import com.restfb.BinaryAttachment
 import com.restfb.FacebookClient
 import com.restfb.Parameter
+import com.restfb.json.JsonObject
 import com.restfb.types.Comment
 import com.restfb.types.Conversation
 import com.restfb.types.send.IdMessageRecipient
@@ -188,8 +192,27 @@ class FacebookPageApiService(
             Parameter.with("fields", "created_time,id,attachment,from{name,id},message")
         )
 
-    override fun publishComment(socialMedia: SocialMedia, postId: String, commentDto: PublishCommentDto): CommentDto {
-        TODO("Not yet implemented")
+    override fun publishComment(socialMedia: SocialMedia, postId: String, commentDto: PublishCommentDto): CommentDto =
+        doFacebookClientAction(socialMedia.token, postId) { client, id ->
+            val response = publishComment(client, postId, commentDto) ?: throw Exception("failed to send a message")
+            commentsMapper.mapToCommentDto(fetchComment(client, response.getString("id", null)))
+        }
+
+    private fun publishComment(client: FacebookClient, postId: String, commentDto: PublishCommentDto): JsonObject? =
+        client.publish(
+            """$postId/comments""",
+            JsonObject::class.java,
+            *prepareParams(commentDto).toTypedArray()
+        )
+
+    private fun fetchComment(client: FacebookClient, id: String) = client.fetchObject(
+        id, JsonObject::class.java, Parameter.with("fields", "created_time,id,attachment,from{name,id},message")
+    )
+
+    private fun prepareParams(commentDto: PublishCommentDto): List<Parameter?> {
+        return listOfNotNull(
+            commentDto.content?.let { Parameter.with("message", it) },
+            commentDto.attachment?.let { Parameter.with("source", it) })
     }
 
     override fun respondToComment(

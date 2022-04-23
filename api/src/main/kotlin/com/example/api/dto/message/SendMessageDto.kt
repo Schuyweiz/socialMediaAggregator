@@ -1,4 +1,4 @@
-package com.example.api.dto
+package com.example.api.dto.message
 
 import com.example.core.annotation.DefaultCtor
 import com.restfb.types.send.MessagingType

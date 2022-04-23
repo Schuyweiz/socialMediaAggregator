@@ -21,6 +21,7 @@ class FacebookConfiguration {
             addPermission(FacebookPermissions.PAGES_SHOW_LIST)
             addPermission(FacebookPermissions.PAGES_MESSAGING)
             addPermission(FacebookPermissions.PAGES_READ_USER_CONTENT)
+            addPermission(FacebookPermissions.PAGES_MANAGE_ENGAGEMENT)
             addPermission(FacebookPermissions.INSTAGRAM_BASIC)
             addPermission(FacebookPermissions.INSTAGRAM_CONTENT_PUBLISH)
             addPermission(FacebookPermissions.INSTAGRAM_MANAGE_COMMENTS)

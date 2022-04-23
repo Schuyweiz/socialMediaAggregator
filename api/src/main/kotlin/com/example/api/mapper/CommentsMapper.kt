@@ -1,10 +1,10 @@
 package com.example.api.mapper
 
-import com.example.api.dto.CommentDto
+import com.example.api.dto.comment.CommentDto
 import com.example.api.dto.SenderDto
-import com.restfb.types.User
-import com.restfb.types.Comment as FbComment
+import com.restfb.json.JsonObject
 import org.springframework.stereotype.Component
+import com.restfb.types.Comment as FbComment
 
 @Component
 class CommentsMapper {
@@ -17,4 +17,14 @@ class CommentsMapper {
             return@let SenderDto(it.id, it.name, it.picture?.url.orEmpty())
         }
     )
+
+    fun mapToCommentDto(comment: JsonObject) = CommentDto(
+        id = null,
+        nativeId = comment.getString("id", ""),
+        content = comment.getString("message", ""),
+        senderDto = mapSenderDto(comment.get("from").asObject())
+    )
+
+    private fun mapSenderDto(sender: JsonObject) =
+        SenderDto(sender.getString("id", ""), sender.getString("username", ""), null)
 }

@@ -1,5 +1,7 @@
-package com.example.api.dto
+package com.example.api.dto.message
 
+import com.example.api.dto.ParticipantDto
+import com.example.api.dto.RecieveAttachmentDto
 import com.example.core.annotation.DefaultCtor
 import java.util.*
 

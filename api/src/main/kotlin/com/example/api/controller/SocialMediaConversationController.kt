@@ -1,6 +1,6 @@
 package com.example.api.controller
 
-import com.example.api.dto.SendMessageDto
+import com.example.api.dto.message.SendMessageDto
 import com.example.api.service.ConversationsService
 import com.example.core.annotation.JwtSecureEndpoint
 import com.example.core.annotation.RestControllerJwt

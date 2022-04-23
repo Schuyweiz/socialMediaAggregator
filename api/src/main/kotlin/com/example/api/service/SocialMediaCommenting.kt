@@ -1,6 +1,6 @@
 package com.example.api.service
 
-import com.example.api.dto.CommentDto
+import com.example.api.dto.comment.CommentDto
 import com.example.api.dto.PublishCommentDto
 import com.example.core.model.SocialMedia
 

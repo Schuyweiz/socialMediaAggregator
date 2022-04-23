@@ -1,10 +1,15 @@
 package com.example.api.service.impl.instagram
 
 import com.example.api.dto.*
+import com.example.api.dto.comment.CommentDto
+import com.example.api.dto.message.MessageDto
+import com.example.api.dto.message.SendMessageDto
 import com.example.api.events.ConversationGetMessagesEvent
+import com.example.api.mapper.CommentsMapper
 import com.example.api.mapper.ConversationMapper
 import com.example.api.mapper.PostMapper
 import com.example.api.service.SaveImageExternallyService
+import com.example.api.service.SocialMediaCommenting
 import com.example.api.service.SocialMediaConversation
 import com.example.api.service.SocialMediaPosting
 import com.example.core.annotation.Logger
@@ -36,7 +41,8 @@ class InstagramApiService(
     private val conversationMapper: ConversationMapper,
     private val restTemplate: RestTemplate,
     private val eventPublisher: ApplicationEventPublisher,
-) : SocialMediaPosting, SocialMediaConversation, FacebookApi {
+    private val commentMapper: CommentsMapper,
+) : SocialMediaPosting, SocialMediaConversation, SocialMediaCommenting, FacebookApi {
 
     override fun getPosts(socialMedia: SocialMedia): List<PostDto> {
         val client = getFacebookClient(socialMedia.token)
@@ -191,4 +197,29 @@ class InstagramApiService(
         com.restfb.types.Message::class.java,
         Parameter.with("fields", fieldsString)
     )
+
+    override fun getPostComments(socialMedia: SocialMedia, postId: String): List<CommentDto> {
+        val client = getFacebookClient(socialMedia.token)
+
+        return fetchComments(client, postId).data.map { commentMapper.mapToCommentDto(it) }
+    }
+
+    private fun fetchComments(client: FacebookClient, postId: String) =
+        client.fetchConnection(
+            """$postId/comments""",
+            JsonObject::class.java,
+            Parameter.with("fields", "from,id,like_count,media{media_type,media_url},parent_id,text,timestamp,username")
+        )
+
+    override fun publishComment(socialMedia: SocialMedia, postId: String, commentDto: PublishCommentDto): CommentDto {
+        return CommentDto(id = null, nativeId = "", content = null, senderDto = null)
+    }
+
+    override fun respondToComment(
+        socialMedia: SocialMedia,
+        commentId: String,
+        commentDto: PublishCommentDto
+    ): CommentDto {
+        TODO("Not yet implemented")
+    }
 }

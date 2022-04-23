@@ -1,12 +1,10 @@
 package com.example.api.mapper
 
 import com.example.api.dto.*
+import com.example.api.dto.message.MessageDto
 import com.example.core.model.SocialMedia
 import com.example.core.model.socialmedia.Message
-import com.restfb.BinaryAttachment
-import com.restfb.types.send.MediaAttachment
 import org.springframework.stereotype.Component
-import org.springframework.web.multipart.MultipartFile
 import com.restfb.types.Conversation as RestFbConversation
 import com.restfb.types.Message as RestFbMessage
 
