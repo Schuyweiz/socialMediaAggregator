@@ -1,6 +1,8 @@
 package com.example.api.service.impl.facebook
 
-import com.example.api.dto.*
+import com.example.api.dto.ConversationDto
+import com.example.api.dto.ConversationWithMessagesDto
+import com.example.api.dto.PublishCommentDto
 import com.example.api.dto.comment.CommentDto
 import com.example.api.dto.message.MessageDto
 import com.example.api.dto.message.SendMessageDto
@@ -219,7 +221,9 @@ class FacebookPageApiService(
         socialMedia: SocialMedia,
         commentId: String,
         commentDto: PublishCommentDto
-    ): CommentDto {
-        TODO("Not yet implemented")
+    ): CommentDto = doFacebookClientAction(socialMedia.token, commentId) { client, id ->
+        val response =
+            publishComment(client, commentId, commentDto) ?: throw Exception("failed to response to a comment")
+        commentsMapper.mapToCommentDto(fetchComment(client, response.getString("id", null)))
     }
 }

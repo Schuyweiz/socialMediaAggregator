@@ -19,6 +19,7 @@ import com.example.core.model.SocialMedia
 import com.example.core.service.FacebookApi
 import com.restfb.FacebookClient
 import com.restfb.Parameter
+import com.restfb.json.Json
 import com.restfb.json.JsonObject
 import com.restfb.types.Conversation
 import com.restfb.types.instagram.IgMedia
@@ -212,14 +213,28 @@ class InstagramApiService(
         )
 
     override fun publishComment(socialMedia: SocialMedia, postId: String, commentDto: PublishCommentDto): CommentDto {
-        return CommentDto(id = null, nativeId = "", content = null, senderDto = null)
+        TODO("not supported by facebook, see https://developers.facebook.com/docs/instagram-api/reference/ig-comment#creating")
     }
 
     override fun respondToComment(
         socialMedia: SocialMedia,
         commentId: String,
         commentDto: PublishCommentDto
-    ): CommentDto {
-        TODO("Not yet implemented")
+    ): CommentDto = doFacebookClientAction(socialMedia.token, commentId) { client, id ->
+        val response = publishReply(client, commentId, commentDto) ?: throw Exception("failed to send a response")
+        val temp = fetchComment(client, response.getString("id", null))
+        commentMapper.mapToCommentDto(temp)
     }
+
+    private fun publishReply(client: FacebookClient, commentId: String, commentDto: PublishCommentDto) = client.publish(
+        """$commentId/replies""",
+        JsonObject::class.java,
+        Parameter.with("message", commentDto.content)
+    )
+
+    private fun fetchComment(client: FacebookClient, commentId: String): JsonObject = client.fetchObject(
+        commentId,
+        JsonObject::class.java,
+        Parameter.with("fields", "from,id,like_count,media{media_type,media_url},parent_id,text,timestamp,username")
+    )
 }
