@@ -8,7 +8,7 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface SocialMediaRepository : JpaRepository<SocialMedia, Long>, CrudRepository<SocialMedia, Long> {
+interface SocialMediaRepository : JpaRepository<SocialMedia, Long>   {
 
     fun findByNativeIdAndSocialMediaType(nativeId: Long, type: SocialMediaType): SocialMedia?
 
