@@ -3,16 +3,14 @@ package com.example.api.service
 import com.example.api.config.CommentServiceRegistry
 import com.example.api.dto.PublishCommentDto
 import com.example.core.model.User
-import com.example.core.repository.SocialMediaRepository
-import com.example.core.repository.UserRepository
+import com.example.core.service.impl.UserQueryService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class CommentingService(
-    private val userRepository: UserRepository,
+    private val userQueryService: UserQueryService,
     private val registry: CommentServiceRegistry,
-    private val socialMediaRepository: SocialMediaRepository,
 ) {
 
     fun getAllComments(userId: Long, postId: String, socialMediaId: Long) = doCommentingAction(userId) { user: User ->
@@ -22,7 +20,7 @@ class CommentingService(
     }
 
     private fun <T> doCommentingAction(userId: Long, action: java.util.function.Function<User, T>): T =
-        with(userRepository.findByIdOrElseThrow(userId)) {
+        with(userQueryService.findByIdOrThrow(userId)) {
             return action.apply(this)
         }
 

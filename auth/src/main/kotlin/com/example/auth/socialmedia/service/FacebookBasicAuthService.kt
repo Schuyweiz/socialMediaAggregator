@@ -9,6 +9,7 @@ import com.example.core.model.SocialMediaType
 import com.example.core.repository.SocialMediaRepository
 import com.example.core.repository.UserRepository
 import com.example.core.service.FacebookApi
+import com.example.core.service.impl.UserQueryService
 import com.restfb.DefaultFacebookClient
 import com.restfb.FacebookClient
 import com.restfb.Parameter
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional
 class FacebookBasicAuthService(
     private val facebookClient: DefaultFacebookClient,
     private val userRepository: UserRepository,
+    private val userQueryService: UserQueryService,
     private val socialMediaRepository: SocialMediaRepository,
     private val socialMediaMapper: SocialMediaMapper,
     @Value("\${app.facebook.app-secret}")
@@ -40,7 +42,7 @@ class FacebookBasicAuthService(
                 verificationCode
             )
         ) {
-            val user = userRepository.findByIdOrElseThrow(userId)
+            val user = userQueryService.findByIdOrThrow(userId)
             val extendedToken = getExtendedAccessToken(this.accessToken).accessToken
             val socialMedia = socialMediaRepository.save(
                 SocialMedia(

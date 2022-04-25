@@ -10,6 +10,7 @@ import com.example.core.model.SocialMediaType.*
 import com.example.core.model.User
 import com.example.core.repository.SocialMediaRepository
 import com.example.core.repository.UserRepository
+import com.example.core.service.impl.UserQueryService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -18,18 +19,19 @@ import org.springframework.transaction.annotation.Transactional
 class FacebookAuthService(
     private val facebookBasicAuthService: FacebookBasicAuthService,
     private val userRepository: UserRepository,
+    private val userQueryService: UserQueryService,
     private val socialMediaRepository: SocialMediaRepository,
     private val socialMediaMapper: SocialMediaMapper,
 ) {
 
     fun getUserPages(userId: Long): List<PageAuthenticateDto> {
-        val user = userRepository.findByIdWithSocialMediaOrThrow(userId)
+        val user = userQueryService.findByIdOrThrow(userId)
         return getUserPagesAuthenticateDto(user.socialMediaSet)
     }
 
     @Transactional
     fun authenticateUserPage(userId: Long, pageId: Long): SocialMediaDto {
-        val user = userRepository.findByIdWithSocialMediaOrThrow(userId)
+        val user = userQueryService.findByIdOrThrow(userId)
 
         getUserPages(user.socialMediaSet)
             .singleOrNull {
@@ -43,7 +45,7 @@ class FacebookAuthService(
 
     @Transactional
     fun authenticateInstagramPage(userId: Long, accountId: Long): SocialMediaDto {
-        val user = userRepository.findByIdOrElseThrow(userId)
+        val user = userQueryService.findByIdOrThrow(userId)
 
         getUserPages(user.socialMediaSet)
             .singleOrNull {

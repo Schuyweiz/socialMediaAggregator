@@ -11,7 +11,4 @@ interface SocialMediaRepository : JpaRepository<SocialMedia, Long> {
     fun findByNativeIdAndSocialMediaType(nativeId: Long, type: SocialMediaType): SocialMedia?
 
     fun findAllByUserId(userId: Long): Set<SocialMedia>
-
-    @JvmDefault
-    fun findByIdOrThrow(socialMediaId: Long) = findById(socialMediaId).orElseThrow()
 }
