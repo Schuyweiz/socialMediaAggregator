@@ -10,4 +10,9 @@ class UserTosController {
     fun getRussianTos(): String {
         return "uterms.html"
     }
+
+    @GetMapping("/uprivacy")
+    fun getPrivacy(): String {
+        return "uprivacy.html"
+    }
 }
