@@ -11,5 +11,6 @@ class SocialMediaQueryService(
     private val socialMediaRepository: SocialMediaRepository,
 ) {
 
-    fun findByIdOrThrow(id: Long): SocialMedia = socialMediaRepository.findByIdOrNull(id)?: throw Exception("")
+    fun findByIdOrThrow(id: Long): SocialMedia =
+        socialMediaRepository.findByIdOrNull(id) ?: throw Exception("EntityNotFound $id")
 }
