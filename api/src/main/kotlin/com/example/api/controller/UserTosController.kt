@@ -15,4 +15,9 @@ class UserTosController {
     fun getPrivacy(): String {
         return "uprivacy.html"
     }
+
+    @GetMapping("/privacy")
+    fun getPrivacyPinterest(): String {
+        return "privacy.html"
+    }
 }

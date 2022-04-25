@@ -32,7 +32,8 @@ class WebSecurityConfig(
         "/swagger-ui.html",
         "/swagger-ui/index.html",
         "/uterms",
-        "/uprivacy"
+        "/uprivacy",
+        "/privacy"
     )
 
     @Bean
