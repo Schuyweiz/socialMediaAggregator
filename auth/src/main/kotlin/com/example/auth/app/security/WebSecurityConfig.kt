@@ -30,7 +30,8 @@ class WebSecurityConfig(
         "/register",
         "/register/confirm",
         "/swagger-ui.html",
-        "/swagger-ui/index.html"
+        "/swagger-ui/index.html",
+        "/uterms"
     )
 
     @Bean
