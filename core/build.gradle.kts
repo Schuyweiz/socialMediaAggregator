@@ -73,7 +73,9 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-data-rest")
 
     implementation("com.restfb:restfb:2022.3.1")
-    // https://mvnrepository.com/artifact/org.postgresql/postgresql
+
+    implementation("com.vk.api:sdk:1.0.14")
+
     implementation("org.postgresql:postgresql")
 
     testImplementation("com.nhaarman:mockito-kotlin")

@@ -80,6 +80,8 @@ dependencies {
 
     runtimeOnly("io.kotest:kotest-assertions-core-jvm:5.0.3")
 
+    implementation("com.vk.api:sdk:1.0.14")
+
 }
 
 tasks.named<Test>("test") {

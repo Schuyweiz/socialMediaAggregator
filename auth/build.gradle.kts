@@ -40,6 +40,12 @@ dependencies {
 
     implementation("com.restfb:restfb:2022.3.1")
 
+    implementation("com.vk.api:sdk:1.0.14")
+    // https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
+    implementation("org.apache.httpcomponents:httpclient:4.5.2")
+
+
+
 }
 
 tasks.withType<Test> {

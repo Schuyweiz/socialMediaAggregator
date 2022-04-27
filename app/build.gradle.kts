@@ -55,6 +55,11 @@ application {
 tasks.withType<org.springframework.boot.gradle.tasks.bundling.BootJar> {
     enabled = true
 }
+configurations {
+    all {
+        exclude(group = "org.springframework.boot", module = "spring-boot-starter-logging")
+    }
+}
 
 
 

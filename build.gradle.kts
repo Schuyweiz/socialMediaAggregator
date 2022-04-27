@@ -44,3 +44,9 @@ tasks.withType<org.springframework.boot.gradle.tasks.run.BootRun> {
     mainModule.set(":app")
     mainClass.set("com.example.socialmediaaggregator.SocialMediaAggregatorApplication")
 }
+
+configurations {
+    all {
+        exclude(group = "org.springframework.boot", module = "spring-boot-starter-logging")
+    }
+}
