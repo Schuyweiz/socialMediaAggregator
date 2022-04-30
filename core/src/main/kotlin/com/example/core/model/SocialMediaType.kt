@@ -1,24 +1,30 @@
 package com.example.core.model
 
 enum class SocialMediaType {
-    FACEBOOK_USER{
+    FACEBOOK_USER {
         override fun getApiService(): String = "facebookUserApiService"
-            },
+    },
 
-    FACEBOOK_PAGE{
+    FACEBOOK_PAGE {
         override fun getApiService(): String = "facebookPageApiService"
     },
 
-    INSTAGRAM{
+    INSTAGRAM {
         override fun getApiService(): String = "instagramApiService"
     },
 
-    VK_USER{
+    VK_USER {
         override fun getApiService(): String = "vkApiUserService"
     },
 
-    VK_GROUP{
+    VK_GROUP {
         override fun getApiService(): String = "vkApiGroupService"
+    },
+
+    TG {
+        override fun getApiService(): String {
+            return "tgApiService"
+        }
     }
     ;
 

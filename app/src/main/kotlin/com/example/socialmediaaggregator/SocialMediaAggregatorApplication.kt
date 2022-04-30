@@ -5,6 +5,8 @@ import com.example.core.model.SocialMediaType
 import com.example.core.model.User
 import com.example.core.repository.SocialMediaRepository
 import com.example.core.repository.UserRepository
+import it.tdlight.common.Init
+import it.tdlight.common.utils.CantLoadLibrary
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.autoconfigure.domain.EntityScan
@@ -21,6 +23,15 @@ class SocialMediaAggregatorApplication {
 
 
     companion object {
+        init {
+            // Скачка библиотеки телеграма
+            try {
+                Init.start()
+            } catch (exception: CantLoadLibrary) {
+                exception.printStackTrace()
+            }
+        }
+
         @JvmStatic
         fun main(args: Array<String>) {
             runApplication<SocialMediaAggregatorApplication>(*args)

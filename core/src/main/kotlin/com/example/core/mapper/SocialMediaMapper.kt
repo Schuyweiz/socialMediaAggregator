@@ -10,7 +10,12 @@ import org.springframework.stereotype.Component
 class SocialMediaMapper {
 
     fun mapToDto(socialMedia: SocialMedia) =
-        SocialMediaDto(socialMedia.nativeId, socialMedia.token, socialMedia.socialMediaType)
+        SocialMediaDto(
+            id = socialMedia.id,
+            nativeId = socialMedia.nativeId,
+            token = socialMedia.token,
+            socialMedia.socialMediaType
+        )
 
     fun mapAuthenticationDto(page: Page) =
         PageAuthenticateDto(

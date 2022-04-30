@@ -27,6 +27,9 @@ dependencies {
 
     implementation("org.springframework.security:spring-security-oauth2-client")
 
+    // https://mvnrepository.com/artifact/org.springframework/spring-aop
+    implementation("org.springframework:spring-aop:5.3.19")
+
     //endregion
 
     implementation("org.springdoc:springdoc-openapi-data-rest:1.6.0")
@@ -45,6 +48,10 @@ dependencies {
     implementation("org.apache.httpcomponents:httpclient:4.5.2")
 
 
+    // do not specify the versions on the dependencies below!
+    implementation("it.tdlight:tdlight-java:2.8.1.2")
+    implementation("it.tdlight:tdlight-natives-linux-amd64:4.0.242")
+    // Include other native versions that you want, for example for windows, osx, .
 
 }
 

@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.plugin.statistics.ReportStatisticsToElasticSearch.url
+
 plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
     id("org.jetbrains.kotlin.jvm")
@@ -6,6 +8,7 @@ plugins {
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
+    maven { url = uri("https://mvn.mchv.eu/repository/mchv/") }
 }
 
 dependencies {
@@ -81,6 +84,11 @@ dependencies {
     runtimeOnly("io.kotest:kotest-assertions-core-jvm:5.0.3")
 
     implementation("com.vk.api:sdk:1.0.14")
+
+
+    // do not specify the versions on the dependencies below!
+    implementation("it.tdlight:tdlight-java:2.8.1.2")
+    implementation("it.tdlight:tdlight-natives-linux-amd64:4.0.242")
 
 }
 

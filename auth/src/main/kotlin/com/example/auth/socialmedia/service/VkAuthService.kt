@@ -27,7 +27,7 @@ class VkAuthService(
     private val map: Map<String, String> = mapOf(
         "client_id" to appCode.toString(),
         "redirect_uri" to redirectUrl,
-        "display" to "page",
+        "display" to "page,wall",
         "scope" to "groups",
         "response_type" to "code",
         "state" to "somestateLALALA"

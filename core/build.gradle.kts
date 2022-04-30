@@ -61,6 +61,10 @@ dependencies {
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
+    // https://mvnrepository.com/artifact/org.springframework/spring-aop
+    implementation("org.springframework:spring-aop:5.3.19")
+
+
     //endregion
 
 
@@ -83,6 +87,15 @@ dependencies {
     runtimeOnly("io.kotest:kotest-assertions-core-jvm")
 
     testImplementation("io.kotest:kotest-runner-junit5-jvm")
+
+
+    // do not specify the versions on the dependencies below!
+    implementation("it.tdlight:tdlight-java:2.8.1.2")
+    implementation("it.tdlight:tdlight-natives-linux-amd64:4.0.242")
+
+    // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-core
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
+
 }
 
 tasks.withType<Test> {

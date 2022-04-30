@@ -1,5 +1,6 @@
 package com.example.core.model
 
+import com.example.core.dto.SocialMediaDto
 import javax.persistence.*
 
 @Entity(name = "social_media")
@@ -28,3 +29,11 @@ data class SocialMedia(
     override fun toString(): String = """Token is $id, token social media type is ${socialMediaType.name}"""
     override fun hashCode(): Int = id.toInt()
 }
+
+fun SocialMedia.toDto() = SocialMediaDto(
+    id = this.id,
+    nativeId = this.nativeId,
+    token = this.token,
+    socialMediaType = this.socialMediaType,
+
+    )
