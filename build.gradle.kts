@@ -45,6 +45,17 @@ tasks.withType<org.springframework.boot.gradle.tasks.run.BootRun> {
     mainClass.set("com.example.socialmediaaggregator.SocialMediaAggregatorApplication")
 }
 
+tasks.register("stage") {
+    subprojects.forEach { project ->
+        val clean = project.tasks.first { it.name.contains("clean") }
+        val build = project.tasks.first { it.name.contains("build") }
+        build.dependsOn(clean)
+        build.mustRunAfter(clean)
+        dependsOn(build)
+    }
+}
+
+
 configurations {
     all {
         exclude(group = "org.springframework.boot", module = "spring-boot-starter-logging")

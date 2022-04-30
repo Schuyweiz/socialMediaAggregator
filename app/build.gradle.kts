@@ -60,6 +60,7 @@ configurations {
         exclude(group = "org.springframework.boot", module = "spring-boot-starter-logging")
     }
 }
-
+tasks.getByName<Zip>("distZip").enabled = false
+tasks.getByName<Tar>("distTar").enabled = false
 
 
