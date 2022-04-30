@@ -16,7 +16,7 @@ class FacebookWebhooksController(
 ) {
 
 
-    @PostMapping("facebook/webhook/page")
+    @PostMapping("facebook/webhook")
     fun receivePageWebhook(
         @RequestBody eventContent: String
     ) {
@@ -24,7 +24,7 @@ class FacebookWebhooksController(
         facebookwebhookService.processMessageWebhook(eventContent)
     }
 
-    @GetMapping("facebook/webhook/page")
+    @GetMapping("facebook/webhook")
     fun verifyPageWebHook(
         @RequestParam(name = "hub.challenge") verification: String
     ): String {

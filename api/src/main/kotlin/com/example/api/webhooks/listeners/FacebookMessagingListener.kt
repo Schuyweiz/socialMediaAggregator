@@ -30,7 +30,7 @@ open class FacebookMessagingListener(
         super.message(message, recipient, sender, timestamp)
         if (message?.isDeleted != true && message?.isLike != true) {
             val messageContent = message?.let { it.attachments.firstOrNull()?.url ?: it.text }
-            val socialMedia = getMessageSocialMedia(recipient)
+            val socialMedia = getMessageSocialMedia(recipient?.id?.toLong() ?: -1L)
             val messageEntity =
                 message?.let {
                     return@let Message(
@@ -43,7 +43,7 @@ open class FacebookMessagingListener(
 
             messageRepository.save(messageEntity)
         } else if (message.isDeleted) {
-            val socialMedia = getMessageSocialMedia(recipient)
+            val socialMedia = getMessageSocialMedia(recipient?.id?.toLong() ?: -1L)
             val correspondingMessages = messageRepository.findAllByNativeIdAndSocialMedia(message.mid, socialMedia)
             val messageId = correspondingMessages.singleOrNull()?.id
                 ?: throw Exception("Amount of messages found is abnormal ${correspondingMessages.size}")
@@ -53,13 +53,12 @@ open class FacebookMessagingListener(
         }
     }
 
-    private fun getMessageSocialMedia(recipient: MessagingParticipant?): SocialMedia {
-        val pageNativeId = recipient?.id
+    private fun getMessageSocialMedia(pageNativeId: Long): SocialMedia {
         val accounts = socialMediaRepository.findAllByNativeIdAndAndSocialMediaTypeIn(
-            pageNativeId?.toLong() ?: -1,
+            pageNativeId,
             setOf(SocialMediaType.FACEBOOK_PAGE, SocialMediaType.INSTAGRAM)
         )
         return accounts.firstOrNull()
-            ?: throw Exception("Unknown facebook type social media with id ${recipient?.id}")
+            ?: throw Exception("Unknown facebook type social media with id $pageNativeId")
     }
 }
