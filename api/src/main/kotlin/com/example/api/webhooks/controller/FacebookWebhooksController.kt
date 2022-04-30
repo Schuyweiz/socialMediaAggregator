@@ -1,5 +1,6 @@
-package com.example.api.controller
+package com.example.api.webhooks.controller
 
+import com.example.api.webhooks.service.FacebookwebhookService
 import com.example.core.annotation.Logger
 import com.example.core.annotation.Logger.Companion.log
 import org.springframework.web.bind.annotation.GetMapping
@@ -10,7 +11,9 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @Logger
-class FacebookWebhooksController {
+class FacebookWebhooksController(
+    private val facebookwebhookService: FacebookwebhookService,
+) {
 
 
     @PostMapping("facebook/webhook/page")
@@ -18,6 +21,7 @@ class FacebookWebhooksController {
         @RequestBody eventContent: String
     ) {
         log.info(eventContent)
+        facebookwebhookService.processMessageWebhook(eventContent)
     }
 
     @GetMapping("facebook/webhook/page")
