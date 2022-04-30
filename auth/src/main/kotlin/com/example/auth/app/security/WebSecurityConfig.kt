@@ -33,7 +33,8 @@ class WebSecurityConfig(
         "/swagger-ui/index.html",
         "/uterms",
         "/uprivacy",
-        "/privacy"
+        "/privacy",
+        "/facebook/webhook/page"
     )
 
     @Bean
