@@ -1,7 +1,9 @@
 package com.example.api.webhooks
 
+import com.example.api.service.impl.instagram.InstagramApiService
 import com.example.api.webhooks.listeners.FacebookMessagingListener
 import com.example.api.webhooks.listeners.FacebookPageEventListener
+import com.example.core.repository.CommentRepository
 import com.example.core.repository.MessageRepository
 import com.example.core.repository.PostRepository
 import com.example.core.repository.SocialMediaRepository
@@ -17,12 +19,21 @@ class FacebookWebhookConfiguration(
     private val socialMediaRepository: SocialMediaRepository,
     private val postRepository: PostRepository,
     private val applicationEventPublisher: ApplicationEventPublisher,
+    private val commentRepository: CommentRepository,
+    private val instagramApiService: InstagramApiService,
 ) {
 
     @Bean
     fun facebookWebhook(): Webhook = Webhook().apply {
         this.registerListener(FacebookMessagingListener(messageRepository, socialMediaRepository))
-        this.registerListener(FacebookPageEventListener(postRepository, applicationEventPublisher))
+        this.registerListener(
+            FacebookPageEventListener(
+                postRepository,
+                commentRepository,
+                applicationEventPublisher,
+                instagramApiService
+            )
+        )
     }
 
     @Bean

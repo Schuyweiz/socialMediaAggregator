@@ -2,6 +2,7 @@ package com.example.auth.socialmedia.service
 
 import com.example.core.dto.SocialMediaDto
 import com.example.core.model.*
+import com.example.core.model.socialmedia.SocialMediaType
 import com.example.core.repository.SocialMediaRepository
 import com.example.core.service.impl.UserQueryService
 import it.tdlight.common.internal.InternalClient

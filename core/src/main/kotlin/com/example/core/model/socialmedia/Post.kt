@@ -18,9 +18,15 @@ data class Post(
     @ManyToOne
     val socialMedia: SocialMedia,
 
+    val socialMediaType: SocialMediaType? = socialMedia.socialMediaType,
+
 
     @Column(name = "likes")
     var likes: Long = 0,
+
+    @OneToMany
+    @JoinColumn(name = "post_id")
+    val comments: List<Comment> = mutableListOf()
 
     //todo: comments
 ) {

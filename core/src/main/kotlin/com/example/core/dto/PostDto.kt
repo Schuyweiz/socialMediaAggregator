@@ -1,6 +1,6 @@
 package com.example.core.dto
 
-import com.example.core.model.SocialMediaType
+import com.example.core.model.socialmedia.SocialMediaType
 import com.example.core.annotation.DefaultCtor
 import com.restfb.Facebook
 

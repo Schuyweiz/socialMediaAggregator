@@ -9,7 +9,7 @@ import com.example.core.annotation.Logger
 import com.example.core.dto.PostDto
 import com.example.core.dto.PublishPostDto
 import com.example.core.model.SocialMedia
-import com.example.core.model.SocialMediaType
+import com.example.core.model.socialmedia.SocialMediaType
 import com.restfb.DefaultFacebookClient
 import com.restfb.Parameter
 import com.restfb.Version

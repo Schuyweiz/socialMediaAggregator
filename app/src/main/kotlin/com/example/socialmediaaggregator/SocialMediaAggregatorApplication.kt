@@ -1,8 +1,10 @@
 package com.example.socialmediaaggregator
 
 import com.example.core.model.SocialMedia
-import com.example.core.model.SocialMediaType
+import com.example.core.model.socialmedia.SocialMediaType
 import com.example.core.model.User
+import com.example.core.model.socialmedia.Post
+import com.example.core.repository.PostRepository
 import com.example.core.repository.SocialMediaRepository
 import com.example.core.repository.UserRepository
 import it.tdlight.common.Init
@@ -42,7 +44,8 @@ class SocialMediaAggregatorApplication {
     fun init(
         userRepository: UserRepository,
         socialMediaTokenRepository: SocialMediaRepository,
-        encoder: PasswordEncoder
+        encoder: PasswordEncoder,
+        postRepository: PostRepository,
     ): CommandLineRunner? {
         return CommandLineRunner {
             val user = User(

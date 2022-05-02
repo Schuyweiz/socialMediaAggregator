@@ -27,20 +27,10 @@ class SocialMediaCommentController(
     ) = commentingService.postComment(user.id, socialMediaId, postId, commentDto)
 
     @JwtSecureEndpoint
-    @GetMapping("/api/{socialMediaId}/comment/{postId}", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
-    fun getComments(
+    @GetMapping("/api/{socialMediaId}/comment/{postId}")
+    fun getCommentsForPost(
         @PathVariable(name = "postId") postId: String,
         @PathVariable(name = "socialMediaId") socialMediaId: Long,
         @AuthenticationPrincipal user: User,
     ) = commentingService.getAllComments(user.id, postId, socialMediaId)
-
-    @JwtSecureEndpoint
-    @PostMapping("/api/comment/{commentId}/respond")
-    fun publishComment(
-        @PathVariable(name = "commentId") commentId: String,
-        @ModelAttribute commentDto: PublishCommentDto,
-        @AuthenticationPrincipal user: User,
-    ) {
-
-    }
 }

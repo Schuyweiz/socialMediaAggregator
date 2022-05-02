@@ -17,8 +17,10 @@ import com.example.core.dto.PostDto
 import com.example.core.dto.PublishPostDto
 import com.example.core.model.SocialMedia
 import com.example.core.service.FacebookApi
+import com.restfb.DefaultFacebookClient
 import com.restfb.FacebookClient
 import com.restfb.Parameter
+import com.restfb.Version
 import com.restfb.json.Json
 import com.restfb.json.JsonObject
 import com.restfb.types.Conversation
@@ -27,6 +29,7 @@ import com.restfb.types.send.IdMessageRecipient
 import com.restfb.types.send.MediaAttachment
 import com.restfb.types.send.Message
 import com.restfb.types.send.SendResponse
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import org.springframework.util.LinkedMultiValueMap
@@ -43,6 +46,10 @@ class InstagramApiService(
     private val restTemplate: RestTemplate,
     private val eventPublisher: ApplicationEventPublisher,
     private val commentMapper: CommentsMapper,
+    @Value("app.facebook.app-id")
+    private val appId: String,
+    @Value("app.facebook.app-secret")
+    private val appSecret: String,
 ) : SocialMediaPosting, SocialMediaConversation, SocialMediaCommenting, FacebookApi {
 
     override fun getPosts(socialMedia: SocialMedia): List<PostDto> {
@@ -177,6 +184,15 @@ class InstagramApiService(
         }
     }
 
+    fun getPostCommentsFromUnderAppToken(postId: String): CommentDto {
+        var client = DefaultFacebookClient(Version.LATEST)
+        val appAccessToken = client.obtainAppAccessToken(appId, appSecret)
+        client = getFacebookClient(appAccessToken.accessToken)
+
+        val comment = fetchComment(client, postId)
+        return commentMapper.mapToCommentDto(comment)
+    }
+
     private fun publishMessage(
         nativeId: Long,
         facebookClient: FacebookClient,
@@ -235,6 +251,6 @@ class InstagramApiService(
     private fun fetchComment(client: FacebookClient, commentId: String): JsonObject = client.fetchObject(
         commentId,
         JsonObject::class.java,
-        Parameter.with("fields", "from,id,like_count,media{media_type,media_url},parent_id,text,timestamp,username")
+        Parameter.with("fields", "from,id,like_count,media{media_type,id},parent_id,text,timestamp,username")
     )
 }

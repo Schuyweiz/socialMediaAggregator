@@ -5,8 +5,8 @@ import com.example.core.dto.PageAuthenticateDto
 import com.example.core.dto.SocialMediaDto
 import com.example.core.mapper.SocialMediaMapper
 import com.example.core.model.SocialMedia
-import com.example.core.model.SocialMediaType
-import com.example.core.model.SocialMediaType.*
+import com.example.core.model.socialmedia.SocialMediaType
+import com.example.core.model.socialmedia.SocialMediaType.*
 import com.example.core.model.User
 import com.example.core.repository.SocialMediaRepository
 import com.example.core.repository.UserRepository

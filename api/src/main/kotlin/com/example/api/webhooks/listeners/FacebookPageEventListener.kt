@@ -1,25 +1,50 @@
 package com.example.api.webhooks.listeners
 
-import com.example.api.webhooks.IncrementPostLikesEvent
+import com.example.api.service.impl.instagram.InstagramApiService
 import com.example.core.annotation.Logger
 import com.example.core.annotation.Logger.Companion.log
-import com.example.core.model.SocialMediaType
+import com.example.core.model.socialmedia.Comment
+import com.example.core.model.socialmedia.SocialMediaType
+import com.example.core.repository.CommentRepository
 import com.example.core.repository.PostRepository
-import com.restfb.types.webhook.*
+import com.restfb.types.webhook.FeedCommentValue
+import com.restfb.types.webhook.FeedLikeValue
+import com.restfb.types.webhook.FeedShareValue
 import com.restfb.types.webhook.instagram.InstagramCommentsValue
 import com.restfb.webhook.AbstractWebhookChangeListener
 import org.springframework.context.ApplicationEventPublisher
-import org.springframework.transaction.annotation.Transactional
 
 
 @Logger
 open class FacebookPageEventListener(
     private val postRepository: PostRepository,
+    private val commentRepository: CommentRepository,
     private val applicationEventPublisher: ApplicationEventPublisher,
+    private val instagramApiService: InstagramApiService,
 ) : AbstractWebhookChangeListener() {
 
     override fun feedCommentValue(feedCommentValue: FeedCommentValue?) {
+        if (feedCommentValue == null || feedCommentValue.isWhatsapp) {
+            return
+        }
 
+        val postId = feedCommentValue.postId
+        val posts = postRepository.selectAllByNativeIdAndSocialMediaType(
+            postId,
+            setOf(SocialMediaType.FACEBOOK_PAGE, SocialMediaType.INSTAGRAM)
+        )
+        val post = posts.singleOrNull()
+            ?: throw Exception("Found abnormal amount of fb and ig type posts for id $postId")
+
+        commentRepository.save(
+            Comment(
+                commentId = Comment.CommentKey(feedCommentValue.commentId, SocialMediaType.FACEBOOK_PAGE),
+                message = feedCommentValue.message,
+                fromId = feedCommentValue.from.id,
+                createdTime = feedCommentValue.createdTime.toInstant(),
+                post = post,
+            )
+        )
     }
 
     override fun feedLikeValue(feedLikeValue: FeedLikeValue?) {
@@ -44,40 +69,30 @@ open class FacebookPageEventListener(
         }
     }
 
-    override fun feedStatusValue(feedStatusValue: FeedStatusValue?) {
-        super.feedStatusValue(feedStatusValue)
-    }
-
-    override fun feedEventValue(feedEventValue: FeedEventValue?) {
-        super.feedEventValue(feedEventValue)
-    }
-
-    override fun feedPostValue(feedPostValue: FeedPostValue?) {
-        super.feedPostValue(feedPostValue)
-    }
-
-    override fun feedReactionValue(feedReactionValue: FeedReactionValue?) {
-        super.feedReactionValue(feedReactionValue)
-    }
-
     override fun feedShareValue(feedShareValue: FeedShareValue?) {
         super.feedShareValue(feedShareValue)
     }
 
-    override fun instagramCommentsValue(instagramCommentsValue: InstagramCommentsValue?) {
-        super.instagramCommentsValue(instagramCommentsValue)
-    }
+    override fun instagramCommentsValue(comment: InstagramCommentsValue?) {
+        if (comment == null || comment.isWhatsapp) {
+            return
+        }
 
-    override fun ratingsReactionValue(ratingsReactionValue: RatingsReactionValue?) {
-        super.ratingsReactionValue(ratingsReactionValue)
-    }
-
-    override fun ratingsLikeValue(ratingsLikeValue: RatingsLikeValue?) {
-        super.ratingsLikeValue(ratingsLikeValue)
-    }
-
-    override fun ratingsCommentValue(ratingsCommentValue: RatingsCommentValue?) {
-        super.ratingsCommentValue(ratingsCommentValue)
+        //TODO: when done with comments for the instagram
+        val commentDto = instagramApiService.getPostCommentsFromUnderAppToken(comment.id)
+        val post = postRepository.selectAllByNativeIdAndSocialMediaType(
+            commentDto.mediaId ?: "",
+            socialMediaTypes = setOf(SocialMediaType.INSTAGRAM)
+        ).first()
+        commentRepository.save(
+            Comment(
+                commentId = Comment.CommentKey(commentDto.nativeId, SocialMediaType.INSTAGRAM),
+                message = comment.text,
+                fromId = commentDto.senderDto?.id,
+                createdTime = commentDto.createdTime,
+                post = post,
+            )
+        )
     }
 
 }

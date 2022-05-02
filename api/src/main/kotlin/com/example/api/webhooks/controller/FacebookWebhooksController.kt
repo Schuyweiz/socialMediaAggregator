@@ -3,6 +3,14 @@ package com.example.api.webhooks.controller
 import com.example.api.webhooks.service.FacebookwebhookService
 import com.example.core.annotation.Logger
 import com.example.core.annotation.Logger.Companion.log
+import com.example.core.model.SocialMedia
+import com.example.core.model.User
+import com.example.core.model.socialmedia.Post
+import com.example.core.model.socialmedia.SocialMediaType
+import com.example.core.repository.PostRepository
+import com.example.core.repository.SocialMediaRepository
+import com.example.core.repository.UserRepository
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -13,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController
 @Logger
 class FacebookWebhooksController(
     private val facebookwebhookService: FacebookwebhookService,
+    private val postRepository: PostRepository,
+    private val socialMediaRepository: SocialMediaRepository,
 ) {
 
 
@@ -30,5 +40,20 @@ class FacebookWebhooksController(
     ): String {
         log.info(verification)
         return verification
+    }
+
+    @GetMapping("test")
+    fun test() {
+        val socialMedia = socialMediaRepository.findById(1L).orElseThrow()
+        postRepository.save(
+            Post(
+                id = 0,
+                nativeId = "123",
+                textContent = "sdfg",
+                socialMedia = socialMedia,
+                likes = 0,
+                comments = listOf()
+            )
+        )
     }
 }

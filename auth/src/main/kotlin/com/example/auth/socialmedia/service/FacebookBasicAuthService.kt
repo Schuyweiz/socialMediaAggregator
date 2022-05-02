@@ -5,7 +5,7 @@ import com.example.core.config.FacebookConfiguration
 import com.example.core.dto.SocialMediaDto
 import com.example.core.mapper.SocialMediaMapper
 import com.example.core.model.SocialMedia
-import com.example.core.model.SocialMediaType
+import com.example.core.model.socialmedia.SocialMediaType
 import com.example.core.repository.SocialMediaRepository
 import com.example.core.repository.UserRepository
 import com.example.core.service.FacebookApi
@@ -13,7 +13,6 @@ import com.example.core.service.impl.UserQueryService
 import com.restfb.DefaultFacebookClient
 import com.restfb.FacebookClient
 import com.restfb.Parameter
-import com.restfb.Version
 import com.restfb.types.Page
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service

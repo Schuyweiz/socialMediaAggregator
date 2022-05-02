@@ -1,6 +1,7 @@
 package com.example.core.model
 
 import com.example.core.dto.SocialMediaDto
+import com.example.core.model.socialmedia.SocialMediaType
 import javax.persistence.*
 
 @Entity(name = "social_media")

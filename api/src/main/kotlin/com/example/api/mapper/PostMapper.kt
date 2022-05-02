@@ -1,8 +1,7 @@
 package com.example.api.mapper
 
 import com.example.core.dto.PostDto
-import com.example.core.model.SocialMedia
-import com.example.core.model.SocialMediaType
+import com.example.core.model.socialmedia.SocialMediaType
 import com.restfb.types.instagram.IgMedia
 import org.springframework.stereotype.Component
 

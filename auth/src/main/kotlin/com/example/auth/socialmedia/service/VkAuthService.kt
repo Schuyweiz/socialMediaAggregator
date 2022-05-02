@@ -1,7 +1,7 @@
 package com.example.auth.socialmedia.service
 
 import com.example.core.model.SocialMedia
-import com.example.core.model.SocialMediaType
+import com.example.core.model.socialmedia.SocialMediaType
 import com.example.core.service.VkApi
 import com.example.core.service.impl.UserQueryService
 import com.vk.api.sdk.client.VkApiClient
