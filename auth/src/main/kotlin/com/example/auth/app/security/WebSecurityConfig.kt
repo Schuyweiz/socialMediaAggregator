@@ -34,7 +34,8 @@ class WebSecurityConfig(
         "/uterms",
         "/uprivacy",
         "/privacy",
-        "/facebook/webhook/page"
+        "/facebook/webhook/page",
+        "/api/webhook/post",
     )
 
     @Bean

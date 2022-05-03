@@ -3,6 +3,7 @@ package com.example.socialmediaaggregator
 import com.example.core.model.SocialMedia
 import com.example.core.model.socialmedia.SocialMediaType
 import com.example.core.model.User
+import com.example.core.model.Webhooks
 import com.example.core.model.socialmedia.Post
 import com.example.core.repository.PostRepository
 import com.example.core.repository.SocialMediaRepository
@@ -15,10 +16,10 @@ import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
+import org.springframework.scheduling.annotation.EnableScheduling
 import org.springframework.security.crypto.password.PasswordEncoder
 
-
-@SpringBootApplication(scanBasePackages = ["com.example.socialmediaaggregator", "com.example.core", "com.example.auth", "com.example.api"])
+@SpringBootApplication(scanBasePackages = ["com.example.socialmediaaggregator", "com.example.core", "com.example.auth", "com.example.api", "com.example.tms"])
 @EnableJpaRepositories(basePackages = ["com.example.core"])
 @EntityScan(basePackages = ["com.example.core"])
 class SocialMediaAggregatorApplication {
@@ -58,7 +59,8 @@ class SocialMediaAggregatorApplication {
                 "EAAHO4difc4UBAPWLiSSJLPt4wSqVxT7542ewQDR0ZAJMXMsLV5HZBjjQeP8Y1nTj9FOhfqFtzWY3nn5nCHXBss3IiZC9WIhocLvKCVFoXlnQBfNP6N2mop7A4HbKP7MwNibigIsjyivH8PULDFdMiDY9oX55piHdTBStSuQxoZBkDxcYsMew"
             val user2 = User(
                 firstName = "kirill", lastName = "pike",
-                userPassword = encoder.encode("1234"), email = "pikek@mail.ru", enabled = true
+                userPassword = encoder.encode("1234"), email = "pikek@mail.ru", enabled = true,
+                webhooks = Webhooks(postWebhook = "https://localhost:8443/api/webhook/post"),
             )
             val socialMedia =
                 mutableSetOf(

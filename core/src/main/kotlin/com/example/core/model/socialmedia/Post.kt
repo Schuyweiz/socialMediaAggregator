@@ -1,6 +1,7 @@
 package com.example.core.model.socialmedia
 
 import com.example.core.model.SocialMedia
+import java.time.Instant
 import javax.persistence.*
 
 //todo: full implementation once everything is ready
@@ -26,7 +27,10 @@ data class Post(
 
     @OneToMany
     @JoinColumn(name = "post_id")
-    val comments: List<Comment> = mutableListOf()
+    val comments: List<Comment> = mutableListOf(),
+
+    @Column(updatable = true)
+    var createdAt: Instant?= null
 
     //todo: comments
 ) {

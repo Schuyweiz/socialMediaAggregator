@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
+import java.time.Instant
 
 @Repository
 interface PostRepository : JpaRepository<Post, Long> {
@@ -32,4 +33,6 @@ interface PostRepository : JpaRepository<Post, Long> {
                 "where id = ?1"
     )
     fun incrementLikes(@Param("id") postId: Long)
+
+    fun findAllByCreatedAtBefore(createdAt: Instant): List<Post>
 }

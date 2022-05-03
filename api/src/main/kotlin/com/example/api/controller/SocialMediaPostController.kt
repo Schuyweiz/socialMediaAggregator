@@ -3,11 +3,13 @@ package com.example.api.controller
 import com.example.api.service.PostService
 import com.example.core.annotation.JwtSecureEndpoint
 import com.example.core.annotation.Logger
+import com.example.core.annotation.Logger.Companion.log
 import com.example.core.annotation.RestControllerJwt
 import com.example.core.dto.PostDto
 import com.example.core.dto.PublishPostDto
 import com.example.core.dto.PublishPostSelectedAccountsDto
 import com.example.core.model.User
+import com.example.core.model.socialmedia.Post
 import org.springframework.http.MediaType
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
@@ -51,5 +53,10 @@ class SocialMediaPostController(
         @ModelAttribute postDto: PublishPostSelectedAccountsDto,
         @AuthenticationPrincipal user: User,
     ) = postService.publishPost(user.id, postDto.publishPostDto, postDto.socialMediaIds)
+
+    @PostMapping("/api/webhook/post")
+    fun getPost(
+        @RequestBody posts: List<Post>
+    ) = log.info(posts.toString())
 
 }

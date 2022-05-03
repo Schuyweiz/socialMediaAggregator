@@ -8,4 +8,4 @@
  */
 
 rootProject.name = "socialAggregator"
-include("core", "app", "auth", "api")
+include("core", "app", "auth", "api", "tms")

@@ -30,9 +30,12 @@ data class User(
     var authorities: MutableList<SimpleGrantedAuthority> = mutableListOf(SimpleGrantedAuthority("ROLE_USER")),
 
     @OneToMany(mappedBy = "user", cascade = [CascadeType.MERGE, CascadeType.PERSIST])
-    var socialMediaSet: MutableSet<SocialMedia> = mutableSetOf()
+    var socialMediaSet: MutableSet<SocialMedia> = mutableSetOf(),
 
-) : UserDetails {
+    @OneToOne(cascade = [CascadeType.ALL])
+    var webhooks: Webhooks? = null,
+
+    ) : UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> =
         mutableSetOf(SimpleGrantedAuthority("ROLE_USER"))
 

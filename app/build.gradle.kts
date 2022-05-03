@@ -19,6 +19,7 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":auth"))
     implementation(project(":api"))
+    implementation(project(":tms"))
 
 
     //region spring dependencies
