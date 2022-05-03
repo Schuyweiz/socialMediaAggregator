@@ -32,7 +32,7 @@ class SocialMediaPostController(
     fun publishPost(
         @ModelAttribute postDto: PublishPostDto,
         @AuthenticationPrincipal user: User
-    ): List<PostDto> {
+    ): List<PostDto?> {
         return postService.publishPostAllAccounts(user.id, postDto)
     }
 

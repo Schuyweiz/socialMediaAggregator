@@ -1,7 +1,7 @@
 package com.example.core.libs.pinterest.model
 
 data class CreatePinterestBoardRequest(
-    val description: String?,
+    val description: String? = null,
     val name: String,
-    val privacy: String?
+    val privacy: String? = "PUBLIC"
 )

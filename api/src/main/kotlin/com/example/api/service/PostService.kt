@@ -5,11 +5,9 @@ import com.example.core.dto.PostDto
 import com.example.core.dto.PublishPostDto
 import com.example.core.model.SocialMedia
 import com.example.core.model.User
-import com.example.core.repository.UserRepository
 import com.example.core.service.impl.UserQueryService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.function.BiFunction
 
 @Service
 class PostService(
@@ -25,7 +23,7 @@ class PostService(
     }
 
     @Transactional
-    fun publishPostAllAccounts(userId: Long, postDto: PublishPostDto): List<PostDto> {
+    fun publishPostAllAccounts(userId: Long, postDto: PublishPostDto): List<PostDto?> {
         val user = uerQueryService.findByIdOrThrow(userId)
 
         return publishPostAllAccounts(user.socialMediaSet, postDto)
@@ -41,7 +39,7 @@ class PostService(
     }
 
     @Transactional
-    fun publishPost(userId: Long, postDto: PublishPostDto, socialMediaIds: Set<Long>): List<PostDto> {
+    fun publishPost(userId: Long, postDto: PublishPostDto, socialMediaIds: Set<Long>): List<PostDto?> {
         val user = uerQueryService.findByIdOrThrow(userId)
 
         return user.socialMediaSet.filter { socialMediaIds.contains(it.id) }
@@ -51,7 +49,7 @@ class PostService(
             }
     }
 
-    private fun publishPostAllAccounts(tokens: Set<SocialMedia>, post: PublishPostDto): List<PostDto> =
+    private fun publishPostAllAccounts(tokens: Set<SocialMedia>, post: PublishPostDto): List<PostDto?> =
         tokens.map {
             postServiceRegistry.getPostService(it.socialMediaType.getApiService())
                 .publishPost(socialMedia = it, postDto = post)
@@ -60,24 +58,6 @@ class PostService(
     private fun getPosts(tokens: Set<SocialMedia>): List<PostDto> =
         tokens.flatMap {
             postServiceRegistry.getPostService(it.socialMediaType.getApiService())
-                .getPosts(it)
+                .getPosts(it) ?: emptyList()
         }
-
-    private fun doPublishPostAction(
-        userId: Long,
-        postDto: PublishPostDto,
-        action: BiFunction<User, PublishPostDto, List<PostDto>>
-    ): List<PostDto> {
-        val user = uerQueryService.findByIdOrThrow(userId)
-        return action.apply(user, postDto)
-    }
-
-    private fun doPublishPostActionSingle(
-        userId: Long,
-        postDto: PublishPostDto,
-        action: BiFunction<User, PublishPostDto, PostDto>
-    ): PostDto {
-        val user = uerQueryService.findByIdOrThrow(userId)
-        return action.apply(user, postDto)
-    }
 }

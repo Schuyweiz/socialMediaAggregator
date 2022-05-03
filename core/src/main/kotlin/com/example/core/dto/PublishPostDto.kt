@@ -7,4 +7,7 @@ import org.springframework.web.multipart.MultipartFile
 data class PublishPostDto(
     val content: String,
     val attachment: MultipartFile?,
+    val pinBoardId: String?,
+    val pinSectionId: String?,
+    val pinTitle: String?,
 )

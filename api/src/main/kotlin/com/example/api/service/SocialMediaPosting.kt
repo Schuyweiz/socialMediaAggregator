@@ -6,7 +6,7 @@ import com.example.core.dto.PublishPostDto
 
 interface SocialMediaPosting {
 
-    fun getPosts(socialMedia: SocialMedia): List<PostDto>
+    fun getPosts(socialMedia: SocialMedia): List<PostDto>?
 
-    fun publishPost(socialMedia: SocialMedia, postDto: PublishPostDto): PostDto
+    fun publishPost(socialMedia: SocialMedia, postDto: PublishPostDto): PostDto?
 }

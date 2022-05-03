@@ -1,6 +1,6 @@
 package com.example.core.libs.pinterest.model
 
-data class PinterestBoardDto(
+data class PinterestBoardsDto(
     val bookmark: String?,
-    val items: List<Item>
+    val items: List<Item>?
 )
