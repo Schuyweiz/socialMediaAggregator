@@ -25,6 +25,10 @@ enum class SocialMediaType {
         override fun getApiService(): String {
             return "tgApiService"
         }
+    },
+
+    PINTEREST {
+        override fun getApiService(): String = "pinterestApiService"
     }
     ;
 
