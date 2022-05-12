@@ -71,14 +71,15 @@ class FacebookAuthService(
         socialMediaType: SocialMediaType,
         nativeId: Long,
     ): SocialMediaDto {
-        val socialMedia = socialMediaRepository.findByNativeIdAndSocialMediaType(nativeId, socialMediaType)?.apply {
-            this.token = dto.token
-        } ?: SocialMedia(
-            nativeId = nativeId,
-            token = dto.token,
-            socialMediaType = socialMediaType,
-            user = user
-        )
+        val socialMedia =
+            socialMediaRepository.findByNativeIdAndSocialMediaTypeAndUser(nativeId, socialMediaType, user)?.apply {
+                this.token = dto.token
+            } ?: SocialMedia(
+                nativeId = nativeId,
+                token = dto.token,
+                socialMediaType = socialMediaType,
+                user = user
+            )
         val savedSocialMedia = socialMediaRepository.save(socialMedia)
         return socialMediaMapper.mapToDto(savedSocialMedia)
     }

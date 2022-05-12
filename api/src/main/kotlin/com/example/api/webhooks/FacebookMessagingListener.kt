@@ -1,4 +1,4 @@
-package com.example.api.webhooks.listeners
+package com.example.api.webhooks
 
 import com.example.core.annotation.Logger
 import com.example.core.annotation.Logger.Companion.log

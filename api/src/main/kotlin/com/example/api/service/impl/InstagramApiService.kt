@@ -1,10 +1,11 @@
-package com.example.api.service.impl.instagram
+package com.example.api.service.impl
 
 import com.example.api.dto.*
-import com.example.api.dto.comment.CommentDto
-import com.example.api.dto.message.MessageDto
-import com.example.api.dto.message.SendMessageDto
+import com.example.api.dto.CommentDto
+import com.example.api.dto.MessageDto
+import com.example.api.dto.SendMessageDto
 import com.example.api.events.ConversationGetMessagesEvent
+import com.example.api.events.PostRequestedEvent
 import com.example.api.mapper.CommentsMapper
 import com.example.api.mapper.ConversationMapper
 import com.example.api.mapper.PostMapper
@@ -21,7 +22,6 @@ import com.restfb.DefaultFacebookClient
 import com.restfb.FacebookClient
 import com.restfb.Parameter
 import com.restfb.Version
-import com.restfb.json.Json
 import com.restfb.json.JsonObject
 import com.restfb.types.Conversation
 import com.restfb.types.instagram.IgMedia
@@ -63,6 +63,7 @@ class InstagramApiService(
         )
 
         return listMedia.data.map { postMapper.map(it) }
+            .also { eventPublisher.publishEvent(PostRequestedEvent(socialMedia, it)) }
     }
 
     override fun publishPost(socialMedia: SocialMedia, postDto: PublishPostDto): PostDto {

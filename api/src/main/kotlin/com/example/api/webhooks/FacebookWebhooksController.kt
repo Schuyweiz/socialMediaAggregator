@@ -1,16 +1,11 @@
-package com.example.api.webhooks.controller
+package com.example.api.webhooks
 
-import com.example.api.webhooks.service.FacebookwebhookService
+import com.example.api.webhooks.FacebookwebhookService
 import com.example.core.annotation.Logger
 import com.example.core.annotation.Logger.Companion.log
-import com.example.core.model.SocialMedia
-import com.example.core.model.User
 import com.example.core.model.socialmedia.Post
-import com.example.core.model.socialmedia.SocialMediaType
 import com.example.core.repository.PostRepository
 import com.example.core.repository.SocialMediaRepository
-import com.example.core.repository.UserRepository
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody

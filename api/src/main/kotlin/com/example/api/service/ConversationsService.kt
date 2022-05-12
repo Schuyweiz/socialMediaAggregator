@@ -3,9 +3,10 @@ package com.example.api.service
 import com.example.api.config.ConversationServiceRegistry
 import com.example.api.dto.ConversationDto
 import com.example.api.dto.ConversationWithMessagesDto
-import com.example.api.dto.message.MessageDto
-import com.example.api.dto.message.SendMessageDto
+import com.example.api.dto.MessageDto
+import com.example.api.dto.SendMessageDto
 import com.example.core.model.SocialMedia
+import com.example.core.model.socialmedia.SocialMediaType
 import com.example.core.repository.UserRepository
 import com.example.core.service.impl.SocialMediaQueryService
 import com.example.core.service.impl.UserQueryService
@@ -24,7 +25,7 @@ class ConversationsService(
     fun getAllUserConversations(userId: Long): List<List<ConversationDto>> {
         val user = userQueryService.findByIdOrThrow(userId)
 
-        return user.socialMediaSet.map {
+        return user.socialMediaSet.filterNot { it.socialMediaType.noConversation()  }.map {
             getConversations(it)
         }
     }

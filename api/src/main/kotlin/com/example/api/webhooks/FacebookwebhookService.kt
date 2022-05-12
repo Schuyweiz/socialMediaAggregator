@@ -1,4 +1,4 @@
-package com.example.api.webhooks.service
+package com.example.api.webhooks
 
 import com.restfb.DefaultJsonMapper
 import com.restfb.types.webhook.WebhookObject

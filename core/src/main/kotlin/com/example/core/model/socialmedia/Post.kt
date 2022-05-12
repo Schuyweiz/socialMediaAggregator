@@ -38,3 +38,4 @@ data class Post(
     fun incrementLikes() = likes.plus(1)
 
 }
+

@@ -1,5 +1,7 @@
 package com.example.core.model.socialmedia
 
+import com.example.core.model.SocialMedia
+
 enum class SocialMediaType {
     FACEBOOK_USER {
         override fun getApiService(): String = "facebookUserApiService"
@@ -33,4 +35,9 @@ enum class SocialMediaType {
     ;
 
     abstract fun getApiService(): String
+
+
+    fun noPosts() = this == FACEBOOK_USER
+    fun noConversation() = this == FACEBOOK_USER || this == PINTEREST
+    fun noComments() = this == FACEBOOK_USER || this == PINTEREST
 }

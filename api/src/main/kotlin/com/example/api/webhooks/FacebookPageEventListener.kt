@@ -1,6 +1,6 @@
-package com.example.api.webhooks.listeners
+package com.example.api.webhooks
 
-import com.example.api.service.impl.instagram.InstagramApiService
+import com.example.api.service.impl.InstagramApiService
 import com.example.core.annotation.Logger
 import com.example.core.annotation.Logger.Companion.log
 import com.example.core.model.socialmedia.Comment

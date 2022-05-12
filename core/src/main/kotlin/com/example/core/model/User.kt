@@ -8,6 +8,7 @@ import javax.persistence.*
 @Entity(name = "app_user")
 data class User(
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     val id: Long = 0,
 

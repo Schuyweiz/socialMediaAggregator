@@ -1,8 +1,8 @@
-package com.example.api.service.impl.facebook
+package com.example.api.service.impl
 
 import com.example.api.dto.*
-import com.example.api.dto.message.MessageDto
-import com.example.api.dto.message.SendMessageDto
+import com.example.api.dto.MessageDto
+import com.example.api.dto.SendMessageDto
 import com.example.api.service.SocialMediaConversation
 import com.example.api.service.SocialMediaPosting
 import com.example.core.annotation.Logger

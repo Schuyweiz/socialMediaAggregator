@@ -1,7 +1,7 @@
 package com.example.api.mapper
 
 import com.example.api.dto.*
-import com.example.api.dto.message.MessageDto
+import com.example.api.dto.MessageDto
 import com.example.core.model.SocialMedia
 import com.example.core.model.socialmedia.Message
 import org.springframework.stereotype.Component

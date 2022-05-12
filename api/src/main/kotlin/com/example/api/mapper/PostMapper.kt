@@ -6,6 +6,9 @@ import com.example.core.libs.pinterest.model.Pin
 import com.example.core.model.socialmedia.SocialMediaType
 import com.restfb.types.instagram.IgMedia
 import org.springframework.stereotype.Component
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 @Component
 class PostMapper() {
@@ -19,6 +22,7 @@ class PostMapper() {
         pageId = igMedia.id.toLong(),
         socialMediaType = SocialMediaType.INSTAGRAM,
         mediaUrl = igMedia.mediaUrl,
+        createdAt = igMedia.timestamp.toInstant(),
     )
 
     fun map(pins: List<Pin>, nativeId: Long) = pins.map { map(it, nativeId) }
@@ -30,7 +34,8 @@ class PostMapper() {
             0,
             nativeId,
             pin.media.images.originals.url,
-            socialMediaType = SocialMediaType.PINTEREST
+            socialMediaType = SocialMediaType.PINTEREST,
+            createdAt = LocalDateTime.parse(pin.created_at).toInstant(ZoneOffset.UTC),
         )
 
     fun map(pinResponse: CreatePinResponseDto, nativeId: Long) =

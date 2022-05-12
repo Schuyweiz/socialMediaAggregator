@@ -2,10 +2,11 @@ package com.example.auth.app.controller
 
 import com.example.auth.app.jwt.JwtService
 import com.example.auth.util.CookieUtil
-import com.example.core.dto.LoginRequestDto
 import com.example.core.annotation.RestControllerJwt
+import com.example.core.dto.LoginRequestDto
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -38,13 +39,15 @@ class AuthenticationController(
 
     @PostMapping("/login")
     fun login(
-        @RequestBody @SwaggerBody(content = [Content(
-            mediaType = MediaType.MULTIPART_FORM_DATA_VALUE,
-            schema = Schema(implementation = LoginRequestDto::class, name = "login dto")
-        )])
+        @RequestBody @SwaggerBody(
+            content = [Content(
+                mediaType = MediaType.MULTIPART_FORM_DATA_VALUE,
+                schema = Schema(implementation = LoginRequestDto::class, name = "login dto")
+            )]
+        )
         loginRequestDto: LoginRequestDto,
         request: HttpServletRequest, response: HttpServletResponse
     ): String {
-        return "good";
+        return response.getHeader(HttpHeaders.AUTHORIZATION);
     }
 }

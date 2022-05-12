@@ -1,4 +1,4 @@
-package com.example.api.dto.comment
+package com.example.api.dto
 
 import com.example.api.dto.SenderDto
 import com.example.core.annotation.DefaultCtor

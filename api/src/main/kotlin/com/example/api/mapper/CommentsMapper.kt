@@ -1,7 +1,7 @@
 package com.example.api.mapper
 
 import com.example.api.dto.SenderDto
-import com.example.api.dto.comment.CommentDto
+import com.example.api.dto.CommentDto
 import com.restfb.json.JsonObject
 import org.springframework.stereotype.Component
 import java.sql.Timestamp

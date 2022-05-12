@@ -1,8 +1,6 @@
 package com.example.api.webhooks
 
-import com.example.api.service.impl.instagram.InstagramApiService
-import com.example.api.webhooks.listeners.FacebookMessagingListener
-import com.example.api.webhooks.listeners.FacebookPageEventListener
+import com.example.api.service.impl.InstagramApiService
 import com.example.core.repository.CommentRepository
 import com.example.core.repository.MessageRepository
 import com.example.core.repository.PostRepository

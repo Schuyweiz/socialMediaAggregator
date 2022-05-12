@@ -5,6 +5,7 @@ import com.example.core.dto.PostDto
 import com.example.core.dto.PublishPostDto
 import com.example.core.model.SocialMedia
 import com.example.core.model.User
+import com.example.core.model.socialmedia.SocialMediaType
 import com.example.core.service.impl.UserQueryService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -50,13 +51,13 @@ class PostService(
     }
 
     private fun publishPostAllAccounts(tokens: Set<SocialMedia>, post: PublishPostDto): List<PostDto?> =
-        tokens.map {
+        tokens.filter { it.socialMediaType != SocialMediaType.FACEBOOK_USER }.map {
             postServiceRegistry.getPostService(it.socialMediaType.getApiService())
                 .publishPost(socialMedia = it, postDto = post)
         }
 
     private fun getPosts(tokens: Set<SocialMedia>): List<PostDto> =
-        tokens.flatMap {
+        tokens.filter { it.socialMediaType != SocialMediaType.FACEBOOK_USER }.flatMap {
             postServiceRegistry.getPostService(it.socialMediaType.getApiService())
                 .getPosts(it) ?: emptyList()
         }

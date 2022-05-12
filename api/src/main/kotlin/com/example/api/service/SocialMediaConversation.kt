@@ -2,8 +2,8 @@ package com.example.api.service
 
 import com.example.api.dto.ConversationDto
 import com.example.api.dto.ConversationWithMessagesDto
-import com.example.api.dto.message.MessageDto
-import com.example.api.dto.message.SendMessageDto
+import com.example.api.dto.MessageDto
+import com.example.api.dto.SendMessageDto
 import com.example.core.model.SocialMedia
 import org.springframework.web.multipart.MultipartFile
 

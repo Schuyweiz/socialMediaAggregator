@@ -1,11 +1,11 @@
-package com.example.api.service.impl.facebook
+package com.example.api.service.impl
 
 import com.example.api.dto.ConversationDto
 import com.example.api.dto.ConversationWithMessagesDto
 import com.example.api.dto.PublishCommentDto
-import com.example.api.dto.comment.CommentDto
-import com.example.api.dto.message.MessageDto
-import com.example.api.dto.message.SendMessageDto
+import com.example.api.dto.CommentDto
+import com.example.api.dto.MessageDto
+import com.example.api.dto.SendMessageDto
 import com.example.api.events.ConversationGetMessagesEvent
 import com.example.api.events.PostRequestedEvent
 import com.example.api.mapper.CommentsMapper
@@ -17,6 +17,7 @@ import com.example.core.annotation.Logger
 import com.example.core.dto.PostDto
 import com.example.core.dto.PostResponseDto
 import com.example.core.dto.PublishPostDto
+import com.example.core.mapper.PostDtoMapper
 import com.example.core.mapper.PublishPostDtoMapper
 import com.example.core.model.SocialMedia
 import com.example.core.service.FacebookApi
@@ -26,6 +27,7 @@ import com.restfb.Parameter
 import com.restfb.json.JsonObject
 import com.restfb.types.Comment
 import com.restfb.types.Conversation
+import com.restfb.types.Post
 import com.restfb.types.send.IdMessageRecipient
 import com.restfb.types.send.MediaAttachment
 import com.restfb.types.send.Message
@@ -37,7 +39,7 @@ import org.springframework.web.multipart.MultipartFile
 @Service
 @Logger
 class FacebookPageApiService(
-    private val publishPostMapper: PublishPostDtoMapper,
+    private val postDtoMapper: PostDtoMapper,
     private val conversationMapper: ConversationMapper,
     private val commentsMapper: CommentsMapper,
     private val eventPublisher: ApplicationEventPublisher,
@@ -47,8 +49,9 @@ class FacebookPageApiService(
         doFacebookClientAction(socialMedia.token, socialMedia.nativeId.toString()) { client, id ->
             client.fetchConnection(
                 """$id/feed""",
-                PostDto::class.java
-            ).data.onEach { it.socialMediaType = socialMedia.socialMediaType }
+                Post::class.java
+            ).data.map { postDtoMapper.map(it, id.toLong()) }
+                .onEach { it.socialMediaType = socialMedia.socialMediaType }
                 .also {
                     eventPublisher.publishEvent(PostRequestedEvent(socialMedia, it))
                 }
@@ -58,11 +61,8 @@ class FacebookPageApiService(
         return doFacebookClientAction(socialMedia.token, socialMedia.nativeId.toString()) { client, id ->
             val responseDto = postDto.attachment?.let { publishMediaPost(client, postDto, id) }
                 ?: publishTextPost(client, postDto, id)
-            client.fetchObject(responseDto.postId, PostDto::class.java).apply {
-                this.pageId = socialMedia.nativeId ?: -1
-                this.socialMediaType = socialMedia.socialMediaType
-            }
-                ?: throw Exception("Something went wrong, post id is ${responseDto.postId}")
+            client.fetchObject(responseDto.postId, Post::class.java)
+                .let { return@let postDtoMapper.map(it, socialMedia.nativeId ?: -1) }
         }
     }
 

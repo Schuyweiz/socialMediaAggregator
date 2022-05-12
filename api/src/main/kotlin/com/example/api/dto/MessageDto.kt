@@ -1,4 +1,4 @@
-package com.example.api.dto.message
+package com.example.api.dto
 
 import com.example.api.dto.ParticipantDto
 import com.example.api.dto.RecieveAttachmentDto

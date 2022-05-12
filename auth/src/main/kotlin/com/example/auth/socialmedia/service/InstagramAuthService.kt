@@ -55,9 +55,10 @@ class InstagramAuthService(
         socialMediaType: SocialMediaType,
         nativeId: Long,
     ): SocialMediaDto {
-        val socialMedia = socialMediaRepository.findByNativeIdAndSocialMediaType(
+        val socialMedia = socialMediaRepository.findByNativeIdAndSocialMediaTypeAndUser(
             nativeId,
-            SocialMediaType.FACEBOOK_PAGE
+            socialMediaType,
+            user
         )?.apply {
             this.token = dto.token
         } ?: SocialMedia(
