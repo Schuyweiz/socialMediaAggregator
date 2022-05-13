@@ -33,6 +33,7 @@ import com.restfb.types.send.MediaAttachment
 import com.restfb.types.send.Message
 import com.restfb.types.send.SendResponse
 import org.springframework.context.ApplicationEventPublisher
+import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 
@@ -69,7 +70,11 @@ class FacebookPageApiService(
     private fun publishMediaPost(client: FacebookClient, postDto: PublishPostDto, pageId: String) = client.publish(
         """$pageId/feed""",
         PostResponseDto::class.java,
-        BinaryAttachment.with(postDto.attachment!!.name, postDto.attachment!!.bytes, postDto.attachment!!.contentType),
+        BinaryAttachment.with(
+            postDto.attachment?.name ?: "image",
+            postDto.attachment?.bytes ?: postDto.byteContent,
+            postDto.attachment?.contentType ?: MediaType.IMAGE_PNG_VALUE
+        ),
         Parameter.with("message", postDto.content)
     )
 

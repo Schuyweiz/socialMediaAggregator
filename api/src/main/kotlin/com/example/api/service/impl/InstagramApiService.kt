@@ -69,7 +69,7 @@ class InstagramApiService(
     override fun publishPost(socialMedia: SocialMedia, postDto: PublishPostDto): PostDto {
         val client = getFacebookClient(socialMedia.token)
         val nativeId = socialMedia.nativeId
-        val imageUrl = saveImageService.saveImage(postDto.attachment!!)
+        val imageUrl = postDto.attachment?.let { saveImageService.saveImage(it) }?:saveImageService.saveImage(postDto.byteContent!!)
 
         return publishMediaPost(client, nativeId!!, imageUrl!!)?.apply {
             this.pageId = socialMedia.nativeId ?: -1

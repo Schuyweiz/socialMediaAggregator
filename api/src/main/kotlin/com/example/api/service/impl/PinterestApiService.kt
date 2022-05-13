@@ -30,6 +30,7 @@ class PinterestApiService(
     override fun publishPost(socialMedia: SocialMedia, postDto: PublishPostDto): PostDto? {
         val client = PinterestUserClient(socialMedia.token)
         val url = postDto.attachment?.let { saveImageExternallyService.saveImage(it) }
+            ?: saveImageExternallyService.saveImage(postDto.byteContent!!)
         val response = client.createPin(
             CreatePinRequest(
                 null,

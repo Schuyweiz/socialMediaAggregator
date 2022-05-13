@@ -1,18 +1,27 @@
 package com.example.api.service
 
 import com.example.api.config.PostServiceRegistry
+import com.example.api.dto.DelayedPostDto
 import com.example.core.dto.PostDto
 import com.example.core.dto.PublishPostDto
+import com.example.core.model.DelayedPost
 import com.example.core.model.SocialMedia
 import com.example.core.model.User
+import com.example.core.model.socialmedia.Post
 import com.example.core.model.socialmedia.SocialMediaType
+import com.example.core.repository.DelayedPostRepository
+import com.example.core.repository.SocialMediaRepository
 import com.example.core.service.impl.UserQueryService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.Instant
 
 @Service
 class PostService(
     private val uerQueryService: UserQueryService,
+    private val socialMediaRepository: SocialMediaRepository,
+    private val imageExternallyService: SaveImageExternallyService,
+    private val delayedPostRepository: DelayedPostRepository,
     private val postServiceRegistry: PostServiceRegistry
 ) {
 
@@ -21,6 +30,26 @@ class PostService(
         val user = uerQueryService.findByIdOrThrow(user.id)
 
         return getPosts(user.socialMediaSet)
+    }
+
+    @Transactional
+    fun postDelayed(userId: Long, dto: DelayedPostDto) {
+        dto.socialMediaIds?.let { socialMediaRepository.findAllById(it) }?.forEach {
+            delayedPostRepository.save(
+                DelayedPost(
+                    content = dto.content,
+                    attachment = dto.attachment?.bytes,
+                    pinBoardId = dto.pinBoardId,
+                    pinSectionId = dto.pinSectionId,
+                    pinTitle = dto.pinTitle,
+                    timeToPost = dto.timeToPost,
+                    socialMediaId = it.id,
+                    timePublished = dto.timeToPost ?: Instant.now(),
+                    userId = userId,
+                )
+            )
+        }
+
     }
 
     @Transactional

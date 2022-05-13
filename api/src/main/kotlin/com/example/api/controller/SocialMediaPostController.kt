@@ -1,5 +1,6 @@
 package com.example.api.controller
 
+import com.example.api.dto.DelayedPostDto
 import com.example.api.service.PostService
 import com.example.core.annotation.JwtSecureEndpoint
 import com.example.core.annotation.Logger
@@ -58,5 +59,12 @@ class SocialMediaPostController(
     fun getPost(
         @RequestBody posts: List<Post>
     ) = log.info(posts.toString())
+
+    @JwtSecureEndpoint
+    @PostMapping("/api/post/delayed")
+    fun delayedPost(
+        @ModelAttribute delayedPostDto: DelayedPostDto,
+        @AuthenticationPrincipal user: User,
+    ) = postService.postDelayed(user.id, delayedPostDto)
 
 }
